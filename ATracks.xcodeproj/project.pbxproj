@@ -9,19 +9,66 @@
 /* Begin PBXBuildFile section */
 		F868D65A280DAD4600EC3D30 /* ATracksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64A280DAD4500EC3D30 /* ATracksApp.swift */; };
 		F868D65B280DAD4600EC3D30 /* ATracksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64A280DAD4500EC3D30 /* ATracksApp.swift */; };
-		F868D65C280DAD4600EC3D30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64B280DAD4500EC3D30 /* ContentView.swift */; };
-		F868D65D280DAD4600EC3D30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64B280DAD4500EC3D30 /* ContentView.swift */; };
+		F868D65C280DAD4600EC3D30 /* TrackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64B280DAD4500EC3D30 /* TrackListView.swift */; };
+		F868D65D280DAD4600EC3D30 /* TrackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64B280DAD4500EC3D30 /* TrackListView.swift */; };
 		F868D65E280DAD4600EC3D30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F868D64C280DAD4600EC3D30 /* Assets.xcassets */; };
 		F868D65F280DAD4600EC3D30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F868D64C280DAD4600EC3D30 /* Assets.xcassets */; };
+		F868D66D280DAE3200EC3D30 /* ATracks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F868D66B280DAE3200EC3D30 /* ATracks.xcdatamodeld */; };
+		F868D66F280DB2E200EC3D30 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D66E280DB2E200EC3D30 /* AppInfo.swift */; };
+		F868D671280DB35B00EC3D30 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D670280DB35B00EC3D30 /* CoreDataStack.swift */; };
+		F868D672280DB35B00EC3D30 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D670280DB35B00EC3D30 /* CoreDataStack.swift */; };
+		F868D673280DB35F00EC3D30 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D66E280DB2E200EC3D30 /* AppInfo.swift */; };
+		F868D675280DB40A00EC3D30 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D674280DB40A00EC3D30 /* Track.swift */; };
+		F868D676280DB40A00EC3D30 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D674280DB40A00EC3D30 /* Track.swift */; };
+		F868D678280DB44B00EC3D30 /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D677280DB44B00EC3D30 /* DataType.swift */; };
+		F868D679280DB44B00EC3D30 /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D677280DB44B00EC3D30 /* DataType.swift */; };
+		F868D67B280DB4D300EC3D30 /* TrackPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D67A280DB4D300EC3D30 /* TrackPoint.swift */; };
+		F868D67C280DB4D300EC3D30 /* TrackPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D67A280DB4D300EC3D30 /* TrackPoint.swift */; };
+		F868D67E280DB5DA00EC3D30 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D67D280DB5DA00EC3D30 /* TrackManager.swift */; };
+		F868D67F280DB5DA00EC3D30 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D67D280DB5DA00EC3D30 /* TrackManager.swift */; };
+		F868D681280DB5F800EC3D30 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D680280DB5F700EC3D30 /* Date+.swift */; };
+		F868D682280DB5F800EC3D30 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D680280DB5F700EC3D30 /* Date+.swift */; };
+		F868D684280DB63400EC3D30 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D683280DB63400EC3D30 /* LocationManager.swift */; };
+		F868D685280DB63400EC3D30 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D683280DB63400EC3D30 /* LocationManager.swift */; };
+		F868D688280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */; };
+		F868D689280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */; };
+		F868D68B280DBD7400EC3D30 /* TrackRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D68A280DBD7400EC3D30 /* TrackRow.swift */; };
+		F868D68C280DBD7400EC3D30 /* TrackRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D68A280DBD7400EC3D30 /* TrackRow.swift */; };
+		F868D68E280DC26D00EC3D30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D68D280DC26D00EC3D30 /* ContentView.swift */; };
+		F868D68F280DC26D00EC3D30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D68D280DC26D00EC3D30 /* ContentView.swift */; };
+		F868D695280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */; };
+		F868D696280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */; };
+		F868D698280DF99400EC3D30 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D697280DF99400EC3D30 /* MapView.swift */; };
+		F868D699280DF99400EC3D30 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D697280DF99400EC3D30 /* MapView.swift */; };
+		F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */; };
+		F868D69C280E0C2000EC3D30 /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */; };
+		F868D69E280E143100EC3D30 /* UIView+pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69D280E143100EC3D30 /* UIView+pin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F868D64A280DAD4500EC3D30 /* ATracksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATracksApp.swift; sourceTree = "<group>"; };
-		F868D64B280DAD4500EC3D30 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F868D64B280DAD4500EC3D30 /* TrackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListView.swift; sourceTree = "<group>"; };
 		F868D64C280DAD4600EC3D30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F868D651280DAD4600EC3D30 /* ATracks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ATracks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F868D657280DAD4600EC3D30 /* ATracks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ATracks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F868D659280DAD4600EC3D30 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		F868D66C280DAE3200EC3D30 /* ATracks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ATracks.xcdatamodel; sourceTree = "<group>"; };
+		F868D66E280DB2E200EC3D30 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		F868D670280DB35B00EC3D30 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		F868D674280DB40A00EC3D30 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		F868D677280DB44B00EC3D30 /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
+		F868D67A280DB4D300EC3D30 /* TrackPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPoint.swift; sourceTree = "<group>"; };
+		F868D67D280DB5DA00EC3D30 /* TrackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackManager.swift; sourceTree = "<group>"; };
+		F868D680280DB5F700EC3D30 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		F868D683280DB63400EC3D30 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		F868D686280DB8AC00EC3D30 /* ATracks--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ATracks--iOS--Info.plist"; sourceTree = "<group>"; };
+		F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailView.swift; sourceTree = "<group>"; };
+		F868D68A280DBD7400EC3D30 /* TrackRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackRow.swift; sourceTree = "<group>"; };
+		F868D68D280DC26D00EC3D30 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsView.swift; sourceTree = "<group>"; };
+		F868D697280DF99400EC3D30 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+.swift"; sourceTree = "<group>"; };
+		F868D69D280E143100EC3D30 /* UIView+pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+pin.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +92,9 @@
 		F868D644280DAD4500EC3D30 = {
 			isa = PBXGroup;
 			children = (
+				F868D686280DB8AC00EC3D30 /* ATracks--iOS--Info.plist */,
 				F868D649280DAD4500EC3D30 /* Shared */,
+				F868D690280DEBFB00EC3D30 /* iOS */,
 				F868D658280DAD4600EC3D30 /* macOS */,
 				F868D652280DAD4600EC3D30 /* Products */,
 			);
@@ -55,8 +104,9 @@
 			isa = PBXGroup;
 			children = (
 				F868D64A280DAD4500EC3D30 /* ATracksApp.swift */,
-				F868D64B280DAD4500EC3D30 /* ContentView.swift */,
-				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
+				F868D66A280DADF000EC3D30 /* Helpers */,
+				F868D668280DADDC00EC3D30 /* Model */,
+				F868D669280DADE400EC3D30 /* Views */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -76,6 +126,52 @@
 				F868D659280DAD4600EC3D30 /* macOS.entitlements */,
 			);
 			path = macOS;
+			sourceTree = "<group>";
+		};
+		F868D668280DADDC00EC3D30 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F868D66B280DAE3200EC3D30 /* ATracks.xcdatamodeld */,
+				F868D670280DB35B00EC3D30 /* CoreDataStack.swift */,
+				F868D677280DB44B00EC3D30 /* DataType.swift */,
+				F868D674280DB40A00EC3D30 /* Track.swift */,
+				F868D67D280DB5DA00EC3D30 /* TrackManager.swift */,
+				F868D67A280DB4D300EC3D30 /* TrackPoint.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F868D669280DADE400EC3D30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F868D68D280DC26D00EC3D30 /* ContentView.swift */,
+				F868D697280DF99400EC3D30 /* MapView.swift */,
+				F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */,
+				F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */,
+				F868D64B280DAD4500EC3D30 /* TrackListView.swift */,
+				F868D68A280DBD7400EC3D30 /* TrackRow.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F868D66A280DADF000EC3D30 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F868D66E280DB2E200EC3D30 /* AppInfo.swift */,
+				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
+				F868D680280DB5F700EC3D30 /* Date+.swift */,
+				F868D683280DB63400EC3D30 /* LocationManager.swift */,
+				F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F868D690280DEBFB00EC3D30 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F868D69D280E143100EC3D30 /* UIView+pin.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,8 +272,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F868D65C280DAD4600EC3D30 /* ContentView.swift in Sources */,
+				F868D671280DB35B00EC3D30 /* CoreDataStack.swift in Sources */,
+				F868D65C280DAD4600EC3D30 /* TrackListView.swift in Sources */,
+				F868D68E280DC26D00EC3D30 /* ContentView.swift in Sources */,
+				F868D67B280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
+				F868D688280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
+				F868D684280DB63400EC3D30 /* LocationManager.swift in Sources */,
+				F868D69E280E143100EC3D30 /* UIView+pin.swift in Sources */,
+				F868D695280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */,
+				F868D66F280DB2E200EC3D30 /* AppInfo.swift in Sources */,
+				F868D698280DF99400EC3D30 /* MapView.swift in Sources */,
+				F868D67E280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
 				F868D65A280DAD4600EC3D30 /* ATracksApp.swift in Sources */,
+				F868D66D280DAE3200EC3D30 /* ATracks.xcdatamodeld in Sources */,
+				F868D68B280DBD7400EC3D30 /* TrackRow.swift in Sources */,
+				F868D681280DB5F800EC3D30 /* Date+.swift in Sources */,
+				F868D675280DB40A00EC3D30 /* Track.swift in Sources */,
+				F868D678280DB44B00EC3D30 /* DataType.swift in Sources */,
+				F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +297,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F868D65D280DAD4600EC3D30 /* ContentView.swift in Sources */,
+				F868D682280DB5F800EC3D30 /* Date+.swift in Sources */,
+				F868D699280DF99400EC3D30 /* MapView.swift in Sources */,
+				F868D696280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */,
+				F868D689280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
+				F868D672280DB35B00EC3D30 /* CoreDataStack.swift in Sources */,
+				F868D685280DB63400EC3D30 /* LocationManager.swift in Sources */,
+				F868D67C280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
+				F868D679280DB44B00EC3D30 /* DataType.swift in Sources */,
+				F868D68C280DBD7400EC3D30 /* TrackRow.swift in Sources */,
+				F868D676280DB40A00EC3D30 /* Track.swift in Sources */,
+				F868D673280DB35F00EC3D30 /* AppInfo.swift in Sources */,
+				F868D67F280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
+				F868D68F280DC26D00EC3D30 /* ContentView.swift in Sources */,
+				F868D69C280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
+				F868D65D280DAD4600EC3D30 /* TrackListView.swift in Sources */,
 				F868D65B280DAD4600EC3D30 /* ATracksApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,6 +438,9 @@
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ATracks--iOS--Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs to access your location in order to perform tracking.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs to access your location in order to perform tracking.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -322,7 +451,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;
@@ -342,6 +471,9 @@
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ATracks--iOS--Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs to access your location in order to perform tracking.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs to access your location in order to perform tracking.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -352,7 +484,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;
@@ -450,6 +582,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F868D66B280DAE3200EC3D30 /* ATracks.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F868D66C280DAE3200EC3D30 /* ATracks.xcdatamodel */,
+			);
+			currentVersion = F868D66C280DAE3200EC3D30 /* ATracks.xcdatamodel */;
+			path = ATracks.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F868D645280DAD4500EC3D30 /* Project object */;
 }

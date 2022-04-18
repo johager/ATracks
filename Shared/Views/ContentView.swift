@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Shared
+//  ATracks
 //
 //  Created by James Hager on 4/18/22.
 //
@@ -9,10 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView {
+            TrackListView()
+        }
     }
 }
+
+// MARK: - Previews
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
