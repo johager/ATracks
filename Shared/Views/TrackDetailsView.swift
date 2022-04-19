@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TrackDetailsView: View {
+    
     @ObservedObject var track: Track
     
     var body: some View {
@@ -19,10 +20,15 @@ struct TrackDetailsView: View {
                 Text("Distance: \(String(format: "%.2f", track.distance)) mi")
                     .font(.footnote)
             }
-            .padding([.trailing, .leading], 32)
-            
-            
+            HStack {
+                Text("Ave Speed: \(Int(round(track.aveSpeed))) mph")
+                    .font(.footnote)
+                Spacer()
+                Text("Steps: \(track.steps)")
+                    .font(.footnote)
+            }
         }
+        .padding([.trailing, .leading], 32)
     }
 }
 

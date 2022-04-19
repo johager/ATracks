@@ -39,10 +39,15 @@
 		F868D695280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */; };
 		F868D696280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */; };
 		F868D698280DF99400EC3D30 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D697280DF99400EC3D30 /* MapView.swift */; };
-		F868D699280DF99400EC3D30 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D697280DF99400EC3D30 /* MapView.swift */; };
 		F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */; };
 		F868D69C280E0C2000EC3D30 /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */; };
 		F868D69E280E143100EC3D30 /* UIView+pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69D280E143100EC3D30 /* UIView+pin.swift */; };
+		F868D6A1280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6A0280E1FBE00EC3D30 /* MapViewHelper.swift */; };
+		F868D6A2280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6A0280E1FBE00EC3D30 /* MapViewHelper.swift */; };
+		F868D6A7280E298300EC3D30 /* MapViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6A6280E298300EC3D30 /* MapViewCoordinator.swift */; };
+		F868D6A8280E298300EC3D30 /* MapViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6A6280E298300EC3D30 /* MapViewCoordinator.swift */; };
+		F868D6AA280E2AD000EC3D30 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6A9280E2AD000EC3D30 /* MapView.swift */; };
+		F868D6AB280E537900EC3D30 /* ATracks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F868D66B280DAE3200EC3D30 /* ATracks.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +74,9 @@
 		F868D697280DF99400EC3D30 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+.swift"; sourceTree = "<group>"; };
 		F868D69D280E143100EC3D30 /* UIView+pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+pin.swift"; sourceTree = "<group>"; };
+		F868D6A0280E1FBE00EC3D30 /* MapViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewHelper.swift; sourceTree = "<group>"; };
+		F868D6A6280E298300EC3D30 /* MapViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewCoordinator.swift; sourceTree = "<group>"; };
+		F868D6A9280E2AD000EC3D30 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				F868D659280DAD4600EC3D30 /* macOS.entitlements */,
+				F868D6A9280E2AD000EC3D30 /* MapView.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -145,7 +154,6 @@
 			isa = PBXGroup;
 			children = (
 				F868D68D280DC26D00EC3D30 /* ContentView.swift */,
-				F868D697280DF99400EC3D30 /* MapView.swift */,
 				F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */,
 				F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */,
 				F868D64B280DAD4500EC3D30 /* TrackListView.swift */,
@@ -161,6 +169,8 @@
 				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
 				F868D680280DB5F700EC3D30 /* Date+.swift */,
 				F868D683280DB63400EC3D30 /* LocationManager.swift */,
+				F868D6A6280E298300EC3D30 /* MapViewCoordinator.swift */,
+				F868D6A0280E1FBE00EC3D30 /* MapViewHelper.swift */,
 				F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */,
 			);
 			path = Helpers;
@@ -169,6 +179,7 @@
 		F868D690280DEBFB00EC3D30 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				F868D697280DF99400EC3D30 /* MapView.swift */,
 				F868D69D280E143100EC3D30 /* UIView+pin.swift */,
 			);
 			path = iOS;
@@ -276,10 +287,12 @@
 				F868D65C280DAD4600EC3D30 /* TrackListView.swift in Sources */,
 				F868D68E280DC26D00EC3D30 /* ContentView.swift in Sources */,
 				F868D67B280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
+				F868D6A7280E298300EC3D30 /* MapViewCoordinator.swift in Sources */,
 				F868D688280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
 				F868D684280DB63400EC3D30 /* LocationManager.swift in Sources */,
 				F868D69E280E143100EC3D30 /* UIView+pin.swift in Sources */,
 				F868D695280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */,
+				F868D6A1280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */,
 				F868D66F280DB2E200EC3D30 /* AppInfo.swift in Sources */,
 				F868D698280DF99400EC3D30 /* MapView.swift in Sources */,
 				F868D67E280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
@@ -298,13 +311,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				F868D682280DB5F800EC3D30 /* Date+.swift in Sources */,
-				F868D699280DF99400EC3D30 /* MapView.swift in Sources */,
 				F868D696280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */,
 				F868D689280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
+				F868D6A8280E298300EC3D30 /* MapViewCoordinator.swift in Sources */,
 				F868D672280DB35B00EC3D30 /* CoreDataStack.swift in Sources */,
 				F868D685280DB63400EC3D30 /* LocationManager.swift in Sources */,
 				F868D67C280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
+				F868D6AA280E2AD000EC3D30 /* MapView.swift in Sources */,
 				F868D679280DB44B00EC3D30 /* DataType.swift in Sources */,
+				F868D6A2280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */,
 				F868D68C280DBD7400EC3D30 /* TrackRow.swift in Sources */,
 				F868D676280DB40A00EC3D30 /* Track.swift in Sources */,
 				F868D673280DB35F00EC3D30 /* AppInfo.swift in Sources */,
@@ -312,6 +327,7 @@
 				F868D68F280DC26D00EC3D30 /* ContentView.swift in Sources */,
 				F868D69C280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
 				F868D65D280DAD4600EC3D30 /* TrackListView.swift in Sources */,
+				F868D6AB280E537900EC3D30 /* ATracks.xcdatamodeld in Sources */,
 				F868D65B280DAD4600EC3D30 /* ATracksApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,7 +450,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -467,7 +483,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

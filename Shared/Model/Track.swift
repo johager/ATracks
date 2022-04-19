@@ -26,6 +26,14 @@ class Track: NSManagedObject, Identifiable {
     
     var id: String { objectID.uriRepresentation().absoluteString }
     
+    var aveSpeed: Double {
+        if duration > 0 {
+            return distance / duration * 3600  // convert seconds to hours
+        } else {
+            return 0
+        }
+    }
+    
     var trackPoints: [TrackPoint] {
         guard let trackPointsSet = trackPointsSet as? Set<TrackPoint> else { return [] }
         return Array(trackPointsSet).sorted { $0.timestamp < $1.timestamp }

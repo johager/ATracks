@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TrackListView: View {
+    
     @State private var isTracking = false
     
     @FetchRequest(
@@ -58,7 +59,9 @@ struct TrackListView: View {
             }
         }
         .navigationTitle("Tracks")
-        .navigationBarTitleDisplayMode(.inline)
+        #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+        #endif
         .frame(minWidth: 250)
     }
     
