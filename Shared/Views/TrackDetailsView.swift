@@ -30,6 +30,17 @@ struct TrackDetailsView: View {
         }
         .padding([.top, .bottom], 8)
         .padding([.trailing, .leading], 32)
+        #if os(iOS)
+        .task {
+            guard let endDate = track.trackPoints.last?.timestamp else { return }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd, h:mm:ss a"
+            print("start date: \(dateFormatter.string(from: track.date))")
+            print("  end date: \(dateFormatter.string(from: endDate))")
+            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, andEndingAt: endDate) else { return }
+            print("Retrieved steps - sumInt: \(numSteps)")
+        }
+        #endif
     }
 }
 

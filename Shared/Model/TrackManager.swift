@@ -33,7 +33,7 @@ class TrackManager {
     // MARK: - Init
     
     private init() {
-        print("\(#function)")
+//        print("\(#function)")
         trackFetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
         //fetchTracks()
@@ -71,6 +71,12 @@ class TrackManager {
         trackPoints.append(trackPoint)
         coreDataStack.saveContext()
         delegate?.didMakeNewTrackPoint(trackPoint)
+        #if os(iOS)
+        Task.init {
+            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date) else { return }
+            track.steps = numSteps
+        }
+        #endif
     }
     
     func fetchTrackPoints(for track: Track? = nil) {

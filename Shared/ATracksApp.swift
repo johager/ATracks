@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import HealthKit
+#endif
 
 @main
 struct ATracksApp: App {
@@ -18,23 +21,25 @@ struct ATracksApp: App {
             ContentView()
                 .environment(\.managedObjectContext, coreDataStack.context)
                 .onChange(of: scenePhase) { scenePhaseChanged(to: $0) }
+                .task { await checkHealthKit() }
         }
+        
     }
     
-    // MARK: - Methods
+    // MARK: - ScenePhase Methods
     
     func scenePhaseChanged(to phase: ScenePhase) {
         switch phase {
         case .active:
             print("\(#function) - active")
             #if os(iOS)
-            //LocationManager.shared.sceneDidBecomeActive()
+            LocationManager.shared.sceneDidBecomeActive()
             #endif
             //doSpecialStartUp()
         #if os(iOS)
         case .inactive:
             print("\(#function) - inactive")
-            //LocationManager.shared.sceneDidBecomeInActive()
+            LocationManager.shared.sceneDidBecomeInActive()
         #endif
         case .background:
             print("\(#function) - background")
@@ -62,5 +67,17 @@ struct ATracksApp: App {
         } catch {
             print("\(#function) - error fetching")
         }
+    }
+    
+    // MARK: - HealthKit Methods
+    
+    func checkHealthKit() async {
+        #if os(iOS)
+        print("\(#function)")
+        
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        
+        guard await HealthKitManager.shared.requestPermission() == true else { return }
+        #endif
     }
 }
