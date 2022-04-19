@@ -15,9 +15,11 @@ struct TrackRow: View {
         HStack(alignment: .center) {
             Text(track.name)
                 .font(.body)
+                .foregroundColor(.text)
             Spacer()
             Text(String(format: "%.2f", track.distance) + " mi")
                 .font(.footnote)
+                .foregroundColor(.textSecondary)
         }
     }
 }

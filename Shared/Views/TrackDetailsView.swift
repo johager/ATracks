@@ -12,7 +12,7 @@ struct TrackDetailsView: View {
     @ObservedObject var track: Track
     
     var body: some View {
-        VStack {
+        VStack(spacing: 4) {
             HStack {
                 Text("Duration: \(track.duration.stringWithHrMin)")
                     .font(.footnote)
@@ -28,6 +28,7 @@ struct TrackDetailsView: View {
                     .font(.footnote)
             }
         }
+        .padding([.top, .bottom], 8)
         .padding([.trailing, .leading], 32)
     }
 }

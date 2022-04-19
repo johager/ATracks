@@ -10,6 +10,7 @@ import SwiftUI
 struct TrackListView: View {
     
     @State private var isTracking = false
+//    @State private var selectedTrack: Track?
     
     @FetchRequest(
         sortDescriptors: [
@@ -34,12 +35,19 @@ struct TrackListView: View {
                         .opacity(0)
                         TrackRow(track: track)
                     }
+//                    .onTapGesture {
+//                        print("tapped in list")
+//                        selectedTrack = track
+//                    }
+//                    .listRowBackground(track == selectedTrack ? Color.tableViewSelectedBackgroundColor : .white)
                 }
                 .onDelete(perform: delete)
-//                .listRowBackground(Color.white)
+//                .listRowBackground(Color.tableViewSelectedBackgroundColor)
+                
             }
             .listStyle(.plain)
             
+            #if os(iOS)
             HStack {
                 Spacer()
                 
@@ -47,6 +55,7 @@ struct TrackListView: View {
                     Text("Start")
                 }
                 .disabled(isTracking)
+                .buttonStyle(AAButtonStyle(isEnabled: !isTracking))
                 
                 Spacer()
                 
@@ -54,9 +63,11 @@ struct TrackListView: View {
                     Text("Stop")
                 }
                 .disabled(!isTracking)
+                .buttonStyle(AAButtonStyle(isEnabled: isTracking))
                 
                 Spacer()
             }
+            #endif
         }
         .navigationTitle("Tracks")
         #if os(iOS)
@@ -74,15 +85,19 @@ struct TrackListView: View {
     }
     
     func startTrack() {
-        print("\(#function)")       
+        print("\(#function)")
+        #if os(iOS)
         LocationManager.shared.startTracking()
         isTracking = true
+        #endif
     }
     
     func stopTrack() {
         print("\(#function)")
+        #if os(iOS)
         LocationManager.shared.stopTracking()
         isTracking = false
+        #endif
     }
 }
 

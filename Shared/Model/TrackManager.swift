@@ -36,7 +36,7 @@ class TrackManager {
         print("\(#function)")
         trackFetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
-        fetchTracks()
+        //fetchTracks()
         //describeTrackPoints()
     }
     

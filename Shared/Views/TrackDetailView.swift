@@ -12,7 +12,7 @@ struct TrackDetailView: View {
     @ObservedObject var track: Track
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             TrackDetailsView(track: track)
             MapView(track: track)
                 .edgesIgnoringSafeArea([.trailing, .bottom, .leading])

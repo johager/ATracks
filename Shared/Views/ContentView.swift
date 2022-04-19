@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
+    init() {
+        Appearance.customizeAppearance()
+    }
+    
     var body: some View {
         NavigationView {
             TrackListView()

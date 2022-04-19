@@ -84,6 +84,7 @@ class MapViewHelper: NSObject {
     func setUpTracking() {
         setMapNoTrack()
         
+        #if os(iOS)
         guard let isTrackingTrack = LocationManager.shared.isTrackingTrack else { return }
         print("\(#function) - got LocationManager.shared.isTrackingTrack")
         
@@ -91,6 +92,7 @@ class MapViewHelper: NSObject {
         print("\(#function) - track === isTrackingTrack")
         
         setMapToTrack()
+        #endif
     }
     
     func setMapNoTrack() {

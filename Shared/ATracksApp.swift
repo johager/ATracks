@@ -17,21 +17,29 @@ struct ATracksApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, coreDataStack.context)
-                .onChange(of: scenePhase) { newPhase in
-                    switch newPhase {
-                    case .active:
-                        print("\(#function) - active")
-                        LocationManager.shared.sceneDidBecomeActive()
-                        //doSpecialStartUp()
-                    case .inactive:
-                        print("\(#function) - inactive")
-                        LocationManager.shared.sceneDidBecomeInActive()
-                    case .background:
-                        print("\(#function) - background")
-                    default:
-                        print("\(#function) - newPhase: \(newPhase)")
-                    }
-                }
+                .onChange(of: scenePhase) { scenePhaseChanged(to: $0) }
+        }
+    }
+    
+    // MARK: - Methods
+    
+    func scenePhaseChanged(to phase: ScenePhase) {
+        switch phase {
+        case .active:
+            print("\(#function) - active")
+            #if os(iOS)
+            //LocationManager.shared.sceneDidBecomeActive()
+            #endif
+            //doSpecialStartUp()
+        #if os(iOS)
+        case .inactive:
+            print("\(#function) - inactive")
+            //LocationManager.shared.sceneDidBecomeInActive()
+        #endif
+        case .background:
+            print("\(#function) - background")
+        default:
+            print("\(#function) - phase: \(phase)")
         }
     }
     
