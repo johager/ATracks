@@ -11,13 +11,31 @@ struct TrackDetailView: View {
     
     @ObservedObject var track: Track
     
+    @State private var isShowingTrackDetailsView = false
+    
     var body: some View {
         VStack(spacing: 0) {
-            TrackDetailsView(track: track)
+            TrackStatsView(track: track)
             MapView(track: track)
                 .edgesIgnoringSafeArea([.trailing, .bottom, .leading])
+            NavigationLink(destination: TrackDetailsView(track: track), isActive: $isShowingTrackDetailsView) { EmptyView() }
         }
         .navigationTitle(track.name)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: showTrackDetails) {
+                    Image(systemName: "ellipsis")
+                        .tint(.textSelectable)
+                }
+            }
+        }
+    }
+    
+    // MARKL - Methods
+    
+    func showTrackDetails() {
+        print("\(#function)")
+        isShowingTrackDetailsView = true
     }
 }
 

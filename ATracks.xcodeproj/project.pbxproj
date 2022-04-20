@@ -35,8 +35,8 @@
 		F868D68C280DBD7400EC3D30 /* TrackRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D68A280DBD7400EC3D30 /* TrackRow.swift */; };
 		F868D68E280DC26D00EC3D30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D68D280DC26D00EC3D30 /* ContentView.swift */; };
 		F868D68F280DC26D00EC3D30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D68D280DC26D00EC3D30 /* ContentView.swift */; };
-		F868D695280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */; };
-		F868D696280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */; };
+		F868D695280DEF9900EC3D30 /* TrackStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackStatsView.swift */; };
+		F868D696280DEF9900EC3D30 /* TrackStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D694280DEF9900EC3D30 /* TrackStatsView.swift */; };
 		F868D698280DF99400EC3D30 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D697280DF99400EC3D30 /* MapView.swift */; };
 		F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */; };
 		F868D69C280E0C2000EC3D30 /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */; };
@@ -58,6 +58,16 @@
 		F868D6C6280F479200EC3D30 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6C5280F479200EC3D30 /* HealthKitManager.swift */; };
 		F868D6C8280F6C5000EC3D30 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6C7280F6C5000EC3D30 /* SettingsView.swift */; };
 		F868D6CA280F6C6100EC3D30 /* CodeVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */; };
+		F868D6CC281040B000EC3D30 /* LineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6CB281040B000EC3D30 /* LineShape.swift */; };
+		F868D6CE281042FF00EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6CD281042FF00EC3D30 /* TrackDetailsView.swift */; };
+		F868D6CF281042FF00EC3D30 /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6CD281042FF00EC3D30 /* TrackDetailsView.swift */; };
+		F868D6D02810430200EC3D30 /* LineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6CB281040B000EC3D30 /* LineShape.swift */; };
+		F868D6D22810455F00EC3D30 /* TrackPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6D12810455F00EC3D30 /* TrackPlotView.swift */; };
+		F868D6D32810455F00EC3D30 /* TrackPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6D12810455F00EC3D30 /* TrackPlotView.swift */; };
+		F868D6D52810534600EC3D30 /* TrackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6D42810534600EC3D30 /* TrackHelper.swift */; };
+		F868D6D62810534600EC3D30 /* TrackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6D42810534600EC3D30 /* TrackHelper.swift */; };
+		F868D6DB2810727300EC3D30 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6DA2810727300EC3D30 /* Double+.swift */; };
+		F868D6DC2810727300EC3D30 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6DA2810727300EC3D30 /* Double+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,7 +90,7 @@
 		F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailView.swift; sourceTree = "<group>"; };
 		F868D68A280DBD7400EC3D30 /* TrackRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackRow.swift; sourceTree = "<group>"; };
 		F868D68D280DC26D00EC3D30 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsView.swift; sourceTree = "<group>"; };
+		F868D694280DEF9900EC3D30 /* TrackStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackStatsView.swift; sourceTree = "<group>"; };
 		F868D697280DF99400EC3D30 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+.swift"; sourceTree = "<group>"; };
 		F868D69D280E143100EC3D30 /* UIView+pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+pin.swift"; sourceTree = "<group>"; };
@@ -98,6 +108,11 @@
 		F868D6C5280F479200EC3D30 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		F868D6C7280F6C5000EC3D30 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeVersionView.swift; sourceTree = "<group>"; };
+		F868D6CB281040B000EC3D30 /* LineShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineShape.swift; sourceTree = "<group>"; };
+		F868D6CD281042FF00EC3D30 /* TrackDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsView.swift; sourceTree = "<group>"; };
+		F868D6D12810455F00EC3D30 /* TrackPlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPlotView.swift; sourceTree = "<group>"; };
+		F868D6D42810534600EC3D30 /* TrackHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHelper.swift; sourceTree = "<group>"; };
+		F868D6DA2810727300EC3D30 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,9 +194,12 @@
 			isa = PBXGroup;
 			children = (
 				F868D68D280DC26D00EC3D30 /* ContentView.swift */,
+				F868D6CB281040B000EC3D30 /* LineShape.swift */,
 				F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */,
-				F868D694280DEF9900EC3D30 /* TrackDetailsView.swift */,
+				F868D6CD281042FF00EC3D30 /* TrackDetailsView.swift */,
 				F868D64B280DAD4500EC3D30 /* TrackListView.swift */,
+				F868D6D12810455F00EC3D30 /* TrackPlotView.swift */,
+				F868D694280DEF9900EC3D30 /* TrackStatsView.swift */,
 				F868D68A280DBD7400EC3D30 /* TrackRow.swift */,
 			);
 			path = Views;
@@ -194,9 +212,11 @@
 				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
 				F868D6B0280EF13800EC3D30 /* Color+.swift */,
 				F868D680280DB5F700EC3D30 /* Date+.swift */,
+				F868D6DA2810727300EC3D30 /* Double+.swift */,
 				F868D6A6280E298300EC3D30 /* MapViewCoordinator.swift */,
 				F868D6A0280E1FBE00EC3D30 /* MapViewHelper.swift */,
 				F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */,
+				F868D6D42810534600EC3D30 /* TrackHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -361,13 +381,16 @@
 				F868D68E280DC26D00EC3D30 /* ContentView.swift in Sources */,
 				F868D6BE280F195A00EC3D30 /* Appearance.swift in Sources */,
 				F868D67B280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
+				F868D6D22810455F00EC3D30 /* TrackPlotView.swift in Sources */,
 				F868D6CA280F6C6100EC3D30 /* CodeVersionView.swift in Sources */,
 				F868D6A7280E298300EC3D30 /* MapViewCoordinator.swift in Sources */,
 				F868D688280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
 				F868D684280DB63400EC3D30 /* LocationManager.swift in Sources */,
 				F868D69E280E143100EC3D30 /* UIView+pin.swift in Sources */,
-				F868D695280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */,
+				F868D695280DEF9900EC3D30 /* TrackStatsView.swift in Sources */,
+				F868D6D52810534600EC3D30 /* TrackHelper.swift in Sources */,
 				F868D6B5280F06F100EC3D30 /* AAButtonStyle.swift in Sources */,
+				F868D6DB2810727300EC3D30 /* Double+.swift in Sources */,
 				F868D6A1280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */,
 				F868D6B2280EF91D00EC3D30 /* Color+.swift in Sources */,
 				F868D66F280DB2E200EC3D30 /* AppInfo.swift in Sources */,
@@ -383,6 +406,8 @@
 				F868D6B8280F10E800EC3D30 /* Color+iOS.swift in Sources */,
 				F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
 				F868D6C8280F6C5000EC3D30 /* SettingsView.swift in Sources */,
+				F868D6CC281040B000EC3D30 /* LineShape.swift in Sources */,
+				F868D6CE281042FF00EC3D30 /* TrackDetailsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,16 +416,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				F868D682280DB5F800EC3D30 /* Date+.swift in Sources */,
-				F868D696280DEF9900EC3D30 /* TrackDetailsView.swift in Sources */,
+				F868D6CF281042FF00EC3D30 /* TrackDetailsView.swift in Sources */,
+				F868D696280DEF9900EC3D30 /* TrackStatsView.swift in Sources */,
 				F868D689280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
 				F868D6A8280E298300EC3D30 /* MapViewCoordinator.swift in Sources */,
+				F868D6D32810455F00EC3D30 /* TrackPlotView.swift in Sources */,
 				F868D6C0280F1A5800EC3D30 /* Appearance.swift in Sources */,
 				F868D672280DB35B00EC3D30 /* CoreDataStack.swift in Sources */,
+				F868D6D62810534600EC3D30 /* TrackHelper.swift in Sources */,
 				F868D67C280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
 				F868D6AA280E2AD000EC3D30 /* MapView.swift in Sources */,
 				F868D679280DB44B00EC3D30 /* DataType.swift in Sources */,
 				F868D6A2280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */,
 				F868D68C280DBD7400EC3D30 /* TrackRow.swift in Sources */,
+				F868D6DC2810727300EC3D30 /* Double+.swift in Sources */,
 				F868D676280DB40A00EC3D30 /* Track.swift in Sources */,
 				F868D673280DB35F00EC3D30 /* AppInfo.swift in Sources */,
 				F868D6B1280EF13800EC3D30 /* Color+.swift in Sources */,
@@ -408,6 +437,7 @@
 				F868D68F280DC26D00EC3D30 /* ContentView.swift in Sources */,
 				F868D69C280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
 				F868D65D280DAD4600EC3D30 /* TrackListView.swift in Sources */,
+				F868D6D02810430200EC3D30 /* LineShape.swift in Sources */,
 				F868D6BC280F13F600EC3D30 /* Color+macOS.swift in Sources */,
 				F868D6AB280E537900EC3D30 /* ATracks.xcdatamodeld in Sources */,
 				F868D65B280DAD4600EC3D30 /* ATracksApp.swift in Sources */,
@@ -534,7 +564,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -571,7 +601,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -610,7 +640,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -639,7 +669,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

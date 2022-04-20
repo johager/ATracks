@@ -79,6 +79,18 @@ extension Color {
         return color(light: lightColor, dark: darkColor)
     }
     
+    // MARK: - Plot Colors
+    
+    static var plotElevation: Color {
+        return color(light: .black, dark: Color(white: 0.9))
+    }
+    
+    static var plotSpeed: Color {
+        let lightColor = Color(red: 0.9, green: 0, blue: 0)
+        let darkColor = Color(red: 0.95, green: 0, blue: 0)
+        return color(light: lightColor, dark: darkColor)
+    }
+    
     // MARK: - Reference Colors
     
     static let avantiGreen = Color(red: 0, green: 84/255.0, blue: 73/255.0)
