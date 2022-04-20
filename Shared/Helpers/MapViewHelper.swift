@@ -16,6 +16,8 @@ class MapViewHelper: NSObject {
     
     private var lastTrackPoint: TrackPoint?
     
+    private var trackPointAnnotation: MKPointAnnotation!
+    
     private var region: MKCoordinateRegion {
         guard let trackPointsSet = track.trackPointsSet,
               trackPointsSet.count > 1
@@ -39,6 +41,20 @@ class MapViewHelper: NSObject {
             center: CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2, longitude: (minLon + maxLon) / 2),
             span: MKCoordinateSpan(latitudeDelta: 1.8 * (maxLat - minLat), longitudeDelta: 1.8 * (maxLon - minLon))
         )
+    }
+    
+    // MARK: - Init
+    
+    override init() {
+        super.init()
+        
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(handleMoveTrackMarkerNotification(_:)),
+            name: .moveTrackMarker, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Methods
@@ -112,20 +128,23 @@ class MapViewHelper: NSObject {
         
         lastTrackPoint = track.trackPoints.last
     }
-}
-
-// MARK: - MKMapViewDelegate
-
-extension MapViewHelper: MKMapViewDelegate {
     
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKPolyline {
-            let renderer = MKPolylineRenderer(overlay: overlay)
-            renderer.strokeColor = .systemRed
-            renderer.lineWidth = 5
-            return renderer
+    // MARK: - Notifications
+    
+    @objc func handleMoveTrackMarkerNotification(_ notification: Notification) {
+        
+        guard let userInfo = notification.userInfo as? Dictionary<String,Any>,
+              let clLocation = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
+        else { return }
+        
+        if trackPointAnnotation == nil {
+            trackPointAnnotation = MKPointAnnotation()
+        } else {
+            mapView.removeAnnotation(trackPointAnnotation)
         }
-        return MKOverlayRenderer()
+
+        trackPointAnnotation.coordinate = clLocation
+        mapView.addAnnotation(trackPointAnnotation)
     }
 }
 

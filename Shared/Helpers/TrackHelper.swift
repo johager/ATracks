@@ -6,8 +6,12 @@
 //
 
 import Foundation
+import CoreGraphics
+import CoreLocation
 
 class TrackHelper {
+    
+    var track: Track!
     
     var xVals = [Double]()
     var elevations = [Double]()
@@ -18,17 +22,21 @@ class TrackHelper {
     
 //    var minSpeed: Double = 0
 //    var maxSpeed: Double = 0
+
+    
+    private var trackPoints: [TrackPoint]!
     
     // MARK: - Init
     
     init(track: Track) {
-        setPlotVals(for: track)
+        self.track = track
+        self.trackPoints = track.trackPoints
+        setPlotVals()
     }
     
-    // MARK: - Methods
+    // MARK: - Plot Methods
     
-    func setPlotVals(for track: Track) {
-        let trackPoints = track.trackPoints
+    func setPlotVals() {
         
         let nSmooth = 21
         
@@ -91,5 +99,24 @@ class TrackHelper {
             x[i] = x[nOffset]
             x.append(x.last!)
         }
+    }
+    
+    // MARK: - Location Methods
+    
+    func plotData(at xFraction: CGFloat) -> Double? {
+        
+        //print("\(#function) - xFraction: \(xFraction)")
+        let xRange = xVals.last! - xVals[0]
+        //print("\(#function) - xRange: \(xRange)")
+        let x = xRange * xFraction
+        //print("\(#function) - x: \(x)")
+        
+        guard let index = xVals.firstIndex(where: { $0 > x }) else { return nil }
+        
+        let userInfo = [Key.clLocationCoordinate2D: trackPoints[index].clLocationCoordinate2D]
+        
+        NotificationCenter.default.post(name: .moveTrackMarker, object: nil, userInfo: userInfo)
+        
+        return elevations[index]
     }
 }

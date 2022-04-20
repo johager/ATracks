@@ -11,6 +11,8 @@ struct TrackDetailsView: View {
     
     @ObservedObject var track: Track
     
+    // MARK: - View
+    
     var body: some View {
         VStack(spacing: 0) {
             TrackStatsView(track: track)

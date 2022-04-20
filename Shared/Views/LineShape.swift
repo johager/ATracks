@@ -16,31 +16,41 @@ struct LineShape: Shape {
     
     func path(in rect: CGRect) -> Path {
         
+        guard xVals.count > 1 else { return Path() }
+        
         let yOrigin = rect.height
         let yMin = yVals.min()!
         
-        print("\(#function) - xVals.count: \(xVals.count)")
-        print("\(#function) - rect: \(rect)")
-        let xScale = rect.width / (xVals.last! - xVals[0])
-        let yScale = rect.height / (yVals.max()! - yMin)
+//        print("\(#function) - xVals.count: \(xVals.count)")
+//        print("\(#function) - rect: \(rect)")
         
-        print("\(#function) - xScale: \(xScale)")
-        print("\(#function) - yScale: \(yScale)")
+        let xScale: CGFloat
+        let yScale: CGFloat
+        
+        if xVals.count > 2 {
+            xScale = rect.width / (xVals.last! - xVals[0])
+            yScale = rect.height / (yVals.max()! - yMin)
+        } else {
+            xScale = rect.width
+            yScale = rect.height
+        }
+        
+//        print("\(#function) - xScale: \(xScale)")
+//        print("\(#function) - yScale: \(yScale)")
         
         var path = Path()
-        path.move(to: CGPoint(x: xVals[0], y: yVals[0] * yScale))
         
-        for i in 0..<xVals.count {
-            let x = xVals[i] * xScale
-            let y = yOrigin - (yVals[i] - yMin) * yScale
-            print("\(#function) - i: \(i), x: \(x), y: \(y)")
+        var x = xVals[0] * xScale
+        var y = yOrigin - (yVals[0] - yMin) * yScale
+        path.move(to: CGPoint(x: x, y: y))
+        
+        for i in 1..<xVals.count {
+            x = xVals[i] * xScale
+            y = yOrigin - (yVals[i] - yMin) * yScale
+//            print("\(#function) - i: \(i), x: \(x), y: \(y)")
             path.addLine(to: CGPoint(x: xVals[i] * xScale, y: y))
         }
         
         return path
     }
-    
-//    func yFor(_ yVal: CGFloat) -> CGFloat {
-//        return yOrigin - (yVal - min) * scale
-//    }
 }

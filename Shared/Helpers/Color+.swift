@@ -79,6 +79,14 @@ extension Color {
         return color(light: lightColor, dark: darkColor)
     }
     
+    // MARK: - Track Colors
+    
+    static var track: Color {
+        let lightColor = Color(red: 0.9, green: 0, blue: 0)
+        let darkColor = Color(red: 0.95, green: 0, blue: 0)
+        return color(light: lightColor, dark: darkColor)
+    }
+    
     // MARK: - Plot Colors
     
     static var plotElevation: Color {
@@ -88,6 +96,12 @@ extension Color {
     static var plotSpeed: Color {
         let lightColor = Color(red: 0.9, green: 0, blue: 0)
         let darkColor = Color(red: 0.95, green: 0, blue: 0)
+        return color(light: lightColor, dark: darkColor)
+    }
+    
+    static var plotVertical: Color {
+        let lightColor = Color(white: 0.0, opacity: 0.3)
+        let darkColor = Color(white: 1.0, opacity: 0.3)
         return color(light: lightColor, dark: darkColor)
     }
     
