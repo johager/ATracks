@@ -56,6 +56,8 @@
 		F868D6C0280F1A5800EC3D30 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6BF280F1A5800EC3D30 /* Appearance.swift */; };
 		F868D6C4280F46C000EC3D30 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F868D6C3280F46C000EC3D30 /* HealthKit.framework */; };
 		F868D6C6280F479200EC3D30 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6C5280F479200EC3D30 /* HealthKitManager.swift */; };
+		F868D6C8280F6C5000EC3D30 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6C7280F6C5000EC3D30 /* SettingsView.swift */; };
+		F868D6CA280F6C6100EC3D30 /* CodeVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +96,8 @@
 		F868D6C1280F46BF00EC3D30 /* ATracks (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ATracks (iOS).entitlements"; sourceTree = "<group>"; };
 		F868D6C3280F46C000EC3D30 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.4.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		F868D6C5280F479200EC3D30 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		F868D6C7280F6C5000EC3D30 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeVersionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,7 +213,9 @@
 		F868D6AC280EF06800EC3D30 /* iViews */ = {
 			isa = PBXGroup;
 			children = (
+				F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */,
 				F868D697280DF99400EC3D30 /* MapView.swift */,
+				F868D6C7280F6C5000EC3D30 /* SettingsView.swift */,
 			);
 			path = iViews;
 			sourceTree = "<group>";
@@ -355,6 +361,7 @@
 				F868D68E280DC26D00EC3D30 /* ContentView.swift in Sources */,
 				F868D6BE280F195A00EC3D30 /* Appearance.swift in Sources */,
 				F868D67B280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
+				F868D6CA280F6C6100EC3D30 /* CodeVersionView.swift in Sources */,
 				F868D6A7280E298300EC3D30 /* MapViewCoordinator.swift in Sources */,
 				F868D688280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
 				F868D684280DB63400EC3D30 /* LocationManager.swift in Sources */,
@@ -375,6 +382,7 @@
 				F868D678280DB44B00EC3D30 /* DataType.swift in Sources */,
 				F868D6B8280F10E800EC3D30 /* Color+iOS.swift in Sources */,
 				F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
+				F868D6C8280F6C5000EC3D30 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,9 +531,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -559,9 +568,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -596,10 +606,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -624,10 +635,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

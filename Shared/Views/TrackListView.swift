@@ -11,6 +11,9 @@ struct TrackListView: View {
     
     @State private var isTracking = false
 //    @State private var selectedTrack: Track?
+    #if os(iOS)
+    @State private var isShowingSettingsView = false
+    #endif
     
     @FetchRequest(
         sortDescriptors: [
@@ -67,11 +70,21 @@ struct TrackListView: View {
                 
                 Spacer()
             }
+            
+            NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) { EmptyView() }
             #endif
         }
         .navigationTitle("Tracks")
         #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: showSettings) {
+                        Image(systemName: "gearshape")
+                            .tint(.textSelectable)
+                    }
+                }
+            }
         #endif
         .frame(minWidth: 250)
     }
@@ -99,6 +112,13 @@ struct TrackListView: View {
         isTracking = false
         #endif
     }
+    
+    #if os(iOS)
+    func showSettings() {
+        print("\(#function)")
+        isShowingSettingsView = true
+    }
+    #endif
 }
 
 // MARK: - Previews
