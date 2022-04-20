@@ -10,6 +10,10 @@ import UIKit
 
 enum Appearance {
     
+    static var isDark: Bool {
+        UIScreen.main.traitCollection.userInterfaceStyle == .dark
+    }
+    
     static func customizeAppearance() {
         print(#function)
         

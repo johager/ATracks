@@ -16,11 +16,12 @@ struct TrackDetailView: View {
     var body: some View {
         VStack(spacing: 0) {
             TrackStatsView(track: track)
-            MapView(track: track)
+            MapView(track: track, shouldTrackPoint: false)
                 .edgesIgnoringSafeArea([.trailing, .bottom, .leading])
             NavigationLink(destination: TrackDetailsView(track: track), isActive: $isShowingTrackDetailsView) { EmptyView() }
         }
         .navigationTitle(track.name)
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: showTrackDetails) {
@@ -29,6 +30,7 @@ struct TrackDetailView: View {
                 }
             }
         }
+        #endif
     }
     
     // MARKL - Methods

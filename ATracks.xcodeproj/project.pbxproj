@@ -73,6 +73,8 @@
 		F868D6E428109BA300EC3D30 /* Notification.Name+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E228109BA300EC3D30 /* Notification.Name+.swift */; };
 		F868D6E628109CA200EC3D30 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E528109CA200EC3D30 /* Key.swift */; };
 		F868D6E728109CA200EC3D30 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E528109CA200EC3D30 /* Key.swift */; };
+		F868D6E92810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */; };
+		F868D6EA2810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,6 +123,7 @@
 		F868D6DD28107B8400EC3D30 /* TouchLocatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchLocatingView.swift; sourceTree = "<group>"; };
 		F868D6E228109BA300EC3D30 /* Notification.Name+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+.swift"; sourceTree = "<group>"; };
 		F868D6E528109CA200EC3D30 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AAPointAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +219,7 @@
 		F868D66A280DADF000EC3D30 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */,
 				F868D66E280DB2E200EC3D30 /* AppInfo.swift */,
 				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
 				F868D6B0280EF13800EC3D30 /* Color+.swift */,
@@ -420,6 +424,7 @@
 				F868D6B8280F10E800EC3D30 /* Color+iOS.swift in Sources */,
 				F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
 				F868D6C8280F6C5000EC3D30 /* SettingsView.swift in Sources */,
+				F868D6E92810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */,
 				F868D6CC281040B000EC3D30 /* LineShape.swift in Sources */,
 				F868D6CE281042FF00EC3D30 /* TrackDetailsView.swift in Sources */,
 			);
@@ -429,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F868D6EA2810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */,
 				F868D682280DB5F800EC3D30 /* Date+.swift in Sources */,
 				F868D6CF281042FF00EC3D30 /* TrackDetailsView.swift in Sources */,
 				F868D696280DEF9900EC3D30 /* TrackStatsView.swift in Sources */,
@@ -580,7 +586,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -617,7 +623,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -656,7 +662,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -685,7 +691,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

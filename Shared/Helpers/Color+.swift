@@ -95,7 +95,7 @@ extension Color {
     
     static var plotSpeed: Color {
         let lightColor = Color(red: 0.9, green: 0, blue: 0)
-        let darkColor = Color(red: 0.95, green: 0, blue: 0)
+        let darkColor = Color(red: 0.85, green: 0, blue: 0)
         return color(light: lightColor, dark: darkColor)
     }
     

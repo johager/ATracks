@@ -25,4 +25,20 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
         }
         return MKOverlayRenderer()
     }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {        
+        let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "annotationID")
+        
+        if let aaPointAnnotation = annotation as? AAPointAnnotation {
+            let isDark = Appearance.isDark
+            annotationView.image = aaPointAnnotation.image(mapType: mapView.mapType, isDark: isDark)
+            annotationView.centerOffset = CGPoint(x: 0, y: aaPointAnnotation.imageOffsetY)
+        }
+        
+        #if os(iOS)
+        annotationView.clipsToBounds = false
+        #endif
+        
+        return annotationView
+    }
 }

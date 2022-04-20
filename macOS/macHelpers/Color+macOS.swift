@@ -13,7 +13,7 @@ extension Color {
     // MARK: - Select Light/Dark Mode color
     
     static func color(light lightColor: Color, dark darkColor: Color) -> Color {
-        if NSAppearance.currentDrawing().bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+        if Appearance.isDark {
             return darkColor
         } else {
             return lightColor

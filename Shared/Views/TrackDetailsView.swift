@@ -16,7 +16,7 @@ struct TrackDetailsView: View {
     var body: some View {
         VStack(spacing: 0) {
             TrackStatsView(track: track)
-            MapView(track: track)
+            MapView(track: track, shouldTrackPoint: true)
                 .edgesIgnoringSafeArea([.trailing, .leading])
             TrackPlotView(track: track)
                 .frame(height: 150)

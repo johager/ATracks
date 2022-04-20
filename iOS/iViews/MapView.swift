@@ -13,6 +13,7 @@ import MapKit
 struct MapView: UIViewRepresentable {
     
     @ObservedObject var track: Track
+    @State var shouldTrackPoint: Bool
     
     let mapViewHelper = MapViewHelper()
     
@@ -20,7 +21,7 @@ struct MapView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> MKMapView {
         
-        mapViewHelper.setUpView(forTrack: track)
+        mapViewHelper.setUpView(forTrack: track, shouldTrackPoint: shouldTrackPoint)
         mapViewHelper.mapView.delegate = context.coordinator
         
         return mapViewHelper.mapView

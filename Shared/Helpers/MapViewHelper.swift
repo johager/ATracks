@@ -45,25 +45,23 @@ class MapViewHelper: NSObject {
     
     // MARK: - Init
     
-    override init() {
-        super.init()
-        
-        NotificationCenter.default.addObserver(self,
-            selector: #selector(handleMoveTrackMarkerNotification(_:)),
-            name: .moveTrackMarker, object: nil)
-    }
-    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Methods
     
-    func setUpView(forTrack track: Track) {
+    func setUpView(forTrack track: Track, shouldTrackPoint: Bool = false) {
         self.track = track
         setUpView()
         setUpTracking()
         drawTrack()
+        
+        if shouldTrackPoint {
+            NotificationCenter.default.addObserver(self,
+                selector: #selector(handleMoveTrackMarkerNotification(_:)),
+                name: .moveTrackMarker, object: nil)
+        }
     }
     
     func setUpView() {
@@ -92,8 +90,7 @@ class MapViewHelper: NSObject {
         mapView.addOverlay(routeOverlay, level: .aboveRoads)
         
         // annotation
-        let pin = MKPointAnnotation()
-        pin.coordinate = coordinates.first!
+        let pin = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarker", imageOffsetY: -18)
         mapView.addAnnotation(pin)
     }
     
@@ -134,16 +131,16 @@ class MapViewHelper: NSObject {
     @objc func handleMoveTrackMarkerNotification(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo as? Dictionary<String,Any>,
-              let clLocation = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
+              let clLocationCoordinate2D = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
         else { return }
         
         if trackPointAnnotation == nil {
-            trackPointAnnotation = MKPointAnnotation()
+            trackPointAnnotation = AAPointAnnotation(coordinate: clLocationCoordinate2D, imageNameBase: "mapPointMarker")
         } else {
             mapView.removeAnnotation(trackPointAnnotation)
+            trackPointAnnotation.coordinate = clLocationCoordinate2D
         }
 
-        trackPointAnnotation.coordinate = clLocation
         mapView.addAnnotation(trackPointAnnotation)
     }
 }
