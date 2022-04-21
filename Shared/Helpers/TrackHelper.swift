@@ -137,13 +137,13 @@ class TrackHelper {
         yAxisScale = 1 / (yAxisMax - yAxisMin)
         yAxisNumGridLines = Int16((max - min) / delta)
         
-        //print("\(#function) - min: \(min), max: \(max), delta: \(delta), numGridLines: \(yAxisNumGridLines!)")
+        print("\(#function) - min: \(min), max: \(max), delta: \(delta), numGridLines: \(yAxisNumGridLines!)")
     }
     
-    func axisValues(minVal minFloat: Double, maxVal maxFloat: Double, axisMax: Double? = nil) -> (min: Double, max: Double, delta: Double) {
+    func axisValues(minVal: Double, maxVal: Double, axisMax: Double? = nil) -> (min: Double, max: Double, delta: Double) {
         
-        var minAxis = minFloat
-        var maxAxis = maxFloat
+        var minAxis = minVal
+        var maxAxis = maxVal
         
         if let axisMax = axisMax {
             maxAxis = max(maxAxis, axisMax)
@@ -216,8 +216,7 @@ class TrackHelper {
     
     func gridValues(forIndex index: Int16) -> (xVals: [Double], yVals: [Double]) {
         
-        let y = yAxisMin + yAxisDelta * Double(1 + index)
-        let yVal = yFor(y)
+        let yVal = yFor(gridY(for: index))
         
         let xVals: [Double] = [0, 1]
         let yVals = [yVal, yVal]
@@ -229,7 +228,7 @@ class TrackHelper {
     
     func gridLabelInfo(forIndex index: Int16, andPlotHeight plotHeight: CGFloat) -> (text: String, offset: CGPoint) {
         
-        let y = yAxisMin + yAxisDelta * Double(index)
+        let y = gridY(for: index)
         let yVal = yFor(y)
         
         let text = y.stringAsInt
@@ -238,6 +237,10 @@ class TrackHelper {
         //print("\(#function) - yVal: \(yVal), text: \(text), offset: \(offset)")
         
         return (text, offset)
+    }
+    
+    func gridY(for index: Int16) -> Double {
+        return yAxisMin + yAxisDelta * Double(index)
     }
     
     // MARK: - Location Methods

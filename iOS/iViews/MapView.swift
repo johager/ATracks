@@ -20,7 +20,7 @@ struct MapView: UIViewRepresentable {
     // MARK: - UIViewRepresentable
     
     func makeUIView(context: Context) -> MKMapView {
-        
+        //print(#function)
         mapViewHelper.setUpView(forTrack: track, shouldTrackPoint: shouldTrackPoint)
         mapViewHelper.mapView.delegate = context.coordinator
         
@@ -28,7 +28,8 @@ struct MapView: UIViewRepresentable {
     }
     
     func updateUIView(_ view: MKMapView, context: Context) {
-        print(#function)
+        //print(#function)
+        mapViewHelper.updateView(forTrack: track)
     }
     
     func makeCoordinator() -> MapViewCoordinator {

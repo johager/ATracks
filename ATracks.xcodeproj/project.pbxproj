@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F8233CA82811AA2100536A0F /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8233CA72811AA2100536A0F /* Int32+.swift */; };
+		F8233CA92811AA2100536A0F /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8233CA72811AA2100536A0F /* Int32+.swift */; };
 		F868D65A280DAD4600EC3D30 /* ATracksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64A280DAD4500EC3D30 /* ATracksApp.swift */; };
 		F868D65B280DAD4600EC3D30 /* ATracksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64A280DAD4500EC3D30 /* ATracksApp.swift */; };
 		F868D65C280DAD4600EC3D30 /* TrackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D64B280DAD4500EC3D30 /* TrackListView.swift */; };
@@ -78,6 +80,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F8233CA72811AA2100536A0F /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
 		F868D64A280DAD4500EC3D30 /* ATracksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATracksApp.swift; sourceTree = "<group>"; };
 		F868D64B280DAD4500EC3D30 /* TrackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListView.swift; sourceTree = "<group>"; };
 		F868D64C280DAD4600EC3D30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -225,6 +228,7 @@
 				F868D6B0280EF13800EC3D30 /* Color+.swift */,
 				F868D680280DB5F700EC3D30 /* Date+.swift */,
 				F868D6DA2810727300EC3D30 /* Double+.swift */,
+				F8233CA72811AA2100536A0F /* Int32+.swift */,
 				F868D6E528109CA200EC3D30 /* Key.swift */,
 				F868D6A6280E298300EC3D30 /* MapViewCoordinator.swift */,
 				F868D6A0280E1FBE00EC3D30 /* MapViewHelper.swift */,
@@ -414,6 +418,7 @@
 				F868D67E280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
 				F868D6E628109CA200EC3D30 /* Key.swift in Sources */,
 				F868D65A280DAD4600EC3D30 /* ATracksApp.swift in Sources */,
+				F8233CA82811AA2100536A0F /* Int32+.swift in Sources */,
 				F868D66D280DAE3200EC3D30 /* ATracks.xcdatamodeld in Sources */,
 				F868D6C6280F479200EC3D30 /* HealthKitManager.swift in Sources */,
 				F868D68B280DBD7400EC3D30 /* TrackRow.swift in Sources */,
@@ -436,6 +441,7 @@
 			files = (
 				F868D6EA2810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */,
 				F868D682280DB5F800EC3D30 /* Date+.swift in Sources */,
+				F8233CA92811AA2100536A0F /* Int32+.swift in Sources */,
 				F868D6CF281042FF00EC3D30 /* TrackDetailsView.swift in Sources */,
 				F868D696280DEF9900EC3D30 /* TrackStatsView.swift in Sources */,
 				F868D689280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
@@ -586,7 +592,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -605,7 +611,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;
@@ -623,7 +629,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -642,7 +648,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;
@@ -662,7 +668,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -673,7 +679,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = macosx;
@@ -691,7 +697,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -702,7 +708,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = macosx;
