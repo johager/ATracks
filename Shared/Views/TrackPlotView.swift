@@ -60,7 +60,7 @@ struct TrackPlotView: View {
                         .stroke(Color.plotAxis, lineWidth: 3)
                     
                     // grid lines
-                    ForEach((0..<trackHelper.yAxisNumGridLines), id: \.self) {
+                    ForEach((1...trackHelper.yAxisNumGridLines), id: \.self) {
                         let (xVals, yVals) = trackHelper.gridValues(forIndex: $0)
                         LineShape(xVals: xVals, yVals: yVals)
                             .stroke(Color.plotGrid, lineWidth: 1)

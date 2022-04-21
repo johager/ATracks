@@ -41,4 +41,8 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
         
         return annotationView
     }
+    
+//    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+//        print("\(#function) - camera.centerCoordinateDistance: \(mapView.camera.centerCoordinateDistance)")
+//    }
 }

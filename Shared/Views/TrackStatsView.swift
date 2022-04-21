@@ -24,7 +24,7 @@ struct TrackStatsView: View {
                 Text("Ave Speed: \(Int(round(track.aveSpeed))) mph")
                     .font(.footnote)
                 Spacer()
-                Text("Steps: \(track.steps)")
+                Text("Steps: \(track.steps.stringWithNA)")
                     .font(.footnote)
             }
         }

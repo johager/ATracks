@@ -16,6 +16,7 @@ class MapViewHelper: NSObject {
     
     private var lastTrackPoint: TrackPoint?
     
+    private var startPointAnnotation: MKPointAnnotation!
     private var trackPointAnnotation: MKPointAnnotation!
     
     private var region: MKCoordinateRegion {
@@ -43,19 +44,26 @@ class MapViewHelper: NSObject {
         )
     }
     
+    private var center: CLLocationCoordinate2D {
+        if let location = LocationManager.shared.location {
+            return CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        } else {
+            return CLLocationCoordinate2D(latitude: 37.33, longitude: -122.01)
+        }
+    }
+    
     // MARK: - Init
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Methods
+    // MARK: - Public Methods
     
     func setUpView(forTrack track: Track, shouldTrackPoint: Bool = false) {
         self.track = track
         setUpView()
         setUpTracking()
-        drawTrack()
         
         if shouldTrackPoint {
             NotificationCenter.default.addObserver(self,
@@ -64,10 +72,31 @@ class MapViewHelper: NSObject {
         }
     }
     
-    func setUpView() {
+    func updateView(forTrack track: Track) {
+        
+        guard startPointAnnotation == nil else { return }
+        
+        self.track = track
+        
+        let trackPoints = track.trackPoints
+        
+        guard trackPoints.count > 0 else { return }
+        
+        // track
+        let coordinates = trackPoints.map { $0.clLocationCoordinate2D }
+        let routeOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
+        mapView.addOverlay(routeOverlay, level: .aboveRoads)
+        
+        // annotation
+        startPointAnnotation = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarker", imageOffsetY: -18)
+        mapView.addAnnotation(startPointAnnotation)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setUpView() {
         mapView.isPitchEnabled = false
         mapView.showsCompass = true
-        mapView.region = region
         
         #if os(iOS)
             let scaleView = MKScaleView(mapView: mapView)
@@ -79,48 +108,37 @@ class MapViewHelper: NSObject {
         #endif
     }
     
-    func drawTrack() {
-        let trackPoints = track.trackPoints
-        
-        guard trackPoints.count > 0 else { return }
-        
-        // track
-        let coordinates = trackPoints.map { $0.clLocationCoordinate2D }
-        let routeOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
-        mapView.addOverlay(routeOverlay, level: .aboveRoads)
-        
-        // annotation
-        let pin = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarker", imageOffsetY: -18)
-        mapView.addAnnotation(pin)
-    }
-    
-    func setUpTracking() {
-        setMapNoTrack()
-        
+    private func setUpTracking() {
         #if os(iOS)
-        guard let isTrackingTrack = LocationManager.shared.isTrackingTrack else { return }
-        print("\(#function) - got LocationManager.shared.isTrackingTrack")
+        if LocationManager.shared.isTracking(track) {
+            setMapToTrack()
+        } else {
+            setMapNoTrack()
+        }
+        #endif
         
-        guard track === isTrackingTrack else { return }
-        print("\(#function) - track === isTrackingTrack")
-        
-        setMapToTrack()
+        #if os(macOS)
+        setMapNoTrack()
         #endif
     }
     
-    func setMapNoTrack() {
+    private func setMapNoTrack() {
         TrackManager.shared.delegate = nil
         mapView.isRotateEnabled = false
         mapView.showsUserLocation = false
         mapView.userTrackingMode = .none
+        mapView.region = region
     }
     
-    func setMapToTrack() {
+    private func setMapToTrack() {
         TrackManager.shared.delegate = self
         mapView.isRotateEnabled = true
         mapView.showsUserLocation = true
         #if os(iOS)
-            mapView.userTrackingMode = .followWithHeading
+        mapView.userTrackingMode = .followWithHeading
+        let mapCamera = MKMapCamera(lookingAtCenter: center, fromDistance: 1500, pitch: 0, heading: 0)
+        mapView.camera = mapCamera
+//        mapView.cameraZoomRange = MKMapView.CameraZoomRange(minCenterCoordinateDistance: 1000)
         #endif
         
         lastTrackPoint = track.trackPoints.last
