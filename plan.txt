@@ -1,0 +1,46 @@
+===============
+=== ATracks ===
+===============
+
+This will be an iOS and macOS app for users to:
+
+1) Track their workout/hiking activity using location and step data.
+
+2) Provide route guidance based on waypoints.
+
+The iOS app is mainly to track the activity using the GPS and the macOS app is mainly to view existing tracks and create new routes by taking advantage of the larger screen size.
+
+It will be created using Swift, SwiftUI, HealthKit, and Firebase.
+
+=== MVP ===
+
+The MVP will operate on only iOS devices and will only provide location data.
+
+--- Features ---
+- Create new tracks
+- Display existing tracks
+
+--- Views ---
+- Track list
+- Map view of a track (previous or current)
+
+=== Other Features ===
+
+--- Steps ---
+- Include steps from HealthKit
+
+--- Plotting ---
+- Include elevation and speed plots
+
+--- Routing ---
+- Include route creation via waypoints
+- Provide route guidance during the workout/hiking activity
+
+--- macOS ---
+- Create a macOS UI to display existing tracks and create routes
+
+--- web interface ---
+- Create a website to interact with existing tracks and create routes
+- This is why I'm using Firebase
+- The Apple MapKit JS API looks like an interesting way to present the track data on the web.
+- An alternative is OpenStreetMap

@@ -14,7 +14,7 @@ struct TrackStatsView: View {
     var body: some View {
         VStack(spacing: 4) {
             HStack {
-                Text("Duration: \(track.duration.stringWithHrMin)")
+                Text("Duration: \(track.duration.stringWithUnits)")
                     .font(.footnote)
                 Spacer()
                 Text("Distance: \(String(format: "%.2f", track.distance)) mi")
