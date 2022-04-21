@@ -89,15 +89,23 @@ extension Color {
     
     // MARK: - Plot Colors
     
-    static var plotElevation: Color {
-        return color(light: .black, dark: Color(white: 0.9))
+    static var plotAxis: Color {
+        return color(light: Color(white: 0.10), dark: Color(white: 0.75))
     }
     
-    static var plotSpeed: Color {
-        let lightColor = Color(red: 0.9, green: 0, blue: 0)
-        let darkColor = Color(red: 0.85, green: 0, blue: 0)
-        return color(light: lightColor, dark: darkColor)
+    static var plotElevation: Color {
+        return color(light: Color(white: 0.30), dark: Color(white: 0.70))
     }
+    
+    static var plotGrid: Color {
+        return color(light: Color(white: 0.77), dark: Color(white: 0.23))
+    }
+    
+//    static var plotSpeed: Color {
+//        let lightColor = Color(red: 0.9, green: 0, blue: 0)
+//        let darkColor = Color(red: 0.85, green: 0, blue: 0)
+//        return color(light: lightColor, dark: darkColor)
+//    }
     
     static var plotVertical: Color {
         let lightColor = Color(white: 0.0, opacity: 0.3)

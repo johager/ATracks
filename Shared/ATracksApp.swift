@@ -33,13 +33,15 @@ struct ATracksApp: App {
         case .active:
             print("\(#function) - active")
             #if os(iOS)
-            //LocationManager.shared.sceneDidBecomeActive()
+            LocationManager.shared.sceneDidBecomeActive()
             #endif
             //doSpecialStartUp()
         #if os(iOS)
         case .inactive:
             print("\(#function) - inactive")
-            //LocationManager.shared.sceneDidBecomeInActive()
+            #if os(iOS)
+            LocationManager.shared.sceneDidBecomeInActive()
+            #endif
         #endif
         case .background:
             print("\(#function) - background")

@@ -36,7 +36,6 @@ struct TrackDetailView: View {
     // MARKL - Methods
     
     func showTrackDetails() {
-        print("\(#function)")
         isShowingTrackDetailsView = true
     }
 }

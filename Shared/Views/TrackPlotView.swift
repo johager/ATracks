@@ -12,7 +12,7 @@ struct TrackPlotView: View {
     @ObservedObject var track: Track
     
     @State private var elevationString = ""
-    @State private var plotWidth: CGFloat = 100
+    @State private var plotSize = CGSize(width: 100, height: 100)
     @State private var xVertVals: [Double] = [-1, -1]
     private var yVertVals: [Double] = [0, 1]
     
@@ -21,37 +21,69 @@ struct TrackPlotView: View {
     // MARK: - View
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ZStack {
                 HStack {
-                    Text("min: \(trackHelper.minElevation.stringAsInt)")
+                    Text("Elevation (ft)")
                     Spacer()
                     Text("max: \(trackHelper.maxElevation.stringAsInt)")
                 }
                 Text(elevationString)
             }
-            .padding([.top, .bottom], 8)
-            .padding([.trailing, .leading], 32)
+            .padding(.top, 8)
+            
+            HStack {
+                Spacer()
+                Text("min: \(trackHelper.minElevation.stringAsInt)")
+            }
+            .padding(.bottom, 8)
             
             GeometryReader { geometry in
                 ZStack {
-                    LineShape(xVals: trackHelper.xVals, yVals: trackHelper.elevations)
-                        .stroke(Color.plotElevation, lineWidth: 3)
-    //                LineShape(xVals: trackHelper.xVals, yVals: trackHelper.speeds)
-    //                    .stroke(Color.plotSpeed, lineWidth: 1)
+                    // axis labels
+                    VStack {
+                        HStack {
+                            ZStack {
+                                ForEach((0...trackHelper.yAxisNumGridLines), id: \.self) {
+                                    let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height)
+                                    Text(text)
+                                        .offset(x: offset.x, y: offset.y)
+                                }
+                            }
+                            Spacer()
+                        }
+                        Spacer()
+                    }
+                    
+                    // axis
+                    LineShape(xVals: trackHelper.axisXVals, yVals: trackHelper.axisYVals)
+                        .stroke(Color.plotAxis, lineWidth: 3)
+                    
+                    // grid lines
+                    ForEach((0..<trackHelper.yAxisNumGridLines), id: \.self) {
+                        let (xVals, yVals) = trackHelper.gridValues(forIndex: $0)
+                        LineShape(xVals: xVals, yVals: yVals)
+                            .stroke(Color.plotGrid, lineWidth: 1)
+                    }
+                    
+                    // value lines
+                    LineShape(xVals: trackHelper.xVals, yVals: trackHelper.elevationPlotVals)
+                        .stroke(Color.plotElevation, lineWidth: 2)
+//                    LineShape(xVals: trackHelper.xVals, yVals: trackHelper.speedPlotVals)
+//                        .stroke(Color.plotSpeed, lineWidth: 1)
+                    
+                    // scrubber
                     LineShape(xVals: xVertVals, yVals: yVertVals)
                         .stroke(Color.plotVertical, lineWidth: 6)
                 }
                 #if os(iOS)
                 .onTouch(perform: handleTouch)
                 #endif
-                .task { plotWidth = geometry.size.width }
+                .task { plotSize = geometry.size }
             }
-            
-            Text("Elevation (ft)")
-            .padding(.top, 8)
         }
         .font(.footnote)
+        .padding([.trailing, .leading], 32)
     }
     
     // MARK: - Init
@@ -65,8 +97,8 @@ struct TrackPlotView: View {
     
     func handleTouch(_ location: CGPoint) {
         
-        let xFraction = location.x / plotWidth
-        //print("\(#function) - locationX: \(location.x), plotWidth: \(plotWidth), xFraction: \(xFraction)")
+        let xFraction = location.x / plotSize.width
+        //print("\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")
         
         guard let elevation = trackHelper.plotData(at: xFraction) else { return }
         
