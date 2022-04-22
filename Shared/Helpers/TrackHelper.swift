@@ -15,15 +15,11 @@ class TrackHelper {
     
     var xVals = [Double]()
     var elevations = [Double]()
-//    var speeds = [Double]()
     
     var elevationPlotVals = [Double]()  // for axis 0 to 1
     
     var minElevation: Double = 0
     var maxElevation: Double = 0
-    
-//    var minSpeed: Double = 0
-//    var maxSpeed: Double = 0
 
     var axisXVals: [Double] {
         return [0, 0, 1]
@@ -60,26 +56,19 @@ class TrackHelper {
         // raw values
         
         var e = [Double]()
-//        var s = [Double]()
         for i in 0..<trackPoints.count {
             xVals.append(trackPoints[i].timestamp.timeIntervalSince(trackPoints[0].timestamp))
             e.append(trackPoints[i].altitude * 3.28084)
-//            s.append(trackPoints[i].speed * 2.23694)
         }
 
         // smooth values
         
         elevations = smoothed(e, nSmooth: nSmooth)
-//        speeds = smoothed(s, nSmooth: nSmooth)
         
         minElevation = elevations.min()!
         maxElevation = elevations.max()!
         
-//        minSpeed = speeds.min()!
-//        maxSpeed = speeds.max()!
-        
 //        print("\(#function) - minElevation / maxElevation: \(minElevation) / \(maxElevation)")
-//        print("\(#function) - minSpeed / maxSpeed: \(minSpeed) / \(maxSpeed)")
         
         setGridVals(for: elevations)
         
@@ -131,27 +120,41 @@ class TrackHelper {
     func setGridVals(for yVals: [Double]) {
         let yMin = yVals.min()!
         let yMax = yVals.max()!
-        let (min, max, delta) = axisValues(minVal: yMin, maxVal: yMax)
         
-        yAxisMin = min
-        yAxisMax = max
-        yAxisDelta = delta
-        yAxisScale = 1 / (yAxisMax - yAxisMin)
-        yAxisNumGridLines = Int16((max - min) / delta)
+        //print("=== \(#function) - yMin: \(yMin), yMax: \(yMax), delY: \(yMax - yMin)")
+
+        setGridValsFor(minVal: yMin, maxVal: yMax)
         
-        print("\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(min), max: \(max), delta: \(delta), numGridLines: \(yAxisNumGridLines!)")
+        //print("--- \(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
+        
+        if yAxisNumGridLines > 5 {
+            setGridValsFor(minVal: yAxisMin, maxVal: yAxisMax)
+            
+            //print("--- \(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
+        }
     }
     
-    func axisValues(minVal: Double, maxVal: Double, axisMax: Double? = nil) -> (min: Double, max: Double, delta: Double) {
+    func setGridValsFor(minVal: Double, maxVal: Double) {
         
         var minAxis = minVal
         var maxAxis = maxVal
         
-        if let axisMax = axisMax {
-            maxAxis = max(maxAxis, axisMax)
-        }
+        let delta = deltaFor(minAxis: minAxis, maxAxis: maxAxis)
+        adjustMinMaxAxis(minAxis: &minAxis, maxAxis: &maxAxis, delta: delta)
         
-        var delta = (maxAxis - minAxis) / 5
+        yAxisMin = minAxis
+        yAxisMax = maxAxis
+        yAxisDelta = delta
+        yAxisScale = 1 / (yAxisMax - yAxisMin)
+        yAxisNumGridLines = Int16((maxAxis - minAxis) / delta)
+    }
+    
+    func deltaFor(minAxis: Double, maxAxis: Double) -> Double {
+        
+        var delta = (maxAxis - minAxis) / 4
+        
+        //let delVal = maxAxis - minAxis
+        //let deltaTop = delta
         
         if delta > 5000 {
             delta = 10000
@@ -194,9 +197,9 @@ class TrackHelper {
             delta = 0.5
         }
         
-        adjustMinMaxAxis(minAxis: &minAxis, maxAxis: &maxAxis, delta: delta)
+        //print("--- \(#function) - minAxis: \(minAxis), maxAxis: \(maxAxis), delVal: \(delVal) | delta top/bot: \(deltaTop) / \(delta)")
         
-        return (minAxis, maxAxis, delta)
+        return delta
     }
 
     func adjustMinMaxAxis(minAxis: inout Double, maxAxis: inout Double, delta: Double) {

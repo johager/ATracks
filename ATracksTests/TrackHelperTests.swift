@@ -64,6 +64,8 @@ class TrackHelperTests: XCTestCase {
                 XCTFail("yAxisNumGridLines > 5 for  min/max: \(testCase.min) / \(testCase.max)")
             }
         }
+        
+        reportFailedSetGridValsTestCases(failedCases, function: function)
     }
     
     func reportFailedSetGridValsTestCases(_ failedCases: [SetGridValsTestCase], function: String) {
@@ -83,7 +85,8 @@ class TrackHelperTests: XCTestCase {
         let testCases = [
             SetGridValsTestCase(min: 5434, max: 5546),
             SetGridValsTestCase(min: 5433, max: 5550),
-            SetGridValsTestCase(min: 5433, max: 5554)
+            SetGridValsTestCase(min: 5433, max: 5554),
+            SetGridValsTestCase(min: 5430, max: 5551)
         ]
         
         runSetGridValsTestCases(testCases, function: #function)
