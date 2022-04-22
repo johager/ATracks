@@ -77,7 +77,18 @@
 		F868D6E728109CA200EC3D30 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E528109CA200EC3D30 /* Key.swift */; };
 		F868D6E92810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */; };
 		F868D6EA2810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */; };
+		F8821A9D28124B0F00A21781 /* TrackHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821A9C28124B0F00A21781 /* TrackHelperTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F8821A9E28124B0F00A21781 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F868D645280DAD4500EC3D30 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F868D650280DAD4600EC3D30;
+			remoteInfo = "ATracks (iOS)";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F8233CA72811AA2100536A0F /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
@@ -127,6 +138,8 @@
 		F868D6E228109BA300EC3D30 /* Notification.Name+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+.swift"; sourceTree = "<group>"; };
 		F868D6E528109CA200EC3D30 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AAPointAnnotation.swift; sourceTree = "<group>"; };
+		F8821A9A28124B0F00A21781 /* ATracksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ATracksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8821A9C28124B0F00A21781 /* TrackHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHelperTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +158,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8821A9728124B0F00A21781 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -156,6 +176,7 @@
 				F868D649280DAD4500EC3D30 /* Shared */,
 				F868D690280DEBFB00EC3D30 /* iOS */,
 				F868D658280DAD4600EC3D30 /* macOS */,
+				F8821A9B28124B0F00A21781 /* ATracksTests */,
 				F868D652280DAD4600EC3D30 /* Products */,
 				F868D6C2280F46C000EC3D30 /* Frameworks */,
 			);
@@ -177,6 +198,7 @@
 			children = (
 				F868D651280DAD4600EC3D30 /* ATracks.app */,
 				F868D657280DAD4600EC3D30 /* ATracks.app */,
+				F8821A9A28124B0F00A21781 /* ATracksTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -297,6 +319,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F8821A9B28124B0F00A21781 /* ATracksTests */ = {
+			isa = PBXGroup;
+			children = (
+				F8821A9C28124B0F00A21781 /* TrackHelperTests.swift */,
+			);
+			path = ATracksTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -334,6 +364,24 @@
 			productReference = F868D657280DAD4600EC3D30 /* ATracks.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F8821A9928124B0F00A21781 /* ATracksTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8821AA228124B0F00A21781 /* Build configuration list for PBXNativeTarget "ATracksTests" */;
+			buildPhases = (
+				F8821A9628124B0F00A21781 /* Sources */,
+				F8821A9728124B0F00A21781 /* Frameworks */,
+				F8821A9828124B0F00A21781 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8821A9F28124B0F00A21781 /* PBXTargetDependency */,
+			);
+			name = ATracksTests;
+			productName = ATracksTests;
+			productReference = F8821A9A28124B0F00A21781 /* ATracksTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -349,6 +397,10 @@
 					};
 					F868D656280DAD4600EC3D30 = {
 						CreatedOnToolsVersion = 13.3;
+					};
+					F8821A9928124B0F00A21781 = {
+						CreatedOnToolsVersion = 13.3;
+						TestTargetID = F868D650280DAD4600EC3D30;
 					};
 				};
 			};
@@ -367,6 +419,7 @@
 			targets = (
 				F868D650280DAD4600EC3D30 /* ATracks (iOS) */,
 				F868D656280DAD4600EC3D30 /* ATracks (macOS) */,
+				F8821A9928124B0F00A21781 /* ATracksTests */,
 			);
 		};
 /* End PBXProject section */
@@ -385,6 +438,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F868D65F280DAD4600EC3D30 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8821A9828124B0F00A21781 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,7 +532,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8821A9628124B0F00A21781 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8821A9D28124B0F00A21781 /* TrackHelperTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F8821A9F28124B0F00A21781 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F868D650280DAD4600EC3D30 /* ATracks (iOS) */;
+			targetProxy = F8821A9E28124B0F00A21781 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F868D660280DAD4600EC3D30 /* Debug */ = {
@@ -717,6 +793,47 @@
 			};
 			name = Release;
 		};
+		F8821AA028124B0F00A21781 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 37H8X6K6NN;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ATracks.app/ATracks";
+			};
+			name = Debug;
+		};
+		F8821AA128124B0F00A21781 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 37H8X6K6NN;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ATracks.app/ATracks";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -743,6 +860,15 @@
 			buildConfigurations = (
 				F868D666280DAD4600EC3D30 /* Debug */,
 				F868D667280DAD4600EC3D30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8821AA228124B0F00A21781 /* Build configuration list for PBXNativeTarget "ATracksTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8821AA028124B0F00A21781 /* Debug */,
+				F8821AA128124B0F00A21781 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

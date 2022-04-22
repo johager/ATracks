@@ -129,7 +129,9 @@ class TrackHelper {
     // MARK: - Plot Axis Methods
     
     func setGridVals(for yVals: [Double]) {
-        let (min, max, delta) = axisValues(minVal: yVals.min()!, maxVal: yVals.max()!)
+        let yMin = yVals.min()!
+        let yMax = yVals.max()!
+        let (min, max, delta) = axisValues(minVal: yMin, maxVal: yMax)
         
         yAxisMin = min
         yAxisMax = max
@@ -137,7 +139,7 @@ class TrackHelper {
         yAxisScale = 1 / (yAxisMax - yAxisMin)
         yAxisNumGridLines = Int16((max - min) / delta)
         
-        print("\(#function) - min: \(min), max: \(max), delta: \(delta), numGridLines: \(yAxisNumGridLines!)")
+        print("\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(min), max: \(max), delta: \(delta), numGridLines: \(yAxisNumGridLines!)")
     }
     
     func axisValues(minVal: Double, maxVal: Double, axisMax: Double? = nil) -> (min: Double, max: Double, delta: Double) {
