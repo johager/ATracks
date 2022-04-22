@@ -23,8 +23,6 @@ class TrackHelperTests: XCTestCase {
     var coreDataStack: CoreDataStack { CoreDataStack .shared }
     var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
     
-    class
-    
     // MARK: - SetUp & TearDown
     
     override func setUp() {
