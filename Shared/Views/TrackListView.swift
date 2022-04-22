@@ -54,7 +54,7 @@ struct TrackListView: View {
             HStack {
                 Spacer()
                 
-                Button(action: startTrack) {
+                Button(action: startTracking) {
                     Text("Start")
                 }
                 .disabled(isTracking)
@@ -62,7 +62,7 @@ struct TrackListView: View {
                 
                 Spacer()
                 
-                Button(action: stopTrack) {
+                Button(action: stopTracking) {
                     Text("Stop")
                 }
                 .disabled(!isTracking)
@@ -87,6 +87,12 @@ struct TrackListView: View {
             }
         #endif
         .frame(minWidth: 250)
+        .onReceive(NotificationCenter.default.publisher(for: .didStartTracking)) { _ in
+            isTracking = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .didStopTracking)) { _ in
+            isTracking = false
+        }
     }
     
     // MARK: - Methods
@@ -97,16 +103,16 @@ struct TrackListView: View {
         CoreDataStack.shared.saveContext()
     }
     
-    func startTrack() {
-        print("\(#function)")
+    func startTracking() {
+        print("=== TrackListView.\(#function)")
         #if os(iOS)
         LocationManager.shared.startTracking()
         isTracking = true
         #endif
     }
     
-    func stopTrack() {
-        print("\(#function)")
+    func stopTracking() {
+        print("=== TrackListView.\(#function)")
         #if os(iOS)
         LocationManager.shared.stopTracking()
         isTracking = false

@@ -67,6 +67,10 @@ class MapViewHelper: NSObject {
         
         if shouldTrackPoint {
             NotificationCenter.default.addObserver(self,
+                selector: #selector(handleDidStopTrackingNotification(_:)),
+                name: .didStopTracking, object: nil)
+            
+            NotificationCenter.default.addObserver(self,
                 selector: #selector(handleMoveTrackMarkerNotification(_:)),
                 name: .moveTrackMarker, object: nil)
         }
@@ -99,12 +103,13 @@ class MapViewHelper: NSObject {
         mapView.showsCompass = true
         
         #if os(iOS)
-            let scaleView = MKScaleView(mapView: mapView)
-            mapView.addSubview(scaleView)
-            scaleView.pin(top: nil, trailing: nil, bottom: mapView.safeAreaLayoutGuide.bottomAnchor, leading: nil, margin: [0, 0, 14, 0])
-            scaleView.centerXAnchor.constraint(equalTo: mapView.centerXAnchor, constant: 12).isActive = true
-
-            scaleView.scaleVisibility = .visible
+        let scaleView = MKScaleView(mapView: mapView)
+        mapView.addSubview(scaleView)
+//        scaleView.pin(top: nil, trailing: nil, bottom: mapView.safeAreaLayoutGuide.bottomAnchor, leading: nil, margin: [0, 0, 14, 0])
+//        scaleView.centerXAnchor.constraint(equalTo: mapView.centerXAnchor, constant: 12).isActive = true
+        let mapSafeArea = mapView.safeAreaLayoutGuide
+        scaleView.pin(top: mapSafeArea.topAnchor, trailing: nil, bottom: nil, leading: mapSafeArea.leadingAnchor, margin: [6, 0, 0, 12])
+        scaleView.scaleVisibility = .visible
         #endif
     }
     
@@ -157,6 +162,11 @@ class MapViewHelper: NSObject {
     }
     
     // MARK: - Notifications
+    
+    @objc func handleDidStopTrackingNotification(_ notification: Notification) {
+        print("=== MapViewHelper.\(#function)")
+        setMapNoTrack()
+    }
     
     @objc func handleMoveTrackMarkerNotification(_ notification: Notification) {
         

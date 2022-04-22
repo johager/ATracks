@@ -9,6 +9,12 @@ import Foundation
 
 extension Date {
     
+    var stringForDebug: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+        return dateFormatter.string(from: self)
+    }
+    
     var stringForTrack: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium

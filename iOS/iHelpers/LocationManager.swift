@@ -13,14 +13,31 @@ class LocationManager: NSObject {
     static let shared = LocationManager()
     
     var location: CLLocation!
+    var shouldAutoStop = true
+    //var shouldAutoStop = false
     
     private let locationManager = CLLocationManager()
     
-    private let shouldTrack = true
+    var shouldTrack = true
     
     private var isAvailGPS = false
-    private var isTracking = false
+    
+    var isTracking = false {
+        didSet {
+            if isTracking {
+                NotificationCenter.default.post(name: .didStartTracking, object: nil)
+            } else {
+                NotificationCenter.default.post(name: .didStopTracking, object: nil)
+            }
+        }
+    }
+    
+    let autoStopMinDistToStart: Double = 20
+    let autoStopMinDistToStop: Double = 2
+    let autoStopMinTimeIntToStart: TimeInterval = 30
 
+    var firstLocation: CLLocation!
+    private var shouldCheckAutoStop = false
     private var track: Track!
     
     // MARK: - Init
@@ -48,18 +65,19 @@ class LocationManager: NSObject {
     }
     
     func startLocationUpdates() {
-        print(#function)
+        print("=== LocationManager.\(#function)")
         locationManager.startUpdatingLocation()
         locationManager.startMonitoringSignificantLocationChanges()
     }
     
     func stopLocationUpdates() {
-        print(#function)
+        print("=== LocationManager.\(#function)")
         locationManager.stopMonitoringSignificantLocationChanges()
         locationManager.stopUpdatingLocation()
     }
     
     func startTracking() {
+        print("=== LocationManager.\(#function)")
         isTracking = true
         
         let trackName = Date().stringForTrackName
@@ -69,20 +87,48 @@ class LocationManager: NSObject {
     }
     
     func stopTracking() {
-        print("\(#function)")
+        print("=== LocationManager.\(#function)")
         isTracking = false
         location = nil
+        firstLocation = nil
+        shouldCheckAutoStop = false
         track = nil
     }
     
     func startHeadingUpdates() {
-        print(#function)
+        print("=== LocationManager.\(#function)")
         locationManager.startUpdatingHeading()
     }
     
     func stopHeadingUpdates() {
-        print(#function)
+        print("=== LocationManager.\(#function)")
         locationManager.stopUpdatingHeading()
+    }
+    
+    func checkAutoStop() {
+
+        if firstLocation == nil {
+            firstLocation = location
+            return
+        }
+        
+        guard shouldAutoStop else { return }
+        
+        print("=== \(#function) - first: \(firstLocation.timestamp.stringForDebug), lat/lon \(firstLocation.coordinate.latitude), \(firstLocation.coordinate.longitude)")
+        print("--- \(#function) -   cur: \(location.timestamp.stringForDebug), lat/lon \(location.coordinate.latitude), \(location.coordinate.longitude)")
+        let dTime = location.timestamp.timeIntervalSince(firstLocation.timestamp)
+        let dLoc = location.distance(from: firstLocation)
+        print("--- \(#function) - isTracking: \(isTracking), dTime: \(dTime), dLoc: \(dLoc), shouldCheckAutoStop: \(shouldCheckAutoStop)")
+        
+        guard shouldCheckAutoStop
+        else {
+            shouldCheckAutoStop = dTime > autoStopMinTimeIntToStart && dLoc > autoStopMinDistToStart
+            return
+        }
+        
+        if dLoc < autoStopMinDistToStop {
+            stopTracking()
+        }
     }
     
     // MARK: - Scene Lifecycle
@@ -142,9 +188,11 @@ extension LocationManager: CLLocationManagerDelegate {
         
         self.location = location
         
-        if isTracking {
-            TrackManager.shared.createTrackPoint(from: location, in: track)
-        }
+        guard isTracking else { return }
+        
+        TrackManager.shared.createTrackPoint(from: location, in: track)
+        
+        checkAutoStop()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {

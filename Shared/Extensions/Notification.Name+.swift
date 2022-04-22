@@ -8,5 +8,7 @@
 import Foundation
 
 extension Notification.Name {
+    public static let didStartTracking = Notification.Name(rawValue: "didStartTracking")
+    public static let didStopTracking = Notification.Name(rawValue: "didStopTracking")
     public static let moveTrackMarker = Notification.Name(rawValue: "moveTrackMarker")
 }
