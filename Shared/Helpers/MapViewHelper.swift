@@ -125,7 +125,7 @@ class MapViewHelper: NSObject {
     private func setMapNoTrack() {
         TrackManager.shared.delegate = nil
         mapView.isRotateEnabled = false
-        mapView.showsUserLocation = false
+        //mapView.showsUserLocation = false
         mapView.userTrackingMode = .none
         mapView.region = region
     }
@@ -133,7 +133,7 @@ class MapViewHelper: NSObject {
     private func setMapToTrack() {
         TrackManager.shared.delegate = self
         mapView.isRotateEnabled = true
-        mapView.showsUserLocation = true
+        //mapView.showsUserLocation = true
         #if os(iOS)
         mapView.userTrackingMode = .followWithHeading
         let mapCamera = MKMapCamera(lookingAtCenter: center, fromDistance: 1500, pitch: 0, heading: 0)
@@ -144,13 +144,7 @@ class MapViewHelper: NSObject {
         lastTrackPoint = track.trackPoints.last
     }
     
-    // MARK: - Notifications
-    
-    @objc func handleMoveTrackMarkerNotification(_ notification: Notification) {
-        
-        guard let userInfo = notification.userInfo as? Dictionary<String,Any>,
-              let clLocationCoordinate2D = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
-        else { return }
+    func moveTrackMarker(to clLocationCoordinate2D: CLLocationCoordinate2D) {
         
         if trackPointAnnotation == nil {
             trackPointAnnotation = AAPointAnnotation(coordinate: clLocationCoordinate2D, imageNameBase: "mapPointMarker")
@@ -161,6 +155,17 @@ class MapViewHelper: NSObject {
 
         mapView.addAnnotation(trackPointAnnotation)
     }
+    
+    // MARK: - Notifications
+    
+    @objc func handleMoveTrackMarkerNotification(_ notification: Notification) {
+        
+        guard let userInfo = notification.userInfo as? Dictionary<String,Any>,
+              let clLocationCoordinate2D = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
+        else { return }
+        
+        moveTrackMarker(to: clLocationCoordinate2D)
+    }
 }
 
 // MARK: - TrackManagerDelegate
@@ -170,6 +175,8 @@ extension MapViewHelper: TrackManagerDelegate {
     func didMakeNewTrackPoint(_ trackPoint: TrackPoint) {
         
         mapView.setCenter(trackPoint.clLocationCoordinate2D, animated: true)
+        
+        moveTrackMarker(to: trackPoint.clLocationCoordinate2D)
         
         defer {
             lastTrackPoint = trackPoint

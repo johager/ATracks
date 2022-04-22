@@ -49,9 +49,10 @@ class TrackHelper {
     
     func setPlotVals() {
         
-        let nSmooth = 21
+        let nSmoothPasses = 11
+        let nSmoothRange = 7
         
-        guard trackPoints.count > nSmooth else { return }
+        guard trackPoints.count > nSmoothRange else { return }
         
         // raw values
         
@@ -63,7 +64,7 @@ class TrackHelper {
 
         // smooth values
         
-        elevations = smoothed(e, nSmooth: nSmooth)
+        elevations = smoothed(e, nSmoothPasses: nSmoothPasses, nSmoothRange: nSmoothRange)
         
         minElevation = elevations.min()!
         maxElevation = elevations.max()!
@@ -77,31 +78,38 @@ class TrackHelper {
         }
     }
     
-    func smoothed(_ x: [Double], nSmooth: Int) -> [Double] {
-        let nOffset = (nSmooth - 1) / 2
+    func smoothed(_ x: [Double], nSmoothPasses: Int, nSmoothRange: Int) -> [Double] {
+        let nOffset = (nSmoothRange - 1) / 2
         
-        var xSmoothed = [Double]()
+        var xInit = x
+        var xSmoothed: [Double]!
         
-        for _ in 0..<nOffset {
-            xSmoothed.append(0)
-        }
+        for _ in 0..<nSmoothPasses {
+            xSmoothed = [Double]()
+            
+            for _ in 0..<nOffset {
+                xSmoothed.append(0)
+            }
 
-        for i in nOffset..<(x.count - nOffset) {
-            xSmoothed.append(smoothed(x, at: i, nSmooth: nSmooth))
-        }
+            for i in nOffset..<(xInit.count - nOffset) {
+                xSmoothed.append(smoothed(xInit, at: i, nSmoothRange: nSmoothRange))
+            }
 
-        setEnds(&xSmoothed, nOffset: nOffset)
+            setEnds(&xSmoothed, nOffset: nOffset)
+            
+            xInit = xSmoothed
+        }
         
         return xSmoothed
     }
     
-    func smoothed(_ x: [Double], at i: Int, nSmooth: Int) -> Double {
-        let nOffset = (nSmooth - 1) / 2
+    func smoothed(_ x: [Double], at i: Int, nSmoothRange: Int) -> Double {
+        let nOffset = (nSmoothRange - 1) / 2
         var sum: Double = 0
         for iOffset in -nOffset...nOffset {
             sum += x[i + iOffset]
         }
-        return sum / Double(nSmooth)
+        return sum / Double(nSmoothRange)
     }
     
     func setEnds(_ x: inout [Double], nOffset: Int) {
