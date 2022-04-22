@@ -185,6 +185,7 @@
 		F868D649280DAD4500EC3D30 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F8821AA32812EE1F00A21781 /* Extensions */,
 				F868D64A280DAD4500EC3D30 /* ATracksApp.swift */,
 				F868D66A280DADF000EC3D30 /* Helpers */,
 				F868D668280DADDC00EC3D30 /* Model */,
@@ -206,6 +207,7 @@
 		F868D658280DAD4600EC3D30 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				F8821AA52812EF5D00A21781 /* macExtensions */,
 				F868D6B9280F13CA00EC3D30 /* macHelpers */,
 				F868D659280DAD4600EC3D30 /* macOS.entitlements */,
 				F868D6AE280EF07C00EC3D30 /* macViews */,
@@ -247,15 +249,9 @@
 				F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */,
 				F868D66E280DB2E200EC3D30 /* AppInfo.swift */,
 				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
-				F868D6B0280EF13800EC3D30 /* Color+.swift */,
-				F868D680280DB5F700EC3D30 /* Date+.swift */,
-				F868D6DA2810727300EC3D30 /* Double+.swift */,
-				F8233CA72811AA2100536A0F /* Int32+.swift */,
 				F868D6E528109CA200EC3D30 /* Key.swift */,
 				F868D6A6280E298300EC3D30 /* MapViewCoordinator.swift */,
 				F868D6A0280E1FBE00EC3D30 /* MapViewHelper.swift */,
-				F868D6E228109BA300EC3D30 /* Notification.Name+.swift */,
-				F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */,
 				F868D6D42810534600EC3D30 /* TrackHelper.swift */,
 			);
 			path = Helpers;
@@ -264,6 +260,7 @@
 		F868D690280DEBFB00EC3D30 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				F8821AA42812EF4700A21781 /* iExtensions */,
 				F868D6AD280EF06F00EC3D30 /* iHelpers */,
 				F868D6AC280EF06800EC3D30 /* iViews */,
 			);
@@ -286,10 +283,8 @@
 			children = (
 				F868D6B3280F038D00EC3D30 /* AAButtonStyle.swift */,
 				F868D6BD280F195A00EC3D30 /* Appearance.swift */,
-				F868D6B7280F10E800EC3D30 /* Color+iOS.swift */,
 				F868D6C5280F479200EC3D30 /* HealthKitManager.swift */,
 				F868D683280DB63400EC3D30 /* LocationManager.swift */,
-				F868D69D280E143100EC3D30 /* UIView+pin.swift */,
 			);
 			path = iHelpers;
 			sourceTree = "<group>";
@@ -306,7 +301,6 @@
 			isa = PBXGroup;
 			children = (
 				F868D6BF280F1A5800EC3D30 /* Appearance.swift */,
-				F868D6BA280F13E200EC3D30 /* Color+macOS.swift */,
 			);
 			path = macHelpers;
 			sourceTree = "<group>";
@@ -325,6 +319,36 @@
 				F8821A9C28124B0F00A21781 /* TrackHelperTests.swift */,
 			);
 			path = ATracksTests;
+			sourceTree = "<group>";
+		};
+		F8821AA32812EE1F00A21781 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F868D6B0280EF13800EC3D30 /* Color+.swift */,
+				F868D680280DB5F700EC3D30 /* Date+.swift */,
+				F868D6DA2810727300EC3D30 /* Double+.swift */,
+				F8233CA72811AA2100536A0F /* Int32+.swift */,
+				F868D6E228109BA300EC3D30 /* Notification.Name+.swift */,
+				F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F8821AA42812EF4700A21781 /* iExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				F868D6B7280F10E800EC3D30 /* Color+iOS.swift */,
+				F868D69D280E143100EC3D30 /* UIView+pin.swift */,
+			);
+			path = iExtensions;
+			sourceTree = "<group>";
+		};
+		F8821AA52812EF5D00A21781 /* macExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				F868D6BA280F13E200EC3D30 /* Color+macOS.swift */,
+			);
+			path = macExtensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -668,7 +692,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -705,7 +729,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -744,7 +768,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -773,7 +797,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

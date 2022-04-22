@@ -26,7 +26,9 @@ struct TrackPlotView: View {
                 HStack {
                     Text("Elevation (ft)")
                     Spacer()
-                    Text("max: \(trackHelper.maxElevation.stringAsInt)")
+                    if trackHelper.hasElevationData {
+                        Text("max: \(trackHelper.maxElevation.stringAsInt)")
+                    }
                 }
                 Text(elevationString)
             }
@@ -34,37 +36,48 @@ struct TrackPlotView: View {
             
             HStack {
                 Spacer()
-                Text("min: \(trackHelper.minElevation.stringAsInt)")
+                if trackHelper.hasElevationData {
+                    Text("min: \(trackHelper.minElevation.stringAsInt)")
+                } else {
+                    Text(" ")
+                }
             }
             .padding(.bottom, 8)
             
             GeometryReader { geometry in
                 ZStack {
-                    // axis labels
-                    VStack {
-                        HStack {
-                            ZStack {
-                                ForEach((0...trackHelper.yAxisNumGridLines), id: \.self) {
-                                    let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height)
-                                    Text(text)
-                                        .offset(x: offset.x, y: offset.y)
+                    if trackHelper.hasElevationData {
+                        
+                        // axis labels
+                        VStack {
+                            HStack {
+                                ZStack {
+                                    ForEach((0...trackHelper.yAxisNumGridLines), id: \.self) {
+                                        let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height)
+                                        Text(text)
+                                            .offset(x: offset.x, y: offset.y)
+                                    }
                                 }
+                                Spacer()
                             }
                             Spacer()
                         }
-                        Spacer()
+                        
+                        // grid lines
+                        ForEach((1...trackHelper.yAxisNumGridLines), id: \.self) {
+                            let (xVals, yVals) = trackHelper.gridValues(forIndex: $0)
+                            LineShape(xVals: xVals, yVals: yVals)
+                                .stroke(Color.plotGrid, lineWidth: 1)
+                        }
+                    } else {
+                        Text("Elevation data\nnot available")
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
                     }
                     
                     // axis
                     LineShape(xVals: trackHelper.axisXVals, yVals: trackHelper.axisYVals)
-                        .stroke(Color.plotAxis, lineWidth: 3)
-                    
-                    // grid lines
-                    ForEach((1...trackHelper.yAxisNumGridLines), id: \.self) {
-                        let (xVals, yVals) = trackHelper.gridValues(forIndex: $0)
-                        LineShape(xVals: xVals, yVals: yVals)
-                            .stroke(Color.plotGrid, lineWidth: 1)
-                    }
+                        .stroke(Color.plotAxis, lineWidth: 2)
                     
                     // value lines
                     LineShape(xVals: trackHelper.xVals, yVals: trackHelper.elevationPlotVals)
@@ -74,7 +87,7 @@ struct TrackPlotView: View {
                     
                     // scrubber
                     LineShape(xVals: xVertVals, yVals: yVertVals)
-                        .stroke(Color.plotVertical, lineWidth: 6)
+                        .stroke(Color.plotVertical, lineWidth: 4)
                 }
                 #if os(iOS)
                 .onTouch(perform: handleTouch)
@@ -96,6 +109,8 @@ struct TrackPlotView: View {
     // MARK: - Methods
     
     func handleTouch(_ location: CGPoint) {
+        
+        guard trackHelper.hasElevationData else { return }
         
         let xFraction = location.x / plotSize.width
         //print("\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")

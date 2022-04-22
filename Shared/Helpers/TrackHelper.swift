@@ -21,19 +21,16 @@ class TrackHelper {
     var minElevation: Double = 0
     var maxElevation: Double = 0
 
-    var axisXVals: [Double] {
-        return [0, 0, 1]
-    }
-    
-    var axisYVals: [Double] {
-        return [1, 0, 0]
-    }
+    var axisXVals: [Double] { [0, 0, 1] }
+    var axisYVals: [Double] { [1, 0, 0] }
     
     var yAxisMin: Double!
     var yAxisMax: Double!
     var yAxisDelta: Double!
     var yAxisScale: Double!
-    var yAxisNumGridLines: Int16!
+    var yAxisNumGridLines: Int16 = 0
+    
+    var hasElevationData: Bool { yAxisNumGridLines > 0 }
     
     private var trackPoints: [TrackPoint]!
     
@@ -57,9 +54,9 @@ class TrackHelper {
         // raw values
         
         var e = [Double]()
-        for i in 0..<trackPoints.count {
-            xVals.append(trackPoints[i].timestamp.timeIntervalSince(trackPoints[0].timestamp))
-            e.append(trackPoints[i].altitude * 3.28084)
+        for trackPoint in trackPoints {
+            xVals.append(trackPoint.timestamp.timeIntervalSince(trackPoints[0].timestamp))
+            e.append(trackPoint.altitude * 3.28084)
         }
 
         // smooth values

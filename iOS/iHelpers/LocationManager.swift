@@ -27,6 +27,7 @@ class LocationManager: NSObject {
     
     private override init() {
         super.init()
+        locationManager.allowsBackgroundLocationUpdates = true
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 2
@@ -81,7 +82,7 @@ class LocationManager: NSObject {
     
     func stopHeadingUpdates() {
         print(#function)
-        locationManager.stopUpdatingLocation()
+        locationManager.stopUpdatingHeading()
     }
     
     // MARK: - Scene Lifecycle
@@ -90,11 +91,12 @@ class LocationManager: NSObject {
         
         guard shouldTrack else { return }
         
-        startHeadingUpdates()
+        //startHeadingUpdates()
         
         if isTracking {
             return
         }
+        startHeadingUpdates()
         startLocationUpdates()
     }
     
@@ -102,11 +104,12 @@ class LocationManager: NSObject {
  
         guard shouldTrack else { return }
         
-        stopHeadingUpdates()
+        //stopHeadingUpdates()
         
         if isTracking {
             return
         }
+        stopHeadingUpdates()
         stopLocationUpdates()
     }
 }
