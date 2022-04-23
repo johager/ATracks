@@ -33,7 +33,7 @@ class LocationManager: NSObject {
     }
     
     let autoStopMinDistToStart: Double = 20
-    let autoStopMinDistToStop: Double = 2
+    let autoStopMinDistToStop: Double = 4 //2
     let autoStopMinTimeIntToStart: TimeInterval = 30
 
     var firstLocation: CLLocation!

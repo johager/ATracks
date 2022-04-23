@@ -79,6 +79,10 @@
 		F868D6EA2810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */; };
 		F8821A9D28124B0F00A21781 /* TrackHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821A9C28124B0F00A21781 /* TrackHelperTests.swift */; };
 		F8821AA7281310D600A21781 /* LocationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AA6281310D600A21781 /* LocationManagerTests.swift */; };
+		F8821AA92813877600A21781 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AA82813877600A21781 /* AboutView.swift */; };
+		F8821AAB2813879F00A21781 /* LegalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AAA2813879F00A21781 /* LegalView.swift */; };
+		F8821AAD281397D600A21781 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AAC281397D600A21781 /* MailView.swift */; };
+		F8821AB22813A69500A21781 /* NavigationLink+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AB12813A69500A21781 /* NavigationLink+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +146,10 @@
 		F8821A9A28124B0F00A21781 /* ATracksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ATracksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8821A9C28124B0F00A21781 /* TrackHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHelperTests.swift; sourceTree = "<group>"; };
 		F8821AA6281310D600A21781 /* LocationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerTests.swift; sourceTree = "<group>"; };
+		F8821AA82813877600A21781 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		F8821AAA2813879F00A21781 /* LegalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalView.swift; sourceTree = "<group>"; };
+		F8821AAC281397D600A21781 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
+		F8821AB12813A69500A21781 /* NavigationLink+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,10 +280,10 @@
 		F868D6AC280EF06800EC3D30 /* iViews */ = {
 			isa = PBXGroup;
 			children = (
-				F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */,
 				F868D697280DF99400EC3D30 /* MapView.swift */,
 				F868D6C7280F6C5000EC3D30 /* SettingsView.swift */,
 				F868D6DD28107B8400EC3D30 /* TouchLocatingView.swift */,
+				F8821AB028139EFC00A21781 /* SettingsViews */,
 			);
 			path = iViews;
 			sourceTree = "<group>";
@@ -341,6 +349,7 @@
 			isa = PBXGroup;
 			children = (
 				F868D6B7280F10E800EC3D30 /* Color+iOS.swift */,
+				F8821AB12813A69500A21781 /* NavigationLink+.swift */,
 				F868D69D280E143100EC3D30 /* UIView+pin.swift */,
 			);
 			path = iExtensions;
@@ -352,6 +361,17 @@
 				F868D6BA280F13E200EC3D30 /* Color+macOS.swift */,
 			);
 			path = macExtensions;
+			sourceTree = "<group>";
+		};
+		F8821AB028139EFC00A21781 /* SettingsViews */ = {
+			isa = PBXGroup;
+			children = (
+				F8821AA82813877600A21781 /* AboutView.swift */,
+				F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */,
+				F8821AAA2813879F00A21781 /* LegalView.swift */,
+				F8821AAC281397D600A21781 /* MailView.swift */,
+			);
+			path = SettingsViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -487,6 +507,7 @@
 				F868D68E280DC26D00EC3D30 /* ContentView.swift in Sources */,
 				F868D6BE280F195A00EC3D30 /* Appearance.swift in Sources */,
 				F868D67B280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
+				F8821AB22813A69500A21781 /* NavigationLink+.swift in Sources */,
 				F868D6D22810455F00EC3D30 /* TrackPlotView.swift in Sources */,
 				F868D6CA280F6C6100EC3D30 /* CodeVersionView.swift in Sources */,
 				F868D6A7280E298300EC3D30 /* MapViewCoordinator.swift in Sources */,
@@ -498,8 +519,10 @@
 				F868D6B5280F06F100EC3D30 /* AAButtonStyle.swift in Sources */,
 				F868D6DB2810727300EC3D30 /* Double+.swift in Sources */,
 				F868D6A1280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */,
+				F8821AA92813877600A21781 /* AboutView.swift in Sources */,
 				F868D6B2280EF91D00EC3D30 /* Color+.swift in Sources */,
 				F868D66F280DB2E200EC3D30 /* AppInfo.swift in Sources */,
+				F8821AAB2813879F00A21781 /* LegalView.swift in Sources */,
 				F868D6E328109BA300EC3D30 /* Notification.Name+.swift in Sources */,
 				F868D698280DF99400EC3D30 /* MapView.swift in Sources */,
 				F868D67E280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
@@ -519,6 +542,7 @@
 				F868D6E92810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */,
 				F868D6CC281040B000EC3D30 /* LineShape.swift in Sources */,
 				F868D6CE281042FF00EC3D30 /* TrackDetailsView.swift in Sources */,
+				F8821AAD281397D600A21781 /* MailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -696,7 +720,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -733,7 +757,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
