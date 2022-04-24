@@ -2,7 +2,7 @@
 
 This is my capstone project for the Devmountain iOS App Developer Bootcamp.
 
-The app tracks a user's activity using GPS locations and HelthKit steps.
+The app tracks a user's activity using GPS locations and HealthKit steps.
 
 Data is persisted locally using CoreData.
 
