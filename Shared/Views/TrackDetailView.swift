@@ -61,7 +61,7 @@ struct TrackDetailView: View {
     
     #if os(iOS)
     func stopTracking() {
-        print("=== TrackDetailView.\(#function)")
+        print("=== TrackDetailView.\(#function) ===")
         LocationManager.shared.stopTracking()
         isTracking = false
     }

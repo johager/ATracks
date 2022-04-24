@@ -14,8 +14,12 @@ enum Appearance {
         UIScreen.main.traitCollection.userInterfaceStyle == .dark
     }
     
+    static let file = "Appearance"
+    
+    // MARK: - Methods
+    
     static func customizeAppearance() {
-        print(#function)
+        print("=== \(file).\(#function) ===")
         
         UINavigationBar.appearance().tintColor = UIColor(.textSelectable)
         

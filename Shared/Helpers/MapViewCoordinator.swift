@@ -12,9 +12,13 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
     
     var parent: MapView
     
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    
     init(_ parent: MapView) {
         self.parent = parent
     }
+    
+    // MARK: - Methods
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
@@ -43,6 +47,6 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
     }
     
 //    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-//        print("\(#function) - camera.centerCoordinateDistance: \(mapView.camera.centerCoordinateDistance)")
+//        print("=== \(file).\(#function) - camera.centerCoordinateDistance: \(mapView.camera.centerCoordinateDistance) ===")
 //    }
 }

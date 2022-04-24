@@ -34,6 +34,8 @@ class TrackHelper {
     
     private var trackPoints: [TrackPoint]!
     
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    
     // MARK: - Init
     
     init(track: Track) {
@@ -66,7 +68,7 @@ class TrackHelper {
         minElevation = elevations.min()!
         maxElevation = elevations.max()!
         
-//        print("\(#function) - minElevation / maxElevation: \(minElevation) / \(maxElevation)")
+//        print("=== \(file).\(#function) - minElevation / maxElevation: \(minElevation) / \(maxElevation) ===")
         
         setGridVals(for: elevations)
         
@@ -126,16 +128,16 @@ class TrackHelper {
         let yMin = yVals.min()!
         let yMax = yVals.max()!
         
-        //print("=== \(#function) - yMin: \(yMin), yMax: \(yMax), delY: \(yMax - yMin)")
+        //print("=== \(file).\(#function) - yMin: \(yMin), yMax: \(yMax), delY: \(yMax - yMin) ===")
 
         setGridValsFor(minVal: yMin, maxVal: yMax)
         
-        //print("--- \(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
+        //print("--- \(file).\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
         
         if yAxisNumGridLines > 5 {
             setGridValsFor(minVal: yAxisMin, maxVal: yAxisMax)
             
-            //print("--- \(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
+            //print("--- \(file).\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
         }
     }
     
@@ -202,7 +204,7 @@ class TrackHelper {
             delta = 0.5
         }
         
-        //print("--- \(#function) - minAxis: \(minAxis), maxAxis: \(maxAxis), delVal: \(delVal) | delta top/bot: \(deltaTop) / \(delta)")
+        //print("--- \(file).\(#function) - minAxis: \(minAxis), maxAxis: \(maxAxis), delVal: \(delVal) | delta top/bot: \(deltaTop) / \(delta)")
         
         return delta
     }
@@ -231,7 +233,7 @@ class TrackHelper {
         let xVals: [Double] = [0, 1]
         let yVals = [yVal, yVal]
         
-        //print("\(#function) - yVal: \(yVal)")
+        //print("=== \(file).\(#function) - yVal: \(yVal) ===")
         
         return (xVals, yVals)
     }
@@ -244,7 +246,7 @@ class TrackHelper {
         let text = y.stringAsInt
         let offset = CGPoint(x: 6, y: plotHeight * (1 - yVal) - 16)
         
-        //print("\(#function) - yVal: \(yVal), text: \(text), offset: \(offset)")
+        //print("=== \(file).\(#function) - yVal: \(yVal), text: \(text), offset: \(offset) ===")
         
         return (text, offset)
     }
@@ -257,15 +259,15 @@ class TrackHelper {
     
     func plotData(at xFraction: CGFloat) -> Double? {
         
-        //print("\(#function) - xFraction: \(xFraction)")
+        //print("=== \(file).\(#function) - xFraction: \(xFraction) ===")
         let xRange = xVals.last! - xVals[0]
-        //print("\(#function) - xRange: \(xRange)")
+        //print("--- \(file).\(#function) - xRange: \(xRange)")
         let x = xRange * xFraction
-        //print("\(#function) - x: \(x)")
+        //print("--- \(file).\(#function) - x: \(x)")
         
         guard let index = xVals.firstIndex(where: { $0 > x }) else { return nil }
         
-        //print("\(#function) - index: \(index)")
+        //print("--- \(file).\(#function) - index: \(index)")
         
         let userInfo = [Key.clLocationCoordinate2D: trackPoints[index].clLocationCoordinate2D]
         

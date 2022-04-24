@@ -14,6 +14,11 @@ enum Appearance {
         NSAppearance.currentDrawing().bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
     }
     
+    static let file = "Appearance"
+    
+    // MARK: - Methods
+    
     static func customizeAppearance() {
+        print("=== \(file).\(#function) ===")
     }
 }

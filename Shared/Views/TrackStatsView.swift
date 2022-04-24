@@ -35,10 +35,11 @@ struct TrackStatsView: View {
             guard let endDate = track.trackPoints.last?.timestamp else { return }
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd, h:mm:ss a"
-            print("start date: \(dateFormatter.string(from: track.date))")
-            print("  end date: \(dateFormatter.string(from: endDate))")
+            let file = "TrackStatsView"
+            print("=== \(file).task - start date: \(dateFormatter.string(from: track.date))==")
+            print("--- \(file).task -   end date: \(dateFormatter.string(from: endDate))")
             guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, andEndingAt: endDate) else { return }
-            print("Retrieved steps - sumInt: \(numSteps)")
+            print("--- \(file).task -   numSteps: \(numSteps)")
         }
         #endif
     }

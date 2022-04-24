@@ -33,12 +33,14 @@ class LocationManager: NSObject {
     }
     
     let autoStopMinDistToStart: Double = 20
-    let autoStopMinDistToStop: Double = 4 //2
+    let autoStopMinDistToStop: Double = 8 //4 //2
     let autoStopMinTimeIntToStart: TimeInterval = 30
 
     var firstLocation: CLLocation!
     private var shouldCheckAutoStop = false
     private var track: Track!
+    
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
     
@@ -65,29 +67,29 @@ class LocationManager: NSObject {
     }
     
     func startLocationUpdates() {
-        print("=== LocationManager.\(#function)")
+        print("=== \(file).\(#function) ===")
         locationManager.startUpdatingLocation()
         locationManager.startMonitoringSignificantLocationChanges()
     }
     
     func stopLocationUpdates() {
-        print("=== LocationManager.\(#function)")
+        print("=== \(file).\(#function) ===")
         locationManager.stopMonitoringSignificantLocationChanges()
         locationManager.stopUpdatingLocation()
     }
     
     func startTracking() {
-        print("=== LocationManager.\(#function)")
+        print("=== \(file).\(#function) ===")
         isTracking = true
         
         let trackName = Date().stringForTrackName
-        print("\(#function) - trackName: \(trackName)")
+        print("--- \(file).\(#function) - trackName: \(trackName)")
         
         track = Track(name: trackName)
     }
     
     func stopTracking() {
-        print("=== LocationManager.\(#function)")
+        print("=== \(file).\(#function)")
         isTracking = false
         location = nil
         firstLocation = nil
@@ -96,12 +98,12 @@ class LocationManager: NSObject {
     }
     
     func startHeadingUpdates() {
-        print("=== LocationManager.\(#function)")
+        print("=== \(file).\(#function) ===")
         locationManager.startUpdatingHeading()
     }
     
     func stopHeadingUpdates() {
-        print("=== LocationManager.\(#function)")
+        print("=== \(file).\(#function) ===")
         locationManager.stopUpdatingHeading()
     }
     
@@ -114,11 +116,11 @@ class LocationManager: NSObject {
         
         guard shouldAutoStop else { return }
         
-        print("=== \(#function) - first: \(firstLocation.timestamp.stringForDebug), lat/lon \(firstLocation.coordinate.latitude), \(firstLocation.coordinate.longitude)")
-        print("--- \(#function) -   cur: \(location.timestamp.stringForDebug), lat/lon \(location.coordinate.latitude), \(location.coordinate.longitude)")
+        print("=== \(file).\(#function) - first: \(firstLocation.timestamp.stringForDebug), lat/lon \(firstLocation.coordinate.latitude), \(firstLocation.coordinate.longitude) ===")
+        print("--- \(file).\(#function) -   cur: \(location.timestamp.stringForDebug), lat/lon \(location.coordinate.latitude), \(location.coordinate.longitude)")
         let dTime = location.timestamp.timeIntervalSince(firstLocation.timestamp)
         let dLoc = location.distance(from: firstLocation)
-        print("--- \(#function) - isTracking: \(isTracking), dTime: \(dTime), dLoc: \(dLoc), shouldCheckAutoStop: \(shouldCheckAutoStop)")
+        print("--- \(file).\(#function) - isTracking: \(isTracking), dTime: \(dTime), dLoc: \(dLoc), shouldCheckAutoStop: \(shouldCheckAutoStop)")
         
         guard shouldCheckAutoStop
         else {
@@ -182,7 +184,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        print("=== \(#function) - locations: \(locations.count)")
+//        print("=== \(file).\(#function) - locations: \(locations.count) ===")
         
         guard let location = locations.last else { return }
         

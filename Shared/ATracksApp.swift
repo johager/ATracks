@@ -23,30 +23,42 @@ struct ATracksApp: App {
                 .onChange(of: scenePhase) { scenePhaseChanged(to: $0) }
                 .task { await checkHealthKit() }
         }
-        
     }
+    
+    let file = "ATracksApp"
+    
+    // MARK: - Init
+    
+    init() {
+        UserDefaultsHelper.setUserDefaultsIfNeeded()
+//        let useAutoStop = UserDefaults.standard.bool(forKey: LocationManagerSettings.useAutoStopKey)
+//        print("=== \(file ).\(#function) - useAutoStop: \(useAutoStop) ===")
+    }
+    
+    // MARK: - SetUp Methods
+    
     
     // MARK: - ScenePhase Methods
     
     func scenePhaseChanged(to phase: ScenePhase) {
         switch phase {
         case .active:
-            print("\(#function) - active")
+            print("=== \(file ).\(#function) - active ===")
             #if os(iOS)
             LocationManager.shared.sceneDidBecomeActive()
             #endif
             //doSpecialStartUp()
         #if os(iOS)
         case .inactive:
-            print("\(#function) - inactive")
+            print("=== \(file ).\(#function) - inactive ===")
             #if os(iOS)
             LocationManager.shared.sceneDidBecomeInActive()
             #endif
         #endif
         case .background:
-            print("\(#function) - background")
+            print("=== \(file ).\(#function) - background ===")
         default:
-            print("\(#function) - phase: \(phase)")
+            print("=== \(file ).\(#function) - phase: \(phase) ===")
         }
     }
     
@@ -58,7 +70,7 @@ struct ATracksApp: App {
         
         do {
             let tracks = try context.fetch(fetchRequest)
-            print("\(#function) - tracks.count: \(tracks.count)")
+            print("=== \(file ).\(#function) - tracks.count: \(tracks.count) ===")
             
             for track in tracks {
                 track.duration /= 3600
@@ -67,7 +79,7 @@ struct ATracksApp: App {
             coreDataStack.saveContext()
             
         } catch {
-            print("\(#function) - error fetching")
+            print("=== \(file ).\(#function) - error fetching")
         }
     }
     
@@ -75,7 +87,7 @@ struct ATracksApp: App {
     
     func checkHealthKit() async {
         #if os(iOS)
-        print("\(#function)")
+        print("=== \(file ).\(#function) ===")
         
         guard HKHealthStore.isHealthDataAvailable() else { return }
         

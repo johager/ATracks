@@ -52,6 +52,8 @@ class MapViewHelper: NSObject {
         }
     }
     
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    
     // MARK: - Init
     
     deinit {
@@ -164,7 +166,7 @@ class MapViewHelper: NSObject {
     // MARK: - Notifications
     
     @objc func handleDidStopTrackingNotification(_ notification: Notification) {
-        print("=== MapViewHelper.\(#function)")
+        print("=== \(file).\(#function)")
         setMapNoTrack()
     }
     

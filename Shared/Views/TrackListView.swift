@@ -26,8 +26,9 @@ struct TrackListView: View {
     
     private var tracks: FetchedResults<Track>
     
+    let file = "TrackListView"
+    
     var body: some View {
-        
         VStack {
             List() {
                 ForEach(tracks) { track in
@@ -104,7 +105,7 @@ struct TrackListView: View {
     }
     
     func startTracking() {
-        print("=== TrackListView.\(#function)")
+        print("=== \(file).\(#function) ===")
         #if os(iOS)
         LocationManager.shared.startTracking()
         isTracking = true
@@ -112,7 +113,7 @@ struct TrackListView: View {
     }
     
     func stopTracking() {
-        print("=== TrackListView.\(#function)")
+        print("=== \(file).\(#function) ===")
         #if os(iOS)
         LocationManager.shared.stopTracking()
         isTracking = false
@@ -121,7 +122,7 @@ struct TrackListView: View {
     
     #if os(iOS)
     func showSettings() {
-        print("\(#function)")
+        print("=== \(file)\(#function) ===")
         isShowingSettingsView = true
     }
     #endif

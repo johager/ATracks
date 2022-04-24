@@ -30,10 +30,12 @@ class TrackManager {
     
     var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
     
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    
     // MARK: - Init
     
     private init() {
-//        print("\(#function)")
+//        print("=== TrackManager.\(#function) ===")
         trackFetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
         //fetchTracks()
@@ -54,11 +56,11 @@ class TrackManager {
     }
     
     func fetchTracks() {
-        print("\(#function)")
+        print("=== \(file).\(#function) ===")
         do {
             tracks = try viewContext.fetch(trackFetchRequest)
         } catch {
-            print("error fetching tracks: \(error)")
+            print("--- \(file).\(#function) - error: \(error)")
             print(error.localizedDescription)
         }
     }
@@ -66,7 +68,9 @@ class TrackManager {
     // MARK: - CRUD for TrackPoints
     
     func createTrackPoint(from location: CLLocation, in track: Track) {
-        print("--- \(#function)")
+        //print("=== \(file).\(#function) ===")
+        print("=== \(file).\(#function) - horizontalAccuracy: \(location.horizontalAccuracy) ===")
+        
         let trackPoint = TrackPoint(clLocation: location, track: track)
         trackPoints.append(trackPoint)
         coreDataStack.saveContext()
@@ -93,7 +97,7 @@ class TrackManager {
             trackPoints = try viewContext.fetch(trackPointFetchRequest)
             trackPoints.sort { $0.timestamp < $1.timestamp }
         } catch {
-            print("error fetching trackPoints: \(error)")
+            print("=== \(file).\(#function) - error: \(error)")
             print(error.localizedDescription)
         }
     }

@@ -14,11 +14,13 @@ class HealthKitManager {
     
     var hasAccess = false {
         didSet {
-            print("=== HealthKitManager.hasAccess: \(hasAccess)")
+            print("=== \(file).\(#function): \(hasAccess) ===")
         }
     }
     
     private var hkStore: HKHealthStore!
+    
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
     
@@ -52,26 +54,22 @@ class HealthKitManager {
 //            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: [])
 //            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: [.strictStartDate, .strictEndDate])
 
-            var interval = DateComponents()
-            interval.day = 1
-
             let query = HKStatisticsQuery(quantityType: stepsQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum]) { _, result, error in
                 if let error = error {
-                    print("Error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
+                    print("=== \(self.file) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
                     return continuation.resume(returning: nil)
                 }
 
                 guard let sum = result?.sumQuantity()
                 else {
-                    print("Error retrieving steps: no result or valid sum.")
+                    print("=== \(self.file) - error retrieving steps: no result or valid sum.")
                     return continuation.resume(returning: nil)
                 }
                 
-                let sumDouble = sum.doubleValue(for: HKUnit.count())
-                let sumInt = Int32(sumDouble)
+                let numSteps = Int32(sum.doubleValue(for: .count()))
 
-                print("Retrieved steps - sumInt: \(sumInt)")
-                continuation.resume(returning: sumInt)
+                print("=== \(self.file) - retrieved steps - numSteps: \(numSteps)")
+                continuation.resume(returning: numSteps)
             }
 
             hkStore.execute(query)

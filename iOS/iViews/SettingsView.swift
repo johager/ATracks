@@ -10,8 +10,10 @@ import MessageUI
 
 struct SettingsView: View {
     
+    @ObservedObject var locationManagerSettings = LocationManagerSettings()
+    
     @State var result: Result<MFMailComposeResult, Error>? = nil
-       @State var isShowingMailView = false
+    @State var isShowingMailView = false
     
     var body: some View {
         List() {
@@ -37,18 +39,18 @@ struct SettingsView: View {
             }
             
             Section {
-                Text("Setting1")
+                SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
+//                Text("Setting2")
 //                    .ignoresSafeArea()
 //                    .listRowBackground(Color.headerBackground)
 //                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
-                Text("Setting2")
             } header: {
-                Text("Settings")
+                Text("Tracking Settings")
 //                    .font(.headline)
                     .font(.title)
                     .bold()
                     .foregroundColor(.headerText)
-                    .kerning(3)
+                    .kerning(1)
 //                    .textCase(.uppercase)
                     
 //                    .listRowInsets(EdgeInsets(top: -8, leading: 0, bottom: 0, trailing: 0))

@@ -39,6 +39,8 @@ class Track: NSManagedObject, Identifiable {
         return Array(trackPointsSet).sorted { $0.timestamp < $1.timestamp }
     }
     
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    
     // MARK: - Init
     
     @discardableResult convenience init(name: String, date: Date = Date(), context: NSManagedObjectContext = CoreDataStack.shared.context) {
@@ -72,12 +74,8 @@ class Track: NSManagedObject, Identifiable {
         let startDate = trackPoints.first!.timestamp
         let stopDate = trackPoints.last!.timestamp
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .medium
-        
-        print("\(#function) - startDate: \(dateFormatter.string(from: startDate))")
-        print("\(#function) -  stopDate: \(dateFormatter.string(from: stopDate))")
+        print("=== \(file).\(#function) - startDate: \(startDate.stringForDebug) ===")
+        print("--- \(file).\(#function) -  stopDate: \(stopDate.stringForDebug)")
         
         let duration = stopDate.timeIntervalSince(startDate)
         
