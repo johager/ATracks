@@ -11,8 +11,17 @@ struct TrackListView: View {
     
     @State private var isTracking = false
 //    @State private var selectedTrack: Track?
+    
     #if os(iOS)
+    @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     @State private var isShowingSettingsView = false
+    private var stopTrackingText: String {
+        if locationManagerSettings.useAutoStop {
+            return "[Stop]"
+        } else {
+            return "Stop"
+        }
+    }
     #endif
     
     @FetchRequest(
@@ -64,7 +73,7 @@ struct TrackListView: View {
                 Spacer()
                 
                 Button(action: stopTracking) {
-                    Text("Stop")
+                    Text(stopTrackingText)
                 }
                 .disabled(!isTracking)
                 .buttonStyle(AAButtonStyle(isEnabled: isTracking))

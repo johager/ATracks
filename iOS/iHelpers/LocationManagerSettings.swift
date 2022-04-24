@@ -13,6 +13,8 @@ class LocationManagerSettings: ObservableObject {
     static let useAutoStopKey = "useAutoStop"
     static let useAutoStopDefault = true
     
+    static let shared = LocationManagerSettings()
+    
     @Published var useAutoStop: Bool {
         didSet {
             print("=== \(file).\(#function) didSet - \(useAutoStop) ===")
@@ -32,7 +34,7 @@ class LocationManagerSettings: ObservableObject {
     
     // MARK: - Methods
     
-    static func setDefaults() {
-        UserDefaults.standard.set(useAutoStopDefault, forKey: useAutoStopKey)
+    func setDefaults() {
+        UserDefaults.standard.set(LocationManagerSettings.useAutoStopDefault, forKey: LocationManagerSettings.useAutoStopKey)
     }
 }

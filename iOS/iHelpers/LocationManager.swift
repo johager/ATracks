@@ -5,7 +5,7 @@
 //  Created by James Hager on 4/18/22.
 //
 
-import Foundation
+import SwiftUI
 import CoreLocation
 
 class LocationManager: NSObject {
@@ -13,8 +13,7 @@ class LocationManager: NSObject {
     static let shared = LocationManager()
     
     var location: CLLocation!
-    var shouldAutoStop = true
-    //var shouldAutoStop = false
+    var shouldAutoStop: Bool { LocationManagerSettings.shared.useAutoStop }
     
     private let locationManager = CLLocationManager()
     

@@ -14,6 +14,17 @@ struct TrackDetailView: View {
     @State private var isShowingTrackDetailsView = false
     @State private var isTracking = false
     
+    #if os(iOS)
+    @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
+    private var stopTrackingText: String {
+        if locationManagerSettings.useAutoStop {
+            return "[Stop Tracking]"
+        } else {
+            return "Stop Tracking"
+        }
+    }
+    #endif
+    
     var body: some View {
         VStack(spacing: 0) {
             TrackStatsView(track: track)
@@ -25,7 +36,7 @@ struct TrackDetailView: View {
                     VStack {
                         Spacer()
                         Button(action: stopTracking) {
-                            Text("Stop Tracking")
+                            Text(stopTrackingText)
                         }
                         .buttonStyle(AAButtonStyle(isEnabled: true))
                     }

@@ -10,7 +10,7 @@ import MessageUI
 
 struct SettingsView: View {
     
-    @ObservedObject var locationManagerSettings = LocationManagerSettings()
+    @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false

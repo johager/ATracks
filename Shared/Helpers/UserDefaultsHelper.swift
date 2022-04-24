@@ -44,7 +44,7 @@ enum UserDefaultsHelper {
     
     static func setUserDefaultSettings() {
         #if os(iOS)
-        LocationManagerSettings.setDefaults()
+        LocationManagerSettings.shared.setDefaults()
         #endif
     }
 }
