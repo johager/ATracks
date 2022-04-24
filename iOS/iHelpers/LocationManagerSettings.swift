@@ -35,6 +35,6 @@ class LocationManagerSettings: ObservableObject {
     // MARK: - Methods
     
     func setDefaults() {
-        UserDefaults.standard.set(LocationManagerSettings.useAutoStopDefault, forKey: LocationManagerSettings.useAutoStopKey)
+        useAutoStop = LocationManagerSettings.useAutoStopDefault
     }
 }

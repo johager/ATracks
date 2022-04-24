@@ -52,10 +52,11 @@ struct TrackListView: View {
 //                        print("tapped in list")
 //                        selectedTrack = track
 //                    }
-//                    .listRowBackground(track == selectedTrack ? Color.tableViewSelectedBackgroundColor : .white)
+//                    .listRowBackground(track == selectedTrack ? Color.listRowSelectedBackground : .white)
+                    .listRowSeparatorTint(.listRowSeparator)
                 }
                 .onDelete(perform: delete)
-//                .listRowBackground(Color.tableViewSelectedBackgroundColor)
+//                .listRowBackground(Color.listRowSelectedBackground)
                 
             }
             .listStyle(.plain)
@@ -89,7 +90,7 @@ struct TrackListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: showSettings) {
+                    Button(action: { isShowingSettingsView = true }) {
                         Image(systemName: "gearshape")
                             .tint(.textSelectable)
                     }
@@ -128,13 +129,6 @@ struct TrackListView: View {
         isTracking = false
         #endif
     }
-    
-    #if os(iOS)
-    func showSettings() {
-        print("=== \(file)\(#function) ===")
-        isShowingSettingsView = true
-    }
-    #endif
 }
 
 // MARK: - Previews

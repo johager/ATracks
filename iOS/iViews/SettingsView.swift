@@ -14,18 +14,27 @@ struct SettingsView: View {
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
+    @State var isShowingResetSettings = false
+    
+//    @State var mapDisplayOption = "Regular"
+//    let mapDisplayOptions = ["Regular", "Satellite"]
     
     var body: some View {
+//        Form {
         List() {
             CodeVersionView()
+            
+            // Top Section
             
             NavigationLink(destination: AboutView()) {
                 Text("About")
             }
+            .listRowSeparatorTint(.listRowSeparator)
             
-            Button(action: showMailView) {
+            Button(action: { isShowingMailView = true }) {
                 HStack {
                     Text("Support")
+                        .foregroundColor(supportColor())
                     Spacer()
                     NavigationLink.empty
                 }
@@ -33,31 +42,77 @@ struct SettingsView: View {
             .sheet(isPresented: $isShowingMailView) {
                 MailView(result: self.$result)
             }
+            .disabled(!MFMailComposeViewController.canSendMail())
+            .listRowSeparatorTint(.listRowSeparator)
             
             NavigationLink(destination: LegalView()) {
                 Text("Legal")
             }
+            .listRowSeparatorTint(.listRowSeparator)
             
-            Section {
-                SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
-//                Text("Setting2")
-//                    .ignoresSafeArea()
-//                    .listRowBackground(Color.headerBackground)
-//                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
-            } header: {
-                Text("Tracking Settings")
-//                    .font(.headline)
-                    .font(.title3)
-                    .bold()
-                    .foregroundColor(.headerText)
-                    .kerning(1)
-                    .textCase(.uppercase)
-                    
-//                    .listRowInsets(EdgeInsets(top: -8, leading: 0, bottom: 0, trailing: 0))
+            Button(action: { isShowingResetSettings = true }) {
+                HStack {
+                    Text("Reset Settings")
+                    Spacer()
+                    NavigationLink.empty
+                }
             }
-//            .listRowBackground(Color.headerBackground)
-//            .headerProminence(.increased)
-//            .background(Color.red)
+            .listRowSeparatorTint(.listRowSeparator)
+            
+            // Tracking Settings
+            
+//            Section {
+//                SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
+////                Text("Setting2")
+////                    .ignoresSafeArea()
+////                    .listRowBackground(Color.headerBackground)
+////                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
+//
+//            } header: {
+//                Text("Tracking Settings")
+//                    .font(.title3)
+//                    .bold()
+//                    .foregroundColor(.headerText)
+//                    .kerning(1)
+//                    .textCase(.uppercase)
+//            }
+////            .listRowBackground(Color.red.edgesIgnoringSafeArea(.all))
+            
+            SettingsSectionView(title: "Tracking Settings")
+            
+            SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
+            
+//            // Map Settings
+//
+//            Section {
+//
+//                Picker(selection: $mapDisplayOption, label: Text("Map Display Option")) {
+//                    ForEach(mapDisplayOptions, id: \.self) { option in
+//                        Text(option)
+//                    }
+//                }
+//
+//
+////                Text("Setting2")
+////                    .ignoresSafeArea()
+////                    .listRowBackground(Color.headerBackground)
+////                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
+//
+//
+//            } header: {
+//                Text("Map Settings")
+////                    .font(.headline)
+//                    .font(.title3)
+//                    .bold()
+//                    .foregroundColor(.headerText)
+//                    .kerning(1)
+//                    .textCase(.uppercase)
+//
+////                    .listRowInsets(EdgeInsets(top: -8, leading: 0, bottom: 0, trailing: 0))
+//            }
+////            .listRowBackground(Color.headerBackground)
+////            .headerProminence(.increased)
+////            .background(Color.red)
         }
         
 //        .ignoresSafeArea()
@@ -66,10 +121,26 @@ struct SettingsView: View {
         #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
         #endif
+        .alert("Reset All Settings", isPresented: $isShowingResetSettings) {
+            Button("Cancel", role: .cancel) {}
+            Button("Reset", role: .destructive) {
+                locationManagerSettings.setDefaults()
+            }
+        } message: {
+            Text("Reset all settings to the default values?")
+        }
+//        }
+//        .background(Color.listRowSelectedBackground)
     }
     
-    func showMailView() {
-        isShowingMailView = true
+    // MARK: - Methods
+    
+    func supportColor() -> Color {
+        if MFMailComposeViewController.canSendMail() {
+            return .text
+        } else {
+            return .textInactive
+        }
     }
 }
 

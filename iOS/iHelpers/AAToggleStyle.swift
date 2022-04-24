@@ -39,5 +39,6 @@ struct AAToggleStyle: ToggleStyle {
             }
             .buttonStyle(.plain)
         }
+        .listRowSeparatorTint(.listRowSeparator)
     }
 }

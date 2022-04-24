@@ -16,8 +16,20 @@ extension Color {
         return color(light: light1HGreen, dark: dark3HGreen)
     }
     
+    static var headerBorder: Color {
+        return color(light: medium2Green, dark: dark3HGreen)
+    }
+    
     static var headerText: Color {
         return color(light: dark2Green, dark: lightGreen)
+    }
+    
+    static var listRowSelectedBackground: Color {
+        return color(light: light2Green, dark: Color(white: 0.11))
+    }
+    
+    static var listRowSeparator: Color {
+        return color(light: medium3Green, dark: darkGreen)
     }
     
     static var navigationShadow: Color {
@@ -28,20 +40,16 @@ extension Color {
         return color(light: .black, dark: Color(white: 0.9))
     }
     
+    static var textInactive: Color {
+        return color(light: Color(white: 0.3), dark: Color(white: 0.6))
+    }
+    
     static var textSecondary: Color {
         return color(light: Color(white: 0.2), dark: Color(white: 0.8))
     }
     
     static var textSelectable: Color {
         return color(light: avantiGreen, dark: avantiOrange)
-    }
-    
-    static var tableViewSelectedBackgroundColor: Color {
-        return color(light: light2Green, dark: Color(white: 0.11))
-    }
-    
-    static var tableViewSeparatorColor: Color {
-        return color(light: medium3Green, dark: darkGreen)
     }
     
     // MARK: - AAButtonStyle
@@ -145,6 +153,7 @@ extension Color {
     static let dark2Green = Color(red: 0, green: 0.18, blue: 0.16)  // 45% black
     static let dark3HGreen = Color(red: 0, green: 0.13, blue: 0.11)  // 60% black
     static let mediumGreen = Color(red: 56/255.0, green: 119/255.0, blue: 109/255.0)  // approx 22% white
+    static let medium2Green = Color(red: 128/255.0, green: 170/255.0, blue: 164/255.0)  // 50% white
     static let medium3Green = Color(red: 179/255.0, green: 204/255.0, blue: 201/255.0)  // 70% white
     static let lightishGreen = Color(red: 191/255.0, green: 212/255.0, blue: 209/255.0)  // 75% white
     static let lightGreen = Color(red: 215/255.0, green: 229/255.0, blue: 227/255.0)  // 84% white

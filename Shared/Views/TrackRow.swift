@@ -14,11 +14,11 @@ struct TrackRow: View {
     var body: some View {
         HStack(alignment: .center) {
             Text(track.name)
-                .font(.body)
+                .font(.body.monospacedDigit())
                 .foregroundColor(.text)
             Spacer()
             Text(String(format: "%.2f", track.distance) + " mi")
-                .font(.footnote)
+                .font(.footnote.monospacedDigit())
                 .foregroundColor(.textSecondary)
         }
     }

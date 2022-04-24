@@ -94,6 +94,7 @@
 		F8F6870A28158D6300991442 /* CLLocationCoordinate2D+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F6870928158D6300991442 /* CLLocationCoordinate2D+.swift */; };
 		F8F6870B28158D6300991442 /* CLLocationCoordinate2D+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F6870928158D6300991442 /* CLLocationCoordinate2D+.swift */; };
 		F8F6870D2815AAC000991442 /* AAToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F6870C2815AAC000991442 /* AAToggleStyle.swift */; };
+		F8F6870F2815EE6200991442 /* SettingsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F6870E2815EE6200991442 /* SettingsSectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +169,7 @@
 		F8F68706281589A600991442 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F8F6870928158D6300991442 /* CLLocationCoordinate2D+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+.swift"; sourceTree = "<group>"; };
 		F8F6870C2815AAC000991442 /* AAToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AAToggleStyle.swift; sourceTree = "<group>"; };
+		F8F6870E2815EE6200991442 /* SettingsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -394,6 +396,7 @@
 				F868D6C9280F6C6100EC3D30 /* CodeVersionView.swift */,
 				F8821AAA2813879F00A21781 /* LegalView.swift */,
 				F8821AAC281397D600A21781 /* MailView.swift */,
+				F8F6870E2815EE6200991442 /* SettingsSectionView.swift */,
 				F8F687012814EA8300991442 /* SwitchView.swift */,
 			);
 			path = SettingsViews;
@@ -568,6 +571,7 @@
 				F868D6B8280F10E800EC3D30 /* Color+iOS.swift in Sources */,
 				F868D69B280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
 				F868D6C8280F6C5000EC3D30 /* SettingsView.swift in Sources */,
+				F8F6870F2815EE6200991442 /* SettingsSectionView.swift in Sources */,
 				F8F686FF2814E99B00991442 /* LocationManagerSettings.swift in Sources */,
 				F8F687042814F90100991442 /* Func.swift in Sources */,
 				F868D6E92810B1E500EC3D30 /* AAPointAnnotation.swift in Sources */,
@@ -756,7 +760,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -770,7 +774,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -793,7 +797,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -807,7 +811,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -832,7 +836,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -861,7 +865,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

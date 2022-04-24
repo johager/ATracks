@@ -13,6 +13,7 @@ struct CodeVersionView: View, Identifiable {
     var body: some View {
         Text("\(AppInfo.appNameWithFullVersion)\n© \(AppInfo.copyrightYear) Avanti Applications, LLC")
             .font(.footnote)
+            .padding([.top, .bottom], 8)
     }
 }
 
