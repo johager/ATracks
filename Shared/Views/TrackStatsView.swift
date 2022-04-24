@@ -15,19 +15,17 @@ struct TrackStatsView: View {
         VStack(spacing: 4) {
             HStack {
                 Text("Duration: \(track.duration.stringWithUnits)")
-                    .font(.footnote)
                 Spacer()
                 Text("Distance: \(String(format: "%.2f", track.distance)) mi")
-                    .font(.footnote)
             }
             HStack {
                 Text("Ave Speed: \(Int(round(track.aveSpeed))) mph")
-                    .font(.footnote)
                 Spacer()
                 Text("Steps: \(track.steps.stringWithNA)")
-                    .font(.footnote)
             }
         }
+        .font(.footnote)
+        .foregroundColor(.text)
         .padding([.top, .bottom], 8)
         .padding([.trailing, .leading], 32)
         #if os(iOS)

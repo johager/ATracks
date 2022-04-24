@@ -23,7 +23,11 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(overlay: overlay)
-            renderer.strokeColor = UIColor(.track)
+            #if os(iOS)
+                renderer.strokeColor = UIColor(.track)
+            #elseif os(macOS)
+                renderer.strokeColor = NSColor(.track)
+            #endif
             renderer.lineWidth = 5
             return renderer
         }

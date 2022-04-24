@@ -15,4 +15,6 @@ extension Double {
         formatter.maximumFractionDigits = 0
         return formatter.string(for: self)!
     }
+    
+    var stringWithFourDecimals: String { String(format: "%.4f", self) }
 }

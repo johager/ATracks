@@ -14,21 +14,25 @@ struct MapView: UIViewRepresentable {
     
     @ObservedObject var track: Track
     @State var shouldTrackPoint: Bool
+    var delegate: MapViewDelegate?
     
     let mapViewHelper = MapViewHelper()
+    
+    let file = "MapView"
     
     // MARK: - UIViewRepresentable
     
     func makeUIView(context: Context) -> MKMapView {
-        //print(#function)
+        //print("=== \(file).\(#function) - shouldTrackPoint: \(shouldTrackPoint) ===")
         mapViewHelper.setUpView(forTrack: track, shouldTrackPoint: shouldTrackPoint)
+        mapViewHelper.delegate = delegate
         mapViewHelper.mapView.delegate = context.coordinator
         
         return mapViewHelper.mapView
     }
     
     func updateUIView(_ view: MKMapView, context: Context) {
-        //print(#function)
+        //print("=== \(file).\(#function) - shouldTrackPoint: \(shouldTrackPoint) ===")
         mapViewHelper.updateView(forTrack: track)
     }
     

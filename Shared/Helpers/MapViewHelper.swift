@@ -8,11 +8,19 @@
 import Foundation
 import MapKit
 
+protocol MapViewDelegate {
+    func showLatLonFor(_ clLocationCoordinate2D: CLLocationCoordinate2D)
+}
+
+// MARK: -
+
 class MapViewHelper: NSObject {
     
     let mapView = MKMapView()
     
     var track: Track!
+    
+    var delegate: MapViewDelegate?
     
     private var lastTrackPoint: TrackPoint?
     
@@ -45,11 +53,16 @@ class MapViewHelper: NSObject {
     }
     
     private var center: CLLocationCoordinate2D {
-        if let location = LocationManager.shared.location {
-            return CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        } else {
+        #if os(iOS)
+            if let location = LocationManager.shared.location {
+                return CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            } else {
+                return CLLocationCoordinate2D(latitude: 37.33, longitude: -122.01)
+            }
+        #elseif os(macOS)
             return CLLocationCoordinate2D(latitude: 37.33, longitude: -122.01)
-        }
+        #endif
+        
     }
     
     lazy var file = Func.sourceFileNameFromFullPath(#file)
@@ -117,15 +130,14 @@ class MapViewHelper: NSObject {
     
     private func setUpTracking() {
         #if os(iOS)
-        if LocationManager.shared.isTracking(track) {
-            setMapToTrack()
-        } else {
-            setMapNoTrack()
-        }
-        #endif
+            if LocationManager.shared.isTracking(track) {
+                setMapToTrack()
+            } else {
+                setMapNoTrack()
+            }
         
-        #if os(macOS)
-        setMapNoTrack()
+        #elseif os(macOS)
+            setMapNoTrack()
         #endif
     }
     
@@ -166,7 +178,7 @@ class MapViewHelper: NSObject {
     // MARK: - Notifications
     
     @objc func handleDidStopTrackingNotification(_ notification: Notification) {
-        print("=== \(file).\(#function)")
+        print("=== \(file).\(#function) ===")
         setMapNoTrack()
     }
     
@@ -176,7 +188,10 @@ class MapViewHelper: NSObject {
               let clLocationCoordinate2D = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
         else { return }
         
+        //print("=== \(file).\(#function) ===")
+        
         moveTrackMarker(to: clLocationCoordinate2D)
+        delegate?.showLatLonFor(clLocationCoordinate2D)
     }
 }
 

@@ -18,7 +18,7 @@ struct TrackDetailView: View {
         VStack(spacing: 0) {
             TrackStatsView(track: track)
             ZStack {
-                MapView(track: track, shouldTrackPoint: false)
+                MapView(track: track, shouldTrackPoint: false, delegate: nil)
                     .edgesIgnoringSafeArea([.trailing, .bottom, .leading])
                 #if os(iOS)
                 if isTracking {

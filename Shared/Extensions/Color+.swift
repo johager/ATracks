@@ -87,6 +87,20 @@ extension Color {
         return color(light: lightColor, dark: darkColor)
     }
     
+    // MARK: - Lat/Lon Callout Colors
+    
+    static var latLonCalloutText: Color {
+        return color(light: .text, dark: .white)
+    }
+    
+    static var latLonCalloutBackground: Color {
+        return color(light: Color(white: 1.0), dark: Color(white: 0.10))
+    }
+    
+    static var latLonCalloutBorder: Color {
+        return color(light: Color(white: 0.60), dark: Color(white: 0.70))
+    }
+    
     // MARK: - Plot Colors
     
     static var plotAxis: Color {

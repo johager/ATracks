@@ -95,7 +95,8 @@ struct TrackPlotView: View {
                 .task { plotSize = geometry.size }
             }
         }
-        .font(.footnote)
+        .font(.footnote.monospacedDigit())
+        .foregroundColor(.text)
         .padding([.trailing, .leading], 32)
     }
     

@@ -47,11 +47,11 @@ struct SettingsView: View {
             } header: {
                 Text("Tracking Settings")
 //                    .font(.headline)
-                    .font(.title)
+                    .font(.title3)
                     .bold()
                     .foregroundColor(.headerText)
                     .kerning(1)
-//                    .textCase(.uppercase)
+                    .textCase(.uppercase)
                     
 //                    .listRowInsets(EdgeInsets(top: -8, leading: 0, bottom: 0, trailing: 0))
             }

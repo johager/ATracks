@@ -42,7 +42,9 @@ enum UserDefaultsHelper {
         UserDefaults.standard.set(dataStateCurrent, forKey: dataStateKey)
     }
     
-    static func setUserDefaultSettings() {        
+    static func setUserDefaultSettings() {
+        #if os(iOS)
         LocationManagerSettings.setDefaults()
+        #endif
     }
 }

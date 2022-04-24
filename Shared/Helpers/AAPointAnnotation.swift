@@ -6,11 +6,9 @@
 //
 
 #if os(iOS)
-import UIKit
-#endif
-
-#if os(macOS)
-import Cocoa
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
 #endif
 
 import MapKit
@@ -32,15 +30,14 @@ class AAPointAnnotation: MKPointAnnotation {
     // MARK: - Methods
     
     #if os(iOS)
-    func image(mapType: MKMapType, isDark: Bool) -> UIImage? {
-        return UIImage(named: imageName(mapType: mapType, isDark: isDark))
-    }
-    #endif
+        func image(mapType: MKMapType, isDark: Bool) -> UIImage? {
+            return UIImage(named: imageName(mapType: mapType, isDark: isDark))
+        }
     
-    #if os(macOS)
-    func image(mapType: MKMapType, isDark: Bool) -> NSImage? {
-        return NSImage(named: imageName(mapType: mapType, isDark: isDark))
-    }
+    #elseif os(macOS)
+        func image(mapType: MKMapType, isDark: Bool) -> NSImage? {
+            return NSImage(named: imageName(mapType: mapType, isDark: isDark))
+        }
     #endif
     
     func imageName(mapType: MKMapType, isDark: Bool) -> String {
