@@ -79,6 +79,17 @@ extension Color {
         return color(light: lightColor, dark: darkColor)
     }
     
+    // MARK: - Toggle Colors
+    
+    static var toggleOn: Color {
+        let lightColor = Color(red: 0.49, green: 0.63, blue: 0.60)
+        return color(light: lightColor, dark: mediumGreen)
+    }
+    
+    static var toggleThumb: Color {
+        return color(light: .white, dark: lightishGreen)
+    }
+    
     // MARK: - Track Colors
     
     static var track: Color {
@@ -133,6 +144,7 @@ extension Color {
     static let darkGreen = Color(red: 0, green: 0.22, blue: 0.19)  // 35% black
     static let dark2Green = Color(red: 0, green: 0.18, blue: 0.16)  // 45% black
     static let dark3HGreen = Color(red: 0, green: 0.13, blue: 0.11)  // 60% black
+    static let mediumGreen = Color(red: 56/255.0, green: 119/255.0, blue: 109/255.0)  // approx 22% white
     static let medium3Green = Color(red: 179/255.0, green: 204/255.0, blue: 201/255.0)  // 70% white
     static let lightishGreen = Color(red: 191/255.0, green: 212/255.0, blue: 209/255.0)  // 75% white
     static let lightGreen = Color(red: 215/255.0, green: 229/255.0, blue: 227/255.0)  // 84% white

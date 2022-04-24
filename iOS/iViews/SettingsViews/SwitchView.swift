@@ -13,10 +13,8 @@ struct SwitchView: View {
     @Binding var switchVal: Bool
     
     var body: some View {
-        Toggle(isOn: $switchVal) {
-            Text(switchText)
-                .foregroundColor(.text)
-        }
+        Toggle("", isOn: $switchVal)
+            .toggleStyle(AAToggleStyle(label: switchText))
     }
 }
 
