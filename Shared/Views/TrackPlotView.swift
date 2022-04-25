@@ -13,7 +13,7 @@ struct TrackPlotView: View {
     
     @State private var elevationString = ""
     @State private var plotSize = CGSize(width: 100, height: 100)
-    @State private var xVertVals: [Double] = [-1, -1]
+    @State private var xVertVals: [Double] = [2, 2]
     private var yVertVals: [Double] = [0, 1]
     
     private var trackHelper: TrackHelper

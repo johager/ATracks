@@ -63,10 +63,6 @@ class LocationManager: NSObject {
         return true
     }
     
-    func requestAlwaysAuthorization() {
-        locationManager.requestAlwaysAuthorization()
-    }
-    
     func startLocationUpdates() {
         print("=== \(file).\(#function) ===")
         locationManager.startUpdatingLocation()
@@ -140,8 +136,6 @@ class LocationManager: NSObject {
         
         guard shouldTrack else { return }
         
-        //startHeadingUpdates()
-        
         if isTracking {
             return
         }
@@ -152,8 +146,6 @@ class LocationManager: NSObject {
     func sceneDidBecomeInActive() {
  
         guard shouldTrack else { return }
-        
-        //stopHeadingUpdates()
         
         if isTracking {
             return
@@ -171,13 +163,20 @@ extension LocationManager: CLLocationManagerDelegate {
 
         switch manager.authorizationStatus {
         case .notDetermined:
+            print("=== \(file).\(#function) - authorizationStatus: .notDetermined ===")
             manager.requestAlwaysAuthorization()
-        case .authorizedAlways, .authorizedWhenInUse:
+        case .authorizedAlways:
+            print("=== \(file).\(#function) - authorizationStatus: .authorizedAlways ===")
             break
+        case .authorizedWhenInUse:
+            print("=== \(file).\(#function) - authorizationStatus: .authorizedWhenInUse ===")
+            manager.requestAlwaysAuthorization()
         case .denied:
+            print("=== \(file).\(#function) - authorizationStatus: .denied ===")
             // pop up alert explaining why tracking is important to your app
             break
         case .restricted:
+            print("=== \(file).\(#function) - authorizationStatus: .restricted ===")
             break
         default:
             break

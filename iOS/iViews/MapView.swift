@@ -12,10 +12,14 @@ import MapKit
 
 struct MapView: UIViewRepresentable {
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     @ObservedObject var track: Track
     @State var shouldTrackPoint: Bool
     
     let mapViewHelper = MapViewHelper()
+    
+    var isDark: Bool { colorScheme == .dark }
     
     let file = "MapView"
     

@@ -14,10 +14,17 @@ struct SettingsView: View {
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
+    
+    @State var isShowingMailResponseAlert = false
+    @State var mailResponseTitle = ""
+    @State var mailResponseMessage = ""
+    
     @State var isShowingResetSettings = false
     
 //    @State var mapDisplayOption = "Regular"
 //    let mapDisplayOptions = ["Regular", "Satellite"]
+    
+    let file = "SettingsView"
     
     var body: some View {
 //        Form {
@@ -121,6 +128,16 @@ struct SettingsView: View {
         #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
         #endif
+        
+        .onChange(of: isShowingMailView) { _ in
+            handleMFMailComposeResult()
+        }
+        .alert(mailResponseTitle, isPresented: $isShowingMailResponseAlert) {
+            Button("OK", role: .none) {}
+        } message: {
+            Text(mailResponseMessage)
+        }
+        
         .alert("Reset All Settings", isPresented: $isShowingResetSettings) {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) {
@@ -140,6 +157,44 @@ struct SettingsView: View {
             return .text
         } else {
             return .textInactive
+        }
+    }
+    
+    func handleMFMailComposeResult() {
+        //print("=== \(file).\(#function) ===")
+        
+        guard !isShowingMailView,
+              let result = result
+        else { return }
+        
+        mailResponseTitle = ""
+        
+        switch result {
+        case .success(let mcResult):
+            switch mcResult {
+            case .saved:
+                mailResponseTitle = "Message Saved"
+                mailResponseMessage = "The message was saved in your Drafts folder."
+            case .sent:
+                mailResponseTitle = "Message Sent"
+                mailResponseMessage = "The message was queued to your Outbox and will be sent as soon as possible."
+            case .failed:
+                mailResponseTitle = "Message Failed"
+                mailResponseMessage = "There was an unknown error."
+            default:  // .cancelled
+                break
+            }
+        case .failure(let error):
+            mailResponseTitle = "Message Failed"
+            mailResponseMessage = error.localizedDescription
+        }
+        
+        if mailResponseTitle.isEmpty {
+            return
+        }
+        
+        Func.afterDelay(0.3) {
+            isShowingMailResponseAlert = true
         }
     }
 }

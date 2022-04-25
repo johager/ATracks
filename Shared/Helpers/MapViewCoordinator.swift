@@ -38,8 +38,7 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
         let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "annotationID")
         
         if let aaPointAnnotation = annotation as? AAPointAnnotation {
-            let isDark = Appearance.isDark
-            annotationView.image = aaPointAnnotation.image(mapType: mapView.mapType, isDark: isDark)
+            annotationView.image = aaPointAnnotation.image(mapType: mapView.mapType, isDark: parent.isDark)
             annotationView.centerOffset = CGPoint(x: 0, y: aaPointAnnotation.imageOffsetY)
         }
         
