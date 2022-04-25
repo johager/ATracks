@@ -53,7 +53,9 @@ struct TrackListView: View {
 //                        selectedTrack = track
 //                    }
 //                    .listRowBackground(track == selectedTrack ? Color.listRowSelectedBackground : .white)
+                    #if os(iOS)
                     .listRowSeparatorTint(.listRowSeparator)
+                    #endif
                 }
                 .onDelete(perform: delete)
 //                .listRowBackground(Color.listRowSelectedBackground)

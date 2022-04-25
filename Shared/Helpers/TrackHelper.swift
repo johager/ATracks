@@ -257,7 +257,7 @@ class TrackHelper {
     
     // MARK: - Location Methods
     
-    func plotData(at xFraction: CGFloat) -> Double? {
+    func showData(at xFraction: CGFloat) -> Double? {
         
         //print("=== \(file).\(#function) - xFraction: \(xFraction) ===")
         let xRange = xVals.last! - xVals[0]
@@ -271,7 +271,7 @@ class TrackHelper {
         
         let userInfo = [Key.clLocationCoordinate2D: trackPoints[index].clLocationCoordinate2D]
         
-        NotificationCenter.default.post(name: .moveTrackMarker, object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: .showInfoForLocation, object: nil, userInfo: userInfo)
         
         return elevations[index]
     }

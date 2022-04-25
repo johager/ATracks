@@ -21,7 +21,7 @@ struct TrackDetailsView: View {
         VStack(spacing: 0) {
             TrackStatsView(track: track)
             ZStack {
-                MapView(track: track, shouldTrackPoint: true, delegate: self)
+                MapView(track: track, shouldTrackPoint: true)
                     .edgesIgnoringSafeArea([.trailing, .leading])
                 VStack {
                     Spacer()
@@ -40,28 +40,22 @@ struct TrackDetailsView: View {
                         )
                         .padding(.bottom, 8)
                         .hidden(latLonTextIsHidden)
+                        .onReceive(NotificationCenter.default.publisher(for: .showInfoForLocation)) { notification in
+                            guard let userInfo = notification.userInfo as? Dictionary<String,Any>,
+                                  let clLocationCoordinate2D = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
+                            else { return }
+                            latLonText = clLocationCoordinate2D.stringWithThreeDecimals
+                            
+                            if latLonTextIsHidden {
+                                latLonTextIsHidden = false
+                            }
+                        }
                 }
             }
             TrackPlotView(track: track)
                 .frame(height: 150)
         }
         .navigationTitle(track.name)
-    }
-}
-
-// MARK: - MapViewDelegate
-
-extension TrackDetailsView: MapViewDelegate {
-    
-    func showLatLonFor(_ clLocationCoordinate2D: CLLocationCoordinate2D) {
-//        let file = "TrackDetailsView"
-//        print("=== \(file).\(#function) ===")
-        
-        latLonText = clLocationCoordinate2D.stringWithThreeDecimals
-        
-        if latLonTextIsHidden {
-            latLonTextIsHidden = false
-        }
     }
 }
 

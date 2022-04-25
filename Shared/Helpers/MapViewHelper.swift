@@ -8,19 +8,11 @@
 import Foundation
 import MapKit
 
-protocol MapViewDelegate {
-    func showLatLonFor(_ clLocationCoordinate2D: CLLocationCoordinate2D)
-}
-
-// MARK: -
-
 class MapViewHelper: NSObject {
     
     let mapView = MKMapView()
     
     var track: Track!
-    
-    var delegate: MapViewDelegate?
     
     private var lastTrackPoint: TrackPoint?
     
@@ -86,8 +78,8 @@ class MapViewHelper: NSObject {
                 name: .didStopTracking, object: nil)
             
             NotificationCenter.default.addObserver(self,
-                selector: #selector(handleMoveTrackMarkerNotification(_:)),
-                name: .moveTrackMarker, object: nil)
+                selector: #selector(handleShowInfoForLocationNotification(_:)),
+                name: .showInfoForLocation, object: nil)
         }
     }
     
@@ -182,7 +174,7 @@ class MapViewHelper: NSObject {
         setMapNoTrack()
     }
     
-    @objc func handleMoveTrackMarkerNotification(_ notification: Notification) {
+    @objc func handleShowInfoForLocationNotification(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo as? Dictionary<String,Any>,
               let clLocationCoordinate2D = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
@@ -191,7 +183,6 @@ class MapViewHelper: NSObject {
         //print("=== \(file).\(#function) ===")
         
         moveTrackMarker(to: clLocationCoordinate2D)
-        delegate?.showLatLonFor(clLocationCoordinate2D)
     }
 }
 

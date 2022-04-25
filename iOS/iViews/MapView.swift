@@ -14,7 +14,6 @@ struct MapView: UIViewRepresentable {
     
     @ObservedObject var track: Track
     @State var shouldTrackPoint: Bool
-    var delegate: MapViewDelegate?
     
     let mapViewHelper = MapViewHelper()
     
@@ -25,7 +24,6 @@ struct MapView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         //print("=== \(file).\(#function) - shouldTrackPoint: \(shouldTrackPoint) ===")
         mapViewHelper.setUpView(forTrack: track, shouldTrackPoint: shouldTrackPoint)
-        mapViewHelper.delegate = delegate
         mapViewHelper.mapView.delegate = context.coordinator
         
         return mapViewHelper.mapView
