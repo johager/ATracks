@@ -116,7 +116,7 @@ struct TrackPlotView: View {
         let xFraction = location.x / plotSize.width
         //print("\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")
         
-        guard let elevation = trackHelper.plotData(at: xFraction) else { return }
+        guard let elevation = trackHelper.showData(at: xFraction) else { return }
         
         elevationString = "\(elevation.stringAsInt)"
         xVertVals = [xFraction, xFraction]
