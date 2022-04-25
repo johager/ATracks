@@ -8,7 +8,11 @@
 import Foundation
 import Combine
 
-class LocationManagerSettings: ObservableObject {
+protocol LocationManagerSettingsProvider {
+    var useAutoStop: Bool { get }
+}
+
+class LocationManagerSettings: LocationManagerSettingsProvider, ObservableObject {
     
     static let useAutoStopKey = "useAutoStop"
     static let useAutoStopDefault = true

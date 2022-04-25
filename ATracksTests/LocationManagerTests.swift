@@ -9,7 +9,9 @@ import XCTest
 @testable import ATracks
 import CoreLocation
 
-class LocationManagerTests: XCTestCase {
+class LocationManagerTests: XCTestCase, LocationManagerSettingsProvider {
+    
+    var useAutoStop = false
     
     struct AutoStopTestCase {
         let deltaLocMax: Double  // meters
@@ -44,6 +46,8 @@ class LocationManagerTests: XCTestCase {
     // MARK: - Helper Methods
     
     func runAutoStopTestCases(_ testCases: [AutoStopTestCase], function: String) {
+        
+        LocationManager.shared.settingsProvider = self
         
         var failedCases = [AutoStopTestCase]()
         
@@ -109,7 +113,7 @@ class LocationManagerTests: XCTestCase {
     func testAutoStop() {
         // autoStop() should set isTracking to false, ie an automatic stop
         
-        LocationManager.shared.shouldAutoStop = true
+        useAutoStop = true
         LocationManager.shared.shouldTrack = false
         
         let minDStart = LocationManager.shared.autoStopMinDistToStart
@@ -126,7 +130,7 @@ class LocationManagerTests: XCTestCase {
     func testAutoStopShouldFail() {
         // autoStop() should leave isTracking true, ie a failed automatic stop
         
-        LocationManager.shared.shouldAutoStop = true
+        useAutoStop = true
         LocationManager.shared.shouldTrack = false
         
         let minDStart = LocationManager.shared.autoStopMinDistToStart

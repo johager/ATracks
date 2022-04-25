@@ -13,7 +13,7 @@ class LocationManager: NSObject {
     static let shared = LocationManager()
     
     var location: CLLocation!
-    var shouldAutoStop: Bool { LocationManagerSettings.shared.useAutoStop }
+    var shouldAutoStop: Bool { settingsProvider.useAutoStop }
     
     private let locationManager = CLLocationManager()
     
@@ -38,6 +38,8 @@ class LocationManager: NSObject {
     var firstLocation: CLLocation!
     private var shouldCheckAutoStop = false
     private var track: Track!
+    
+    var settingsProvider: LocationManagerSettingsProvider = LocationManagerSettings.shared
     
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
@@ -130,6 +132,10 @@ class LocationManager: NSObject {
         if dLoc < autoStopMinDistToStop {
             stopTracking()
         }
+    }
+    
+    func setSettingsProvider(_ settingsProvider: LocationManagerSettingsProvider) {
+        
     }
     
     // MARK: - Scene Lifecycle
