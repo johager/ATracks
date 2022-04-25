@@ -10,6 +10,14 @@ import MapKit
 
 class MapViewHelper: NSObject {
     
+    #if os(iOS)
+    let view = UIView()
+    var latLonLabel: AALabelWithPadding!
+    #else
+    let view = NSView()
+    var latLonLabel: NSTextField!
+    #endif
+    
     let mapView = MKMapView()
     
     var track: Track!
@@ -69,7 +77,7 @@ class MapViewHelper: NSObject {
     
     func setUpView(forTrack track: Track, shouldTrackPoint: Bool = false) {
         self.track = track
-        setUpView()
+        setUpView(shouldTrackPoint: shouldTrackPoint)
         setUpTracking()
         
         if shouldTrackPoint {
@@ -105,9 +113,12 @@ class MapViewHelper: NSObject {
     
     // MARK: - Private Methods
     
-    private func setUpView() {
+    private func setUpView(shouldTrackPoint: Bool) {
         mapView.isPitchEnabled = false
         mapView.showsCompass = true
+        
+        view.addSubview(mapView)
+        mapView.pin(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor)
         
         #if os(iOS)
         let scaleView = MKScaleView(mapView: mapView)
@@ -118,6 +129,39 @@ class MapViewHelper: NSObject {
         scaleView.pin(top: mapSafeArea.topAnchor, trailing: nil, bottom: nil, leading: mapSafeArea.leadingAnchor, margin: [6, 0, 0, 12])
         scaleView.scaleVisibility = .visible
         #endif
+        
+        if shouldTrackPoint {
+            addLatLonLabel()
+        }
+    }
+    
+    func addLatLonLabel() {
+        #if os(iOS)
+        latLonLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
+        if let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote).withDesign(.monospaced) {
+            latLonLabel.font = UIFont(descriptor: descriptor, size: 0)
+        } else {
+            latLonLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
+        }
+        latLonLabel.adjustsFontForContentSizeCategory = true
+        latLonLabel.numberOfLines = 0
+        latLonLabel.textAlignment = .center
+        latLonLabel.text = ""
+        latLonLabel.textColor = UIColor(.latLonCalloutText)
+        latLonLabel.isHidden = true
+        
+        latLonLabel.layer.backgroundColor = UIColor(.latLonCalloutBackground).cgColor
+        latLonLabel.layer.borderColor = UIColor(.latLonCalloutBorder).cgColor
+        latLonLabel.layer.borderWidth = 2
+        latLonLabel.layer.cornerRadius = 6
+        
+        #else
+        latLonLabel = NSTextField()
+        #endif
+        
+        view.addSubview(latLonLabel)
+        latLonLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        latLonLabel.pin(top: nil, trailing: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, leading: nil, margin: [0, 0, 4, 0])
     }
     
     private func setUpTracking() {
@@ -167,6 +211,16 @@ class MapViewHelper: NSObject {
         mapView.addAnnotation(trackPointAnnotation)
     }
     
+    func updateLatLonLabel(for clLocationCoordinate2D: CLLocationCoordinate2D) {
+        #if os(iOS)
+            latLonLabel.text = clLocationCoordinate2D.stringWithThreeDecimals
+            latLonLabel.isHidden = false
+        #else
+            latLonLabel.stringValue = clLocationCoordinate2D.stringWithThreeDecimals
+        #endif
+        latLonLabel.isHidden = false
+    }
+    
     // MARK: - Notifications
     
     @objc func handleDidStopTrackingNotification(_ notification: Notification) {
@@ -183,6 +237,7 @@ class MapViewHelper: NSObject {
         //print("=== \(file).\(#function) ===")
         
         moveTrackMarker(to: clLocationCoordinate2D)
+        updateLatLonLabel(for: clLocationCoordinate2D)
     }
 }
 
