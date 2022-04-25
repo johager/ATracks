@@ -138,11 +138,14 @@ class MapViewHelper: NSObject {
     func addLatLonLabel() {
         #if os(iOS)
         latLonLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
-        if let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote).withDesign(.monospaced) {
-            latLonLabel.font = UIFont(descriptor: descriptor, size: 0)
-        } else {
-            latLonLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-        }
+        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote)
+        let monospacedNumbersDescriptor = descriptor.addingAttributes([
+            UIFontDescriptor.AttributeName.featureSettings: [
+                [UIFontDescriptor.FeatureKey.type: kNumberSpacingType,
+                 UIFontDescriptor.FeatureKey.selector: kMonospacedNumbersSelector]
+            ]
+        ])
+        latLonLabel.font = UIFont(descriptor: monospacedNumbersDescriptor, size: 0)
         latLonLabel.adjustsFontForContentSizeCategory = true
         latLonLabel.numberOfLines = 0
         latLonLabel.textAlignment = .center
