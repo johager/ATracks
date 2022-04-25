@@ -134,10 +134,6 @@ class LocationManager: NSObject {
         }
     }
     
-    func setSettingsProvider(_ settingsProvider: LocationManagerSettingsProvider) {
-        
-    }
-    
     // MARK: - Scene Lifecycle
     
     func sceneDidBecomeActive() {
