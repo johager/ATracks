@@ -214,10 +214,10 @@ class MapViewHelper: NSObject {
     func updateLatLonLabel(for clLocationCoordinate2D: CLLocationCoordinate2D) {
         #if os(iOS)
             latLonLabel.text = clLocationCoordinate2D.stringWithThreeDecimals
-            latLonLabel.isHidden = false
         #else
             latLonLabel.stringValue = clLocationCoordinate2D.stringWithThreeDecimals
         #endif
+        
         latLonLabel.isHidden = false
     }
     
