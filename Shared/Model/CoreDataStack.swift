@@ -20,32 +20,47 @@ class CoreDataStack: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
     
-    lazy var context: NSManagedObjectContext = {
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = psc
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        return managedObjectContext
-    }()
+//    lazy var context: NSManagedObjectContext = {
+//        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+//        managedObjectContext.persistentStoreCoordinator = psc
+//        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        return managedObjectContext
+//    }()
+//
+//    lazy var psc: NSPersistentStoreCoordinator = {
+//        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+//        let options = [
+//            NSMigratePersistentStoresAutomaticallyOption: true,
+//            NSInferMappingModelAutomaticallyOption: true
+//        ]
+//
+//        do {
+//            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: psURL, options: options)
+//        } catch  {
+//            print(">> Error adding persistent store.")
+//        }
+//
+//        return coordinator
+//    }()
+//
+//    lazy var managedObjectModel: NSManagedObjectModel = {
+//        let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
+//        return NSManagedObjectModel(contentsOf: modelURL)!
+//    }()
     
-    lazy var psc: NSPersistentStoreCoordinator = {
-        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        let options = [
-            NSMigratePersistentStoresAutomaticallyOption: true,
-            NSInferMappingModelAutomaticallyOption: true
-        ]
-        
-        do {
-            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: psURL, options: options)
-        } catch  {
-            print(">> Error adding persistent store.")
+    var context: NSManagedObjectContext {
+        persistentContainer.viewContext
+    }
+    
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: modelName)
+        container.persistentStoreDescriptions.first?.url = psURL
+        container.loadPersistentStores { _, error in
+            if let error = error {
+                fatalError("=== CoreDataStack.persistentContainer - error loading persistent stores: \(error.localizedDescription)\n---\n\(error)")
+            }
         }
-        
-        return coordinator
-    }()
-    
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
-        return NSManagedObjectModel(contentsOf: modelURL)!
+        return container
     }()
     
     lazy var psURL: URL = {
