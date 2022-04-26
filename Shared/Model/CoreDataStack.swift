@@ -20,40 +20,15 @@ class CoreDataStack: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
     
-//    lazy var context: NSManagedObjectContext = {
-//        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-//        managedObjectContext.persistentStoreCoordinator = psc
-//        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-//        return managedObjectContext
-//    }()
-//
-//    lazy var psc: NSPersistentStoreCoordinator = {
-//        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-//        let options = [
-//            NSMigratePersistentStoresAutomaticallyOption: true,
-//            NSInferMappingModelAutomaticallyOption: true
-//        ]
-//
-//        do {
-//            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: psURL, options: options)
-//        } catch  {
-//            print(">> Error adding persistent store.")
-//        }
-//
-//        return coordinator
-//    }()
-//
-//    lazy var managedObjectModel: NSManagedObjectModel = {
-//        let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
-//        return NSManagedObjectModel(contentsOf: modelURL)!
-//    }()
-    
     var context: NSManagedObjectContext {
-        persistentContainer.viewContext
+        let context = persistentContainer.viewContext
+        context.automaticallyMergesChangesFromParent = true
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        return context
     }
     
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: modelName)
+    lazy var persistentContainer: NSPersistentCloudKitContainer = {
+        let container = NSPersistentCloudKitContainer(name: modelName)
         container.persistentStoreDescriptions.first?.url = psURL
         container.loadPersistentStores { _, error in
             if let error = error {
@@ -63,14 +38,14 @@ class CoreDataStack: NSObject {
         return container
     }()
     
-    lazy var psURL: URL = {
-        return modelDirectoryURL.appendingPathComponent(modelName)
-    }()
+    var psURL: URL {
+        modelDirectoryURL.appendingPathComponent(modelName)
+    }
     
-    lazy var modelDirectoryURL: URL = {
+    var modelDirectoryURL: URL {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count-1]
-    }()
+    }
     
     func saveContext() {
         print("<<< saveContext >>>")

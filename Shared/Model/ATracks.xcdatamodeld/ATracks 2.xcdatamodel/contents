@@ -6,11 +6,11 @@
         <attribute name="altitudeIsValid" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="altitudeMax" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="altitudeMin" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" attributeType="Date" defaultDateTimeInterval="662760000" usesScalarValueType="NO"/>
         <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="hasFinalSteps" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="name" attributeType="String" defaultValueString="_default_"/>
         <attribute name="steps" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="trackPointsSet" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TrackPoint" inverseName="track" inverseEntity="TrackPoint"/>
     </entity>
@@ -19,7 +19,7 @@
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="speed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="timestamp" attributeType="Date" defaultDateTimeInterval="662760000" usesScalarValueType="NO"/>
         <relationship name="track" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Track" inverseName="trackPointsSet" inverseEntity="Track"/>
     </entity>
     <elements>

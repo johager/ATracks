@@ -97,6 +97,8 @@
 		F8F6870F2815EE6200991442 /* SettingsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F6870E2815EE6200991442 /* SettingsSectionView.swift */; };
 		F8F687112816F7BD00991442 /* AALabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F687102816F7BD00991442 /* AALabelWithPadding.swift */; };
 		F8F687142816FC7100991442 /* NSView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F687122816FC4200991442 /* NSView+.swift */; };
+		F8F6877628189FFB00991442 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F6877528189FFB00991442 /* CloudKit.framework */; };
+		F8F687782818A05000991442 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F687772818A05000991442 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +177,8 @@
 		F8F687102816F7BD00991442 /* AALabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AALabelWithPadding.swift; sourceTree = "<group>"; };
 		F8F687122816FC4200991442 /* NSView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+.swift"; sourceTree = "<group>"; };
 		F8F68774281851F800991442 /* ATracks 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ATracks 2.xcdatamodel"; sourceTree = "<group>"; };
+		F8F6877528189FFB00991442 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		F8F687772818A05000991442 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.4.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F868D6C4280F46C000EC3D30 /* HealthKit.framework in Frameworks */,
+				F8F687782818A05000991442 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8F6877628189FFB00991442 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +354,8 @@
 		F868D6C2280F46C000EC3D30 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F8F687772818A05000991442 /* CloudKit.framework */,
+				F8F6877528189FFB00991442 /* CloudKit.framework */,
 				F868D6C3280F46C000EC3D30 /* HealthKit.framework */,
 			);
 			name = Frameworks;
@@ -769,7 +777,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27a;
+				CURRENT_PROJECT_VERSION = 27b;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -806,7 +814,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27a;
+				CURRENT_PROJECT_VERSION = 27b;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -845,7 +853,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 23a;
+				CURRENT_PROJECT_VERSION = 23b;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -874,7 +882,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 23a;
+				CURRENT_PROJECT_VERSION = 23b;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
