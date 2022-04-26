@@ -43,6 +43,9 @@ class TrackHelper {
     init(track: Track, forPlotting: Bool = false) {
         self.track = track
         self.trackPoints = track.trackPoints
+        
+        guard track.altitudeIsValid else { return }
+        
         setAltitudeData()
         
         if forPlotting {

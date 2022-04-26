@@ -12,9 +12,15 @@ class Track: NSManagedObject, Identifiable {
     
     // MARK: - CoreData Properties
     
+    @NSManaged var altitudeMin: Double
+    @NSManaged var altitudeMax: Double
+    @NSManaged var altitudeAve: Double
+    @NSManaged var altitudeGain: Double
+    @NSManaged var altitudeIsValid: Bool
     @NSManaged var date: Date
     @NSManaged var distance: Double
     @NSManaged var duration: TimeInterval
+    @NSManaged var hasFinalSteps: Bool
     @NSManaged var name: String
     @NSManaged var steps: Int32
     
@@ -51,11 +57,32 @@ class Track: NSManagedObject, Identifiable {
     
     // MARK: - Methods
     
-    func setDistanceAndDuration() {
+    func setTrackSummaryData(verticalAccuracy: Double = 1) {
+        
+        if verticalAccuracy <= 0 {
+            altitudeIsValid = false
+        }
         
         let trackPoints = self.trackPoints
         
         guard trackPoints.count > 1 else { return }
+        
+        setDistanceAndDuration(using: trackPoints)
+        setAltitudeData()
+    }
+    
+    func setAltitudeData() {
+        guard altitudeIsValid else { return }
+        
+        let trackHelper = TrackHelper(track: self)
+        
+        altitudeMin = trackHelper.altitudeMin
+        altitudeMax = trackHelper.altitudeMax
+        altitudeAve = trackHelper.altitudeAve
+        altitudeGain = trackHelper.altitudeGain
+    }
+    
+    func setDistanceAndDuration(using trackPoints: [TrackPoint]) {
         
         let locations = trackPoints.map { $0.clLocation }
         

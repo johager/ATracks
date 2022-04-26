@@ -40,6 +40,6 @@ class TrackPoint: NSManagedObject {
         timestamp = clLocation.timestamp
         
         self.track = track
-        track.setDistanceAndDuration()
+        track.setTrackSummaryData(verticalAccuracy: clLocation.verticalAccuracy)
     }
 }
