@@ -19,7 +19,7 @@ struct TrackStatsView: View {
                 Text("Distance: \(String(format: "%.2f", track.distance)) mi")
             }
             HStack {
-                Text("Ave Speed: \(Int(round(track.aveSpeed))) mph")
+                Text("Ave Speed: \(track.aveSpeed.stringForSpeed) mph")
                 Spacer()
                 Text("Steps: \(track.steps.stringWithNA)")
             }

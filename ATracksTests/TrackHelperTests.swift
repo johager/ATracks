@@ -81,6 +81,7 @@ class TrackHelperTests: XCTestCase {
     
     func testSetGridVals() {
         let testCases = [
+            SetGridValsTestCase(min: 0, max: 0),
             SetGridValsTestCase(min: 5434, max: 5546),
             SetGridValsTestCase(min: 5433, max: 5550),
             SetGridValsTestCase(min: 5433, max: 5554),

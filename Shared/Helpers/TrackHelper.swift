@@ -13,13 +13,15 @@ class TrackHelper {
     
     var track: Track!
     
-    var xVals = [Double]()
-    var elevations = [Double]()
+    var time = [Double]()
+    var altitudes = [Double]()
     
-    var elevationPlotVals = [Double]()  // for axis 0 to 1
+    var altitudePlotVals = [Double]()  // for axis 0 to 1
     
-    var minElevation: Double = 0
-    var maxElevation: Double = 0
+    var altitudeMin: Double = 0
+    var altitudeMax: Double = 0
+    var altitudeAve: Double = 0
+    var altitudeGain: Double = 0
 
     var axisXVals: [Double] { [0, 0, 1] }
     var axisYVals: [Double] { [1, 0, 0] }
@@ -30,7 +32,7 @@ class TrackHelper {
     var yAxisScale: Double!
     var yAxisNumGridLines: Int16 = 0
     
-    var hasElevationData: Bool { yAxisNumGridLines > 0 }
+    var hasAltitudeData: Bool { yAxisNumGridLines > 0 }
     
     private var trackPoints: [TrackPoint]!
     
@@ -38,15 +40,19 @@ class TrackHelper {
     
     // MARK: - Init
     
-    init(track: Track) {
+    init(track: Track, forPlotting: Bool = false) {
         self.track = track
         self.trackPoints = track.trackPoints
-        setPlotVals()
+        setAltitudeData()
+        
+        if forPlotting {
+            setPlotVals()
+        }
     }
     
-    // MARK: - Plot Methods
+    // MARK: - Altitude Methods
     
-    func setPlotVals() {
+    func setAltitudeData() {
         
         let nSmoothPasses = 11
         let nSmoothRange = 7
@@ -55,26 +61,40 @@ class TrackHelper {
         
         // raw values
         
-        var e = [Double]()
+        var altRaw = [Double]()
         for trackPoint in trackPoints {
-            xVals.append(trackPoint.timestamp.timeIntervalSince(trackPoints[0].timestamp))
-            e.append(trackPoint.altitude * 3.28084)
+            time.append(trackPoint.timestamp.timeIntervalSince(trackPoints[0].timestamp))
+            altRaw.append(trackPoint.altitude * 3.28084)  // convert meters to feet
         }
 
         // smooth values
         
-        elevations = smoothed(e, nSmoothPasses: nSmoothPasses, nSmoothRange: nSmoothRange)
+        altitudes = smoothed(altRaw, nSmoothPasses: nSmoothPasses, nSmoothRange: nSmoothRange)
         
-        minElevation = elevations.min()!
-        maxElevation = elevations.max()!
+        // summary values
         
-//        print("=== \(file).\(#function) - minElevation / maxElevation: \(minElevation) / \(maxElevation) ===")
+        altitudeMin = altitudes.min()!
+        altitudeMax = altitudes.max()!
         
-        setGridVals(for: elevations)
+        altitudeAve = 0
+        altitudeGain = 0
         
-        for elevation in elevations {
-            elevationPlotVals.append(yFor(elevation))
+        for i in 1..<altitudes.count {
+            let dt = trackPoints[i].timestamp.timeIntervalSince(trackPoints[i - 1].timestamp)
+            altitudeAve += (altitudes[i] + altitudes[i - 1]) / 2 * dt
+            let dAltitude = altitudes[i] - altitudes[i - 1]
+            if dAltitude > 0 {
+                altitudeGain += dAltitude
+            }
         }
+        
+        altitudeAve /= trackPoints[trackPoints.count - 1].timestamp.timeIntervalSince(trackPoints[0].timestamp)
+        
+        let minString = altitudeMin.stringWithFourDecimals
+        let maxString = altitudeMax.stringWithFourDecimals
+        let aveString = altitudeAve.stringWithFourDecimals
+        let gainString = altitudeGain.stringWithFourDecimals
+        print("=== \(file).\(#function) - altitude min / max: \(minString) / \(maxString), ave: \(aveString), gain: \(gainString) ===")
     }
     
     func smoothed(_ x: [Double], nSmoothPasses: Int, nSmoothRange: Int) -> [Double] {
@@ -118,6 +138,16 @@ class TrackHelper {
         }
     }
     
+    // MARK: - Plot Methods
+    
+    func setPlotVals() {
+        setGridVals(for: altitudes)
+        
+        for altitude in altitudes {
+            altitudePlotVals.append(yFor(altitude))
+        }
+    }
+    
     func yFor(_ yVal: Double) -> Double {
         return (yVal - yAxisMin) * yAxisScale
     }
@@ -132,12 +162,12 @@ class TrackHelper {
 
         setGridValsFor(minVal: yMin, maxVal: yMax)
         
-        //print("--- \(file).\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
+        //print("--- \(file).\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines)")
         
         if yAxisNumGridLines > 5 {
             setGridValsFor(minVal: yAxisMin, maxVal: yAxisMax)
             
-            //print("--- \(file).\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines!)")
+            //print("--- \(file).\(#function) - yMin: \(yMin), yMax: \(yMax) | min: \(yAxisMin!), max: \(yAxisMax!), delta: \(yAxisDelta!), numGridLines: \(yAxisNumGridLines)")
         }
     }
     
@@ -195,13 +225,13 @@ class TrackHelper {
             
         } else if delta > 3 {
             delta = 5
+        } else if delta > 2.1 {
+            delta = 3
         } else if delta > 1.3 {
             delta = 2
-        } else if delta > 0.5 {
-            delta = 1
             
         } else {
-            delta = 0.5
+            delta = 1
         }
         
         //print("--- \(file).\(#function) - minAxis: \(minAxis), maxAxis: \(maxAxis), delVal: \(delVal) | delta top/bot: \(deltaTop) / \(delta)")
@@ -210,6 +240,12 @@ class TrackHelper {
     }
 
     func adjustMinMaxAxis(minAxis: inout Double, maxAxis: inout Double, delta: Double) {
+        
+        if minAxis == maxAxis {
+            minAxis -= delta
+            maxAxis += delta
+            return
+        }
         
         var remainder = minAxis.remainder(dividingBy: delta)
         if remainder > 0 {
@@ -259,13 +295,15 @@ class TrackHelper {
     
     func showData(at xFraction: CGFloat) -> Double? {
         
+        guard time.count > 1 else { return nil }
+        
         //print("=== \(file).\(#function) - xFraction: \(xFraction) ===")
-        let xRange = xVals.last! - xVals[0]
+        let xRange = time.last! - time[0]
         //print("--- \(file).\(#function) - xRange: \(xRange)")
         let x = xRange * xFraction
         //print("--- \(file).\(#function) - x: \(x)")
         
-        guard let index = xVals.firstIndex(where: { $0 > x }) else { return nil }
+        guard let index = time.firstIndex(where: { $0 > x }) else { return nil }
         
         //print("--- \(file).\(#function) - index: \(index)")
         
@@ -273,6 +311,6 @@ class TrackHelper {
         
         NotificationCenter.default.post(name: .showInfoForLocation, object: nil, userInfo: userInfo)
         
-        return elevations[index]
+        return altitudes[index]
     }
 }

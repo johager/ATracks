@@ -126,7 +126,7 @@ extension Color {
         return color(light: Color(white: 0.10), dark: Color(white: 0.75))
     }
     
-    static var plotElevation: Color {
+    static var plotAltitude: Color {
         return color(light: Color(white: 0.30), dark: Color(white: 0.70))
     }
     

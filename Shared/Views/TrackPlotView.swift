@@ -26,8 +26,8 @@ struct TrackPlotView: View {
                 HStack {
                     Text("Elevation (ft)")
                     Spacer()
-                    if trackHelper.hasElevationData {
-                        Text("max: \(trackHelper.maxElevation.stringAsInt)")
+                    if trackHelper.hasAltitudeData {
+                        Text("max: \(trackHelper.altitudeMax.stringAsInt)")
                     }
                 }
                 Text(elevationString)
@@ -36,8 +36,8 @@ struct TrackPlotView: View {
             
             HStack {
                 Spacer()
-                if trackHelper.hasElevationData {
-                    Text("min: \(trackHelper.minElevation.stringAsInt)")
+                if trackHelper.hasAltitudeData {
+                    Text("min: \(trackHelper.altitudeMin.stringAsInt)")
                 } else {
                     Text(" ")
                 }
@@ -46,7 +46,7 @@ struct TrackPlotView: View {
             
             GeometryReader { geometry in
                 ZStack {
-                    if trackHelper.hasElevationData {
+                    if trackHelper.hasAltitudeData {
                         
                         // axis labels
                         VStack {
@@ -80,9 +80,9 @@ struct TrackPlotView: View {
                         .stroke(Color.plotAxis, lineWidth: 2)
                     
                     // value lines
-                    LineShape(xVals: trackHelper.xVals, yVals: trackHelper.elevationPlotVals)
-                        .stroke(Color.plotElevation, lineWidth: 2)
-//                    LineShape(xVals: trackHelper.xVals, yVals: trackHelper.speedPlotVals)
+                    LineShape(xVals: trackHelper.time, yVals: trackHelper.altitudePlotVals)
+                        .stroke(Color.plotAltitude, lineWidth: 2)
+//                    LineShape(xVals: trackHelper.time, yVals: trackHelper.speedPlotVals)
 //                        .stroke(Color.plotSpeed, lineWidth: 1)
                     
                     // scrubber
@@ -90,7 +90,10 @@ struct TrackPlotView: View {
                         .stroke(Color.plotVertical, lineWidth: 4)
                 }
                 #if os(iOS)
-                .onTouch(perform: handleTouch)
+                .onTouch() { location in
+                    plotSize = geometry.size
+                    handleTouch(at: location)
+                }
                 #endif
                 .task { plotSize = geometry.size }
             }
@@ -104,14 +107,14 @@ struct TrackPlotView: View {
     
     init(track: Track) {
         self.track = track
-        self.trackHelper = TrackHelper(track: track)
+        self.trackHelper = TrackHelper(track: track, forPlotting: true)
     }
     
     // MARK: - Methods
     
-    func handleTouch(_ location: CGPoint) {
+    func handleTouch(at location: CGPoint) {
         
-        guard trackHelper.hasElevationData else { return }
+        guard trackHelper.hasAltitudeData else { return }
         
         let xFraction = location.x / plotSize.width
         //print("\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")

@@ -63,8 +63,8 @@ class Track: NSManagedObject, Identifiable {
         
         var distance: Double = 0
         
-        for i in 0..<(locations.count - 1) {
-            distance += locations[i + 1].distance(from: locations[i])
+        for i in 1..<locations.count {
+            distance += locations[i].distance(from: locations[i - 1])
         }
         
         distance *= 0.000621371  // convert meters to miles

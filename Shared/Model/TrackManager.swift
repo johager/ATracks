@@ -69,7 +69,7 @@ class TrackManager {
     
     func createTrackPoint(from location: CLLocation, in track: Track) {
         //print("=== \(file).\(#function) ===")
-        print("=== \(file).\(#function) - horizontalAccuracy: \(location.horizontalAccuracy) ===")
+        print("=== \(file).\(#function) - horizontalAccuracy: \(location.horizontalAccuracy), verticalAccuracy: \(location.verticalAccuracy), altitude: \(location.altitude) ===")
         
         let trackPoint = TrackPoint(clLocation: location, track: track)
         trackPoints.append(trackPoint)
