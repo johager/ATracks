@@ -11,7 +11,7 @@ import CoreData
 enum DataStateHelper {
     
     static let dataStateKey = "dataState"
-    static let dataStateCurrent = 3
+    static let dataStateCurrent = 4
     
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
@@ -25,7 +25,8 @@ enum DataStateHelper {
         // dataState values
         //    1: Initial
         //    2: Use dataStateKey to determine if userDefaultSettings have been set
-        //    3: DataModel 2: altitude info and hasFinalSteps
+        //    3: DataModel 2: Track altitude info and hasFinalSteps
+        //    4: DataModel 3: Track.deviceName, deviceUUID, and isTracking
         
         let userDefaults = UserDefaults.standard
         
@@ -54,6 +55,10 @@ enum DataStateHelper {
             prepForDataState3(context:  context)
         }
         
+        if dataStateSaved < 4 {
+            prepForDataState4(context:  context)
+        }
+        
         CoreDataStack.shared.saveContext()
         
         setDataStateCurrent()
@@ -78,7 +83,7 @@ enum DataStateHelper {
     // MARK: - Data State Conversion Methods
     
     static func prepForDataState3(context:  NSManagedObjectContext) {
-        // DataModel 2: altitude info and hasFinalSteps
+        // DataModel 2: Track altitude info and hasFinalSteps
         print("=== \(file).\(#function) ===")
         
         let fetchRequest = Track.fetchRequest
@@ -87,6 +92,43 @@ enum DataStateHelper {
             let tracks = try context.fetch(fetchRequest)
             for track in tracks {
                 track.setTrackSummaryData()
+            }
+        } catch let error as NSError {
+            print("Fetch error: \(error.localizedDescription)\n---\n\(error.userInfo)")
+        }
+    }
+    
+    static func prepForDataState4(context:  NSManagedObjectContext) {
+        // DataModel 3: Track.deviceName, deviceUUID, and isTracking
+        print("=== \(file).\(#function) ===")
+        
+        let deviceUUID = Func.deviceUUID
+        
+        guard deviceUUID == "187F59C0-ECEA-4A77-AE3B-6ED1CD213F6A" else { return }
+        
+        let deviceName = Func.deviceName
+        
+        let simName = "iPhone 13 Mini"
+        let simUUID = "C0424B10-ADC8-4D82-A86B-6FD034EE9177"
+        
+        let fetchRequest = Track.fetchRequest
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Track.dateKey, ascending: false)]
+        
+        do {
+            let tracks = try context.fetch(fetchRequest)
+            for track in tracks {
+                print("--- \(file).\(#function) - name: \(track.name), isTracking: \(track.isTracking)")
+                if let firstTrackPoint = track.trackPoints.first {
+                    if firstTrackPoint.longitude < -115 {
+                        print("--- \(file).\(#function) - set sim")
+                        track.deviceName = simName
+                        track.deviceUUID = simUUID
+                    } else {
+                        print("--- \(file).\(#function) - set device")
+                        track.deviceName = deviceName
+                        track.deviceUUID = deviceUUID
+                    }
+                }
             }
         } catch let error as NSError {
             print("Fetch error: \(error.localizedDescription)\n---\n\(error.userInfo)")

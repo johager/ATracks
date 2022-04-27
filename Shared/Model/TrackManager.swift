@@ -30,6 +30,9 @@ class TrackManager {
     
     var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
     
+    lazy var deviceName = Func.deviceName
+    lazy var deviceUUID = Func.deviceUUID
+    
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
@@ -50,9 +53,11 @@ class TrackManager {
     
     // MARK: - CRUD for Tracks
     
-    func createTrack(name: String) {
-        tracks.insert(Track(name: name), at: 0)
+    @discardableResult func createTrack(name: String) -> Track {
+        let track = Track(name: name, deviceName: deviceName, deviceUUID: deviceUUID)
+        tracks.insert(track, at: 0)
         coreDataStack.saveContext()
+        return track
     }
     
     func fetchTracks() {
@@ -100,5 +105,10 @@ class TrackManager {
             print("=== \(file).\(#function) - error: \(error)")
             print(error.localizedDescription)
         }
+    }
+    
+    func stopTracking(_ track: Track) {
+        track.isTracking = false
+        coreDataStack.saveContext()
     }
 }

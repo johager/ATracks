@@ -33,6 +33,8 @@ struct ATracksApp: App {
         DataStateHelper.checkDataState()
 //        let useAutoStop = UserDefaults.standard.bool(forKey: LocationManagerSettings.useAutoStopKey)
 //        print("=== \(file ).\(#function) - useAutoStop: \(useAutoStop) ===")
+        print("=== \(file ).\(#function) - deviceName: \(Func.deviceName) ===")
+        print("=== \(file ).\(#function) - deviceUUID: \(Func.deviceUUID) ===")
     }    
     
     // MARK: - ScenePhase Methods

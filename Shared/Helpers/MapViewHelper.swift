@@ -169,7 +169,7 @@ class MapViewHelper: NSObject {
     
     private func setUpTracking() {
         #if os(iOS)
-            if LocationManager.shared.isTracking(track) {
+        if track.isTracking {
                 setMapToTrack()
             } else {
                 setMapNoTrack()

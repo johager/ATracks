@@ -20,42 +20,34 @@ class CoreDataStack: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
     
-    lazy var context: NSManagedObjectContext = {
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = psc
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        return managedObjectContext
-    }()
+    var context: NSManagedObjectContext { persistentContainer.viewContext }
     
-    lazy var psc: NSPersistentStoreCoordinator = {
-        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        let options = [
-            NSMigratePersistentStoresAutomaticallyOption: true,
-            NSInferMappingModelAutomaticallyOption: true
-        ]
-        
-        do {
-            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: psURL, options: options)
-        } catch  {
-            print(">> Error adding persistent store.")
+    lazy var persistentContainer: NSPersistentCloudKitContainer = {
+        let container = NSPersistentCloudKitContainer(name: modelName)
+        container.persistentStoreDescriptions.first?.url = persistentStoreURL
+        container.loadPersistentStores { _, error in
+            if let error = error {
+                fatalError("=== CoreDataStack.persistentContainer - error loading persistent stores: \(error.localizedDescription)\n---\n\(error)")
+            }
         }
         
-        return coordinator
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
+        return container
     }()
     
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
-        return NSManagedObjectModel(contentsOf: modelURL)!
-    }()
+    var persistentStoreURL: URL {
+        modelDirectoryURL.appendingPathComponent(modelName)
+    }
     
-    lazy var psURL: URL = {
-        return modelDirectoryURL.appendingPathComponent(modelName)
-    }()
-    
-    lazy var modelDirectoryURL: URL = {
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return urls[urls.count-1]
-    }()
+    var modelDirectoryURL: URL {
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
+        else { fatalError("=== CoreDataStack.modelDirectoryURL - Error finding directory") }
+        
+        print("=== CoreDataStack.modelDirectoryURL ===\n\(url)\n---  ---  ---  ---")
+        return url
+    }
     
     func saveContext() {
         print("<<< saveContext >>>")

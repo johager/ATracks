@@ -12,7 +12,6 @@ struct TrackDetailView: View {
     @ObservedObject var track: Track
     
     @State private var isShowingTrackDetailsView = false
-    @State private var isTracking = false
     
     #if os(iOS)
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
@@ -32,16 +31,13 @@ struct TrackDetailView: View {
                 MapView(track: track, shouldTrackPoint: false)
                     .edgesIgnoringSafeArea([.trailing, .bottom, .leading])
                 #if os(iOS)
-                if isTracking {
+                if track.isTracking {
                     VStack {
                         Spacer()
                         Button(action: stopTracking) {
                             Text(stopTrackingText)
                         }
                         .buttonStyle(AAButtonStyle(isEnabled: true))
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: .didStopTracking)) { _ in
-                        isTracking = false
                     }
                 }
                 #endif
@@ -58,9 +54,6 @@ struct TrackDetailView: View {
                 }
             }
         }
-        .task {
-            isTracking = LocationManager.shared.isTracking
-        }
         #endif
     }
     
@@ -74,7 +67,6 @@ struct TrackDetailView: View {
     func stopTracking() {
         print("=== TrackDetailView.\(#function) ===")
         LocationManager.shared.stopTracking()
-        isTracking = false
     }
     #endif
 }

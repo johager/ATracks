@@ -7,9 +7,12 @@
         <attribute name="altitudeMax" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="altitudeMin" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="date" attributeType="Date" defaultDateTimeInterval="662760000" usesScalarValueType="NO"/>
+        <attribute name="deviceName" attributeType="String" defaultValueString="_default_"/>
+        <attribute name="deviceUUID" attributeType="String" defaultValueString="_defaut_"/>
         <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="hasFinalSteps" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isTracking" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" defaultValueString="_default_"/>
         <attribute name="steps" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="trackPointsSet" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TrackPoint" inverseName="track" inverseEntity="TrackPoint"/>
@@ -23,7 +26,7 @@
         <relationship name="track" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Track" inverseName="trackPointsSet" inverseEntity="Track"/>
     </entity>
     <elements>
-        <element name="Track" positionX="-54" positionY="-9" width="128" height="209"/>
+        <element name="Track" positionX="-54" positionY="-9" width="128" height="254"/>
         <element name="TrackPoint" positionX="-36" positionY="36" width="128" height="119"/>
     </elements>
 </model>
