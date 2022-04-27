@@ -20,25 +20,32 @@ struct TrackPlotView: View {
     // MARK: - View
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("Elevation (ft)")
-                Spacer()
-                if trackHelper.hasAltitudeData {
-                    Text("max: \(trackHelper.altitudeMax.stringAsInt)")
-                }
-            }
-            .padding(.top, 8)
-            
-            HStack {
-                Spacer()
-                if trackHelper.hasAltitudeData {
-                    Text("min: \(trackHelper.altitudeMin.stringAsInt)")
-                } else {
+        VStack(spacing: 0) {            
+            HStack(spacing: 0) {
+                VStack {
+                    Text("Elevation (ft)")
                     Text(" ")
                 }
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text("max: ")
+                    Text("min: ")
+                }
+                VStack(alignment: .trailing) {
+                    Text(trackHelper.altitudeMax.stringAsInt)
+                    Text(trackHelper.altitudeMin.stringAsInt)
+                }
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text("ave: ")
+                    Text("gain: ")
+                }
+                VStack(alignment: .trailing) {
+                    Text(trackHelper.altitudeAve.stringAsInt)
+                    Text(trackHelper.altitudeGain.stringAsInt)
+                }
             }
-            .padding(.bottom, 8)
+            .padding([.top,.bottom], 8)
             
             GeometryReader { geometry in
                 ZStack {
