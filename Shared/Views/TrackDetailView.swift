@@ -11,8 +11,6 @@ struct TrackDetailView: View {
     
     @ObservedObject var track: Track
     
-    @State private var isShowingTrackDetailsView = false
-    
     #if os(iOS)
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     private var stopTrackingText: String {
@@ -28,8 +26,8 @@ struct TrackDetailView: View {
         VStack(spacing: 0) {
             TrackStatsView(track: track)
             ZStack {
-                MapView(track: track, shouldTrackPoint: false)
-                    .edgesIgnoringSafeArea([.trailing, .bottom, .leading])
+                MapView(track: track)
+                        .edgesIgnoringSafeArea([.trailing, .leading])
                 #if os(iOS)
                 if track.isTracking {
                     VStack {
@@ -38,30 +36,31 @@ struct TrackDetailView: View {
                             Text(stopTrackingText)
                         }
                         .buttonStyle(AAButtonStyle(isEnabled: true))
+                        .padding(.bottom, 8)
                     }
                 }
                 #endif
             }
-            NavigationLink(destination: TrackDetailsView(track: track), isActive: $isShowingTrackDetailsView) { EmptyView() }
+            TrackPlotView(track: track)
+                .frame(height: 150)
         }
         .navigationTitle(track.name)
         #if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: showTrackDetails) {
-                    Image(systemName: "ellipsis")
-                        .tint(.textSelectable)
-                }
-            }
-        }
+        .navigationBarTitleDisplayMode(.inline)
         #endif
+//        #if os(iOS)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                Button(action: showTrackDetails) {
+//                    Image(systemName: "ellipsis")
+//                        .tint(.textSelectable)
+//                }
+//            }
+//        }
+//        #endif
     }
     
     // MARKL - Methods
-    
-    func showTrackDetails() {
-        isShowingTrackDetailsView = true
-    }
     
     #if os(iOS)
     func stopTracking() {
