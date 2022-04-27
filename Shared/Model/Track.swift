@@ -18,13 +18,20 @@ class Track: NSManagedObject, Identifiable {
     @NSManaged var altitudeGain: Double
     @NSManaged var altitudeIsValid: Bool
     @NSManaged var date: Date
+    @NSManaged var deviceName: String
+    @NSManaged var deviceUUID: String
     @NSManaged var distance: Double
     @NSManaged var duration: TimeInterval
     @NSManaged var hasFinalSteps: Bool
+    @NSManaged var isTracking: Bool
     @NSManaged var name: String
     @NSManaged var steps: Int32
     
     @NSManaged var trackPointsSet: NSSet?
+    
+    // MARK: - Static Properties
+    
+    static let dateKey = "date"
     
     // MARK: - Properties
 
@@ -49,10 +56,13 @@ class Track: NSManagedObject, Identifiable {
     
     // MARK: - Init
     
-    @discardableResult convenience init(name: String, date: Date = Date(), context: NSManagedObjectContext = CoreDataStack.shared.context) {
+    @discardableResult convenience init(name: String, deviceName: String, deviceUUID: String, date: Date = Date(), isTracking: Bool = true, context: NSManagedObjectContext = CoreDataStack.shared.context) {
         self.init(context: context)
         self.name = name
+        self.deviceName = deviceName
+        self.deviceUUID = deviceUUID
         self.date = date
+        self.isTracking = isTracking
     }
     
     // MARK: - Methods

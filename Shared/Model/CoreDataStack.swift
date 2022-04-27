@@ -20,31 +20,33 @@ class CoreDataStack: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
     
-    var context: NSManagedObjectContext {
-        let context = persistentContainer.viewContext
-        context.automaticallyMergesChangesFromParent = true
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        return context
-    }
+    var context: NSManagedObjectContext { persistentContainer.viewContext }
     
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let container = NSPersistentCloudKitContainer(name: modelName)
-        container.persistentStoreDescriptions.first?.url = psURL
+        container.persistentStoreDescriptions.first?.url = persistentStoreURL
         container.loadPersistentStores { _, error in
             if let error = error {
                 fatalError("=== CoreDataStack.persistentContainer - error loading persistent stores: \(error.localizedDescription)\n---\n\(error)")
             }
         }
+        
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
         return container
     }()
     
-    var psURL: URL {
+    var persistentStoreURL: URL {
         modelDirectoryURL.appendingPathComponent(modelName)
     }
     
     var modelDirectoryURL: URL {
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return urls[urls.count-1]
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
+        else { fatalError("=== CoreDataStack.modelDirectoryURL - Error finding directory") }
+        
+        print("=== CoreDataStack.modelDirectoryURL ===\n\(url)\n---  ---  ---  ---")
+        return url
     }
     
     func saveContext() {

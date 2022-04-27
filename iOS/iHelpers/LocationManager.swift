@@ -82,7 +82,7 @@ class LocationManager: NSObject {
         let trackName = Date().stringForTrackName
         print("--- \(file).\(#function) - trackName: \(trackName)")
         
-        track = Track(name: trackName)
+        track = TrackManager.shared.createTrack(name: trackName)
     }
     
     func stopTracking() {
@@ -91,6 +91,7 @@ class LocationManager: NSObject {
         location = nil
         firstLocation = nil
         shouldCheckAutoStop = false
+        TrackManager.shared.stopTracking(track)
         track = nil
     }
     
