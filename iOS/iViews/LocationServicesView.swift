@@ -23,6 +23,7 @@ struct LocationServicesView: View {
             Text("significantLocationChangeMonitoringAvailable: \(significantLocationChangeMonitoringAvailable)")
             Text("headingAvailable: \(headingAvailable)")
         }
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             locationServicesEnabled = "\(CLLocationManager.locationServicesEnabled())"
             significantLocationChangeMonitoringAvailable = "\(CLLocationManager.significantLocationChangeMonitoringAvailable())"

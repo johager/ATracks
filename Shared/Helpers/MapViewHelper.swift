@@ -75,8 +75,13 @@ class MapViewHelper: NSObject {
     
     // MARK: - Public Methods
     
-    func setUpView(forTrack track: Track, shouldTrackPoint: Bool = false) {
+    func setUpView(forTrack track: Track) {
         self.track = track
+        
+//        let shouldTrackPoint = !(track.isTracking && track.deviceUUID == Func.deviceUUID)
+        let shouldTrackPoint = true
+        print("=== \(file).\(#function) - shouldTrackPoint: \(shouldTrackPoint) ===")
+        
         setUpView(shouldTrackPoint: shouldTrackPoint)
         setUpTracking()
         

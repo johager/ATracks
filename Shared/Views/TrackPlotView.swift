@@ -113,7 +113,7 @@ struct TrackPlotView: View {
         guard trackHelper.hasAltitudeData else { return }
         
         let xFraction = location.x / plotSize.width
-        //print("\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")
+        print("\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")
         
         guard trackHelper.showData(at: xFraction) else { return }
         

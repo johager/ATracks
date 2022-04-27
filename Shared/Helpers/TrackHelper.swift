@@ -144,6 +144,9 @@ class TrackHelper {
     // MARK: - Plot Methods
     
     func setPlotVals() {
+        
+        guard altitudes.count > 1 else { return }
+        
         setGridVals(for: altitudes)
         
         for altitude in altitudes {
