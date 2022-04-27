@@ -28,8 +28,8 @@ struct TrackPlotView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text("max: ")
-                    Text("min: ")
+                    Text("Max: ")
+                    Text("Min: ")
                 }
                 VStack(alignment: .trailing) {
                     Text(trackHelper.altitudeMax.stringAsInt)
@@ -37,8 +37,8 @@ struct TrackPlotView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text("ave: ")
-                    Text("gain: ")
+                    Text("Ave: ")
+                    Text("Gain: ")
                 }
                 VStack(alignment: .trailing) {
                     Text(trackHelper.altitudeAve.stringAsInt)

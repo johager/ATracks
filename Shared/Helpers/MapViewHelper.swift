@@ -160,7 +160,7 @@ class MapViewHelper: NSObject {
         
         trackPointCalloutLabel.layer.backgroundColor = UIColor(.trackPointCalloutBackground).cgColor
         trackPointCalloutLabel.layer.borderColor = UIColor(.trackPointCalloutBorder).cgColor
-        trackPointCalloutLabel.layer.borderWidth = 2
+        trackPointCalloutLabel.layer.borderWidth = 0.5
         trackPointCalloutLabel.layer.cornerRadius = 6
         
         #else
