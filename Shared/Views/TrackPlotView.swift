@@ -27,22 +27,24 @@ struct TrackPlotView: View {
                     Text(" ")
                 }
                 Spacer()
-                VStack(alignment: .trailing) {
-                    Text("Max: ")
-                    Text("Min: ")
-                }
-                VStack(alignment: .trailing) {
-                    Text(trackHelper.altitudeMax.stringAsInt)
-                    Text(trackHelper.altitudeMin.stringAsInt)
-                }
-                Spacer()
-                VStack(alignment: .trailing) {
-                    Text("Ave: ")
-                    Text("Gain: ")
-                }
-                VStack(alignment: .trailing) {
-                    Text(trackHelper.altitudeAve.stringAsInt)
-                    Text(trackHelper.altitudeGain.stringAsInt)
+                if trackHelper.hasAltitudeData {
+                    VStack(alignment: .trailing) {
+                        Text("Max: ")
+                        Text("Min: ")
+                    }
+                    VStack(alignment: .trailing) {
+                        Text(trackHelper.altitudeMax.stringAsInt)
+                        Text(trackHelper.altitudeMin.stringAsInt)
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        Text("Ave: ")
+                        Text("Gain: ")
+                    }
+                    VStack(alignment: .trailing) {
+                        Text(trackHelper.altitudeAve.stringAsInt)
+                        Text(trackHelper.altitudeGain.stringAsInt)
+                    }
                 }
             }
             .padding([.top,.bottom], 8)
