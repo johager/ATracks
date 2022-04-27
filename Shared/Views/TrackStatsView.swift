@@ -12,16 +12,25 @@ struct TrackStatsView: View {
     @ObservedObject var track: Track
     
     var body: some View {
-        VStack(spacing: 4) {
-            HStack {
-                Text("Duration: \(track.duration.stringWithUnits)")
-                Spacer()
-                Text("Distance: \(String(format: "%.2f", track.distance)) mi")
+        HStack(spacing: 0) {
+            VStack(alignment: .trailing) {
+                Text("Duration: ")
+                Text("Ave Speed: ")
             }
-            HStack {
-                Text("Ave Speed: \(track.aveSpeed.stringForSpeed) mph")
-                Spacer()
-                Text("Steps: \(track.steps.stringWithNA)")
+            VStack(alignment: .leading) {
+                Text(track.duration.stringWithUnits)
+                Text("\(track.aveSpeed.stringForSpeed) mph")
+            }
+            Spacer()
+            VStack(alignment: .trailing) {
+                Text("Distance: ")
+                Text("Steps: ")
+                    .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+            }
+            VStack(alignment: .leading) {
+                Text("\(String(format: "%.2f", track.distance)) mi")
+                Text(track.steps.stringWithNA)
+                    .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
             }
         }
         .font(.footnote)
