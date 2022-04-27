@@ -131,6 +131,13 @@ class LocationManager: NSObject {
         }
     }
     
+    func reportCapabilities() -> (locationServices: Bool, significantLocationChangeMonitoring: Bool, heading: Bool) {
+        let locationServices = CLLocationManager.locationServicesEnabled()
+        let significantLocationChangeMonitoring = CLLocationManager.significantLocationChangeMonitoringAvailable()
+        let heading = CLLocationManager.headingAvailable()
+        return (locationServices, significantLocationChangeMonitoring, heading)
+    }
+    
     // MARK: - Scene Lifecycle
     
     func sceneDidBecomeActive() {

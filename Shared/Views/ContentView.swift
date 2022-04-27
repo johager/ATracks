@@ -17,6 +17,9 @@ struct ContentView: View {
         NavigationView {
             TrackListView()
             //SettingsView()
+            #if os(iOS)
+            LocationServicesView()
+            #endif
         }
     }
 }
