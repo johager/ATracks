@@ -106,17 +106,17 @@ extension Color {
         return color(light: lightColor, dark: darkColor)
     }
     
-    // MARK: - Lat/Lon Callout Colors
+    // MARK: - Track Point Callout Colors
     
-    static var latLonCalloutText: Color {
+    static var trackPointCalloutText: Color {
         return color(light: .text, dark: .white)
     }
     
-    static var latLonCalloutBackground: Color {
+    static var trackPointCalloutBackground: Color {
         return color(light: Color(white: 1.0), dark: Color(white: 0.10))
     }
     
-    static var latLonCalloutBorder: Color {
+    static var trackPointCalloutBorder: Color {
         return color(light: Color(white: 0.60), dark: Color(white: 0.70))
     }
     

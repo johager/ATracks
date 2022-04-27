@@ -10,4 +10,5 @@ import Foundation
 enum Key {
     
     static let clLocationCoordinate2D = "clLocationCoordinate2D"
+    static let elevation = "elevation"
 }

@@ -283,7 +283,7 @@ class TrackHelper {
         let yVal = yFor(y)
         
         let text = y.stringAsInt
-        let offset = CGPoint(x: 6, y: plotHeight * (1 - yVal) - 16)
+        let offset = CGPoint(x: 6, y: plotHeight * (1 - yVal) - 17)
         
         //print("=== \(file).\(#function) - yVal: \(yVal), text: \(text), offset: \(offset) ===")
         
@@ -296,9 +296,9 @@ class TrackHelper {
     
     // MARK: - Location Methods
     
-    func showData(at xFraction: CGFloat) -> Double? {
+    func showData(at xFraction: CGFloat) -> Bool {
         
-        guard time.count > 1 else { return nil }
+        guard time.count > 1 else { return false }
         
         //print("=== \(file).\(#function) - xFraction: \(xFraction) ===")
         let xRange = time.last! - time[0]
@@ -306,14 +306,18 @@ class TrackHelper {
         let x = xRange * xFraction
         //print("--- \(file).\(#function) - x: \(x)")
         
-        guard let index = time.firstIndex(where: { $0 > x }) else { return nil }
+        guard let index = time.firstIndex(where: { $0 > x }) else { return false }
         
         //print("--- \(file).\(#function) - index: \(index)")
         
-        let userInfo = [Key.clLocationCoordinate2D: trackPoints[index].clLocationCoordinate2D]
+        var userInfo: [String: Any] = [Key.clLocationCoordinate2D: trackPoints[index].clLocationCoordinate2D]
+        
+        if track.altitudeIsValid {
+            userInfo[Key.elevation] = altitudes[index]
+        }
         
         NotificationCenter.default.post(name: .showInfoForLocation, object: nil, userInfo: userInfo)
         
-        return altitudes[index]
+        return true
     }
 }

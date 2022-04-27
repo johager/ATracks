@@ -11,7 +11,6 @@ struct TrackPlotView: View {
     
     @ObservedObject var track: Track
     
-    @State private var elevationString = ""
     @State private var plotSize = CGSize(width: 100, height: 100)
     @State private var xVertVals: [Double] = [2, 2]
     private var yVertVals: [Double] = [0, 1]
@@ -22,15 +21,12 @@ struct TrackPlotView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            ZStack {
-                HStack {
-                    Text("Elevation (ft)")
-                    Spacer()
-                    if trackHelper.hasAltitudeData {
-                        Text("max: \(trackHelper.altitudeMax.stringAsInt)")
-                    }
+            HStack {
+                Text("Elevation (ft)")
+                Spacer()
+                if trackHelper.hasAltitudeData {
+                    Text("max: \(trackHelper.altitudeMax.stringAsInt)")
                 }
-                Text(elevationString)
             }
             .padding(.top, 8)
             
@@ -119,9 +115,8 @@ struct TrackPlotView: View {
         let xFraction = location.x / plotSize.width
         //print("\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")
         
-        guard let elevation = trackHelper.showData(at: xFraction) else { return }
+        guard trackHelper.showData(at: xFraction) else { return }
         
-        elevationString = "\(elevation.stringAsInt)"
         xVertVals = [xFraction, xFraction]
     }
 }

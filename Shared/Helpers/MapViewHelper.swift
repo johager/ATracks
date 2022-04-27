@@ -12,10 +12,10 @@ class MapViewHelper: NSObject {
     
     #if os(iOS)
     let view = UIView()
-    var latLonLabel: AALabelWithPadding!
+    var trackPointCalloutLabel: AALabelWithPadding!
     #else
     let view = NSView()
-    var latLonLabel: NSTextField!
+    var trackPointCalloutLabel: NSTextField!
     #endif
     
     let mapView = MKMapView()
@@ -137,7 +137,7 @@ class MapViewHelper: NSObject {
     
     func addLatLonLabel() {
         #if os(iOS)
-        latLonLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
+        trackPointCalloutLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
         let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote)
         let monospacedNumbersDescriptor = descriptor.addingAttributes([
             UIFontDescriptor.AttributeName.featureSettings: [
@@ -145,26 +145,26 @@ class MapViewHelper: NSObject {
                  UIFontDescriptor.FeatureKey.selector: kMonospacedNumbersSelector]
             ]
         ])
-        latLonLabel.font = UIFont(descriptor: monospacedNumbersDescriptor, size: 0)
-        latLonLabel.adjustsFontForContentSizeCategory = true
-        latLonLabel.numberOfLines = 0
-        latLonLabel.textAlignment = .center
-        latLonLabel.text = ""
-        latLonLabel.textColor = UIColor(.latLonCalloutText)
-        latLonLabel.isHidden = true
+        trackPointCalloutLabel.font = UIFont(descriptor: monospacedNumbersDescriptor, size: 0)
+        trackPointCalloutLabel.adjustsFontForContentSizeCategory = true
+        trackPointCalloutLabel.numberOfLines = 0
+        trackPointCalloutLabel.textAlignment = .center
+        trackPointCalloutLabel.text = ""
+        trackPointCalloutLabel.textColor = UIColor(.trackPointCalloutText)
+        trackPointCalloutLabel.isHidden = true
         
-        latLonLabel.layer.backgroundColor = UIColor(.latLonCalloutBackground).cgColor
-        latLonLabel.layer.borderColor = UIColor(.latLonCalloutBorder).cgColor
-        latLonLabel.layer.borderWidth = 2
-        latLonLabel.layer.cornerRadius = 6
+        trackPointCalloutLabel.layer.backgroundColor = UIColor(.trackPointCalloutBackground).cgColor
+        trackPointCalloutLabel.layer.borderColor = UIColor(.trackPointCalloutBorder).cgColor
+        trackPointCalloutLabel.layer.borderWidth = 2
+        trackPointCalloutLabel.layer.cornerRadius = 6
         
         #else
-        latLonLabel = NSTextField()
+        trackPointCalloutLabel = NSTextField()
         #endif
         
-        view.addSubview(latLonLabel)
-        latLonLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        latLonLabel.pin(top: nil, trailing: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, leading: nil, margin: [0, 0, 4, 0])
+        view.addSubview(trackPointCalloutLabel)
+        trackPointCalloutLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        trackPointCalloutLabel.pin(top: nil, trailing: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, leading: nil, margin: [0, 0, 8, 0])
     }
     
     private func setUpTracking() {
@@ -214,14 +214,21 @@ class MapViewHelper: NSObject {
         mapView.addAnnotation(trackPointAnnotation)
     }
     
-    func updateLatLonLabel(for clLocationCoordinate2D: CLLocationCoordinate2D) {
+    func updateLatLonLabel(for clLocationCoordinate2D: CLLocationCoordinate2D, elevation: Any?) {
+        
+        var string = clLocationCoordinate2D.stringWithThreeDecimals
+        
+        if let elevation = elevation as? Double {
+            string += "\n\(elevation.stringAsInt) ft"
+        }
+        
         #if os(iOS)
-            latLonLabel.text = clLocationCoordinate2D.stringWithThreeDecimals
+            trackPointCalloutLabel.text = string
         #else
-            latLonLabel.stringValue = clLocationCoordinate2D.stringWithThreeDecimals
+            trackPointCalloutLabel.stringValue = string
         #endif
         
-        latLonLabel.isHidden = false
+        trackPointCalloutLabel.isHidden = false
     }
     
     // MARK: - Notifications
@@ -240,7 +247,8 @@ class MapViewHelper: NSObject {
         //print("=== \(file).\(#function) ===")
         
         moveTrackMarker(to: clLocationCoordinate2D)
-        updateLatLonLabel(for: clLocationCoordinate2D)
+        
+        updateLatLonLabel(for: clLocationCoordinate2D, elevation: userInfo[Key.elevation])
     }
 }
 
