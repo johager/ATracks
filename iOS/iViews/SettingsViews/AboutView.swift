@@ -8,12 +8,46 @@
 import SwiftUI
 
 struct AboutView: View {
+    
+    @State private var isOnboarding: Bool
+    
+    init(isOnboarding: Bool = false) {
+        self.isOnboarding = isOnboarding
+    }
+    
+    let introText: [String] = [
+        "ATracks records location, elevation, and step data for your outdoor activities. Data is stored locally so that you'll always have it, and data is synched to other devices with the same Apple ID so you can view your excursions on larger screens.",
+        "Your data is stored in your own private iCloud account, and no one without access to your Apple ID can access that data."
+    ]
+    
     var body: some View {
         List() {
-            Text("ATracks records location, elevation, and step data for your outdoor activities. Data is stored locally so that you'll always have it, and data is synched to other devices with the same Apple ID so you can view your excursions on larger screens.")
+            if isOnboarding {
+                Text("Welcome to ATracks")
+                    .listRowSeparator(.hidden)
+                    .padding(.top, 24)
+                
+                Text("This information is provided to help you get started. You can view it again on the in-app Settings > About page.")
+                    .listRowSeparator(.hidden)
+                
+                Section {
+                    ForEach(0..<introText.count, id: \.self) { index in
+                        Text(introText[index])
+                    }
+                } header: {
+                    Text("About")
+                        .font(.title3)
+                        .bold()
+                        .foregroundColor(.headerText)
+                        .kerning(1)
+                        .textCase(.uppercase)
+                }
                 .listRowSeparator(.hidden)
-            Text("Your data is stored in your own private iCloud account, and no one without access to your Apple ID can access that data.")
-                .listRowSeparator(.hidden)
+            } else {
+                ForEach(0..<introText.count, id: \.self) { index in
+                    Text(introText[index])
+                }
+            }
             
             Section {
                 Text("The location and elevation data is obtained from the GPS in your device. You must allow ATracks to use your location. The app will first ask permission to \"Allow Once\" or \"Allow While Using App\". Select \"Allow While Using App\" so that your track can be followed. This will only allow tracking while the app is active. After you grant permission for \"Allow While Using App\" and start tracking, exit the app so that you can be prompted to allow background tracking by selecting \"Change to Always Allow.\" If you don't allow background tracking, the app will not provide accurate locations while you are tracking your activity if the app is not active.")

@@ -11,6 +11,8 @@ struct ContentView: View {
     
     @Binding var hasSafeAreaInsets: Bool
     
+    @State private var isOnboarding = false
+    
     init(hasSafeAreaInsets: Binding<Bool>) {
         self._hasSafeAreaInsets = hasSafeAreaInsets
         Appearance.customizeAppearance()
@@ -23,6 +25,16 @@ struct ContentView: View {
             #if os(iOS)
             LocationServicesView()
             #endif
+        }
+        #if os(iOS)
+        .sheet(isPresented: $isOnboarding) {
+            AboutView(isOnboarding: true)
+        }
+        #endif
+        .onAppear {
+            if DataStateHelper.shouldOnboard {
+                isOnboarding = true
+            }
         }
     }
 }

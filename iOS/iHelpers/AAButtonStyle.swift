@@ -13,6 +13,10 @@ struct AAButtonStyle: ButtonStyle {
     
     var isEnabled: Bool
     
+    init(isEnabled: Bool = true) {
+        self.isEnabled = isEnabled
+    }
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding([.top, .bottom], 8)

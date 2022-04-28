@@ -13,11 +13,24 @@ enum DataStateHelper {
     static let dataStateKey = "dataState"
     static let dataStateCurrent = 4
     
+    static let hasOnboardedKey = "hasOnboarded"
+    
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
     static let file = "DataStateHelper"
     
-    // MARK: - Methods
+    // MARK: - Onboarding Methods
+    
+    static var shouldOnboard: Bool {
+        !UserDefaults.standard.bool(forKey: hasOnboardedKey)
+    }
+    
+    static func setHasOnboarded() {
+        UserDefaults.standard.set(true, forKey: hasOnboardedKey)
+        UserDefaults.standard.synchronize()
+    }
+    
+    // MARK: - Data State Methods
     
     static func checkDataState() {
         //print("=== \(file).\(#function) ===")
