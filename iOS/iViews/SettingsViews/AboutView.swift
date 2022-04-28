@@ -80,6 +80,7 @@ struct AboutView: View {
                 
                 Section {
                     Text("The step data is not available from the Health App immediately, so there is always a lag in the data. Final data is usually available 24 hours after completing your activity.")
+                    Text("Note that this version of the app does not try to update steps after tracking stops. The app will be updated soon to do this.")
                 } header: {
                     Text("Steps")
                         .font(.title3)
