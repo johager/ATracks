@@ -10,6 +10,7 @@ import SwiftUI
 struct TrackDetailView: View {
     
     @ObservedObject var track: Track
+    @Binding var hasSafeAreaInsets: Bool
     
     #if os(iOS)
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
@@ -41,7 +42,7 @@ struct TrackDetailView: View {
                 }
                 #endif
             }
-            TrackPlotView(track: track)
+            TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                 .frame(height: 150)
         }
         .navigationTitle(track.name)

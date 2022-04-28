@@ -14,11 +14,13 @@ import HealthKit
 struct ATracksApp: App {
     @Environment(\.scenePhase) var scenePhase
     
+    @State var hasSafeAreaInsets = false
+    
     let coreDataStack = CoreDataStack.shared
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(hasSafeAreaInsets: $hasSafeAreaInsets)
                 .environment(\.managedObjectContext, coreDataStack.context)
                 .onChange(of: scenePhase) { scenePhaseChanged(to: $0) }
                 .task { await checkHealthKit() }
@@ -32,9 +34,9 @@ struct ATracksApp: App {
     init() {
         DataStateHelper.checkDataState()
 //        let useAutoStop = UserDefaults.standard.bool(forKey: LocationManagerSettings.useAutoStopKey)
-//        print("=== \(file ).\(#function) - useAutoStop: \(useAutoStop) ===")
-        print("=== \(file ).\(#function) - deviceName: \(Func.deviceName) ===")
-        print("=== \(file ).\(#function) - deviceUUID: \(Func.deviceUUID) ===")
+//        print("=== \(file).\(#function) - useAutoStop: \(useAutoStop) ===")
+        print("=== \(file).\(#function) - deviceName: \(Func.deviceName) ===")
+        print("=== \(file).\(#function) - deviceUUID: \(Func.deviceUUID) ===")
     }    
     
     // MARK: - ScenePhase Methods
@@ -42,22 +44,23 @@ struct ATracksApp: App {
     func scenePhaseChanged(to phase: ScenePhase) {
         switch phase {
         case .active:
-            print("=== \(file ).\(#function) - active ===")
+            print("=== \(file).\(#function) - active ===")
             #if os(iOS)
+            hasSafeAreaInsets = Func.hasSafeAreaInsets
             LocationManager.shared.sceneDidBecomeActive()
             #endif
             //doSpecialStartUp()
         #if os(iOS)
         case .inactive:
-            print("=== \(file ).\(#function) - inactive ===")
+            print("=== \(file).\(#function) - inactive ===")
             #if os(iOS)
             LocationManager.shared.sceneDidBecomeInActive()
             #endif
         #endif
         case .background:
-            print("=== \(file ).\(#function) - background ===")
+            print("=== \(file).\(#function) - background ===")
         default:
-            print("=== \(file ).\(#function) - phase: \(phase) ===")
+            print("=== \(file).\(#function) - phase: \(phase) ===")
         }
     }
     
@@ -69,7 +72,7 @@ struct ATracksApp: App {
         
         do {
             let tracks = try context.fetch(fetchRequest)
-            print("=== \(file ).\(#function) - tracks.count: \(tracks.count) ===")
+            print("=== \(file).\(#function) - tracks.count: \(tracks.count) ===")
             
             for track in tracks {
                 track.duration /= 3600
@@ -78,7 +81,7 @@ struct ATracksApp: App {
             coreDataStack.saveContext()
             
         } catch {
-            print("=== \(file ).\(#function) - error fetching")
+            print("=== \(file).\(#function) - error fetching")
         }
     }
     
@@ -86,7 +89,7 @@ struct ATracksApp: App {
     
     func checkHealthKit() async {
         #if os(iOS)
-        print("=== \(file ).\(#function) ===")
+        print("=== \(file).\(#function) ===")
         
         guard HKHealthStore.isHealthDataAvailable() else { return }
         

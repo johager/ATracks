@@ -10,6 +10,7 @@ import SwiftUI
 struct TrackPlotView: View {
     
     @ObservedObject var track: Track
+    @Binding var hasSafeAreaInsets: Bool
     
     @State private var plotSize = CGSize(width: 100, height: 100)
     @State private var xVertVals: [Double] = [2, 2]
@@ -49,59 +50,62 @@ struct TrackPlotView: View {
             }
             .padding([.top,.bottom], 8)
             
-            GeometryReader { geometry in
-                ZStack {
-                    if trackHelper.hasAltitudeData {
-                        
-                        // axis labels
-                        VStack {
-                            HStack {
-                                ZStack {
-                                    ForEach((0...trackHelper.yAxisNumGridLines), id: \.self) {
-                                        let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height)
-                                        Text(text)
-                                            .offset(x: offset.x, y: offset.y)
+            ZStack {
+                GeometryReader { geometry in
+                    ZStack {
+                        if trackHelper.hasAltitudeData {
+                            
+                            // axis labels
+                            VStack {
+                                HStack {
+                                    ZStack {
+                                        ForEach((0...trackHelper.yAxisNumGridLines), id: \.self) {
+                                            let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height)
+                                            Text(text)
+                                                .offset(x: offset.x, y: offset.y)
+                                        }
                                     }
+                                    Spacer()
                                 }
                                 Spacer()
                             }
-                            Spacer()
+                            
+                            // grid lines
+                            ForEach((1...trackHelper.yAxisNumGridLines), id: \.self) {
+                                let (xVals, yVals) = trackHelper.gridValues(forIndex: $0)
+                                LineShape(xVals: xVals, yVals: yVals)
+                                    .stroke(Color.plotGrid, lineWidth: 1)
+                            }
+                        } else {
+                            Text("Elevation data\nnot available")
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
                         }
                         
-                        // grid lines
-                        ForEach((1...trackHelper.yAxisNumGridLines), id: \.self) {
-                            let (xVals, yVals) = trackHelper.gridValues(forIndex: $0)
-                            LineShape(xVals: xVals, yVals: yVals)
-                                .stroke(Color.plotGrid, lineWidth: 1)
-                        }
-                    } else {
-                        Text("Elevation data\nnot available")
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
+                        // axis
+                        LineShape(xVals: trackHelper.axisXVals, yVals: trackHelper.axisYVals)
+                            .stroke(Color.plotAxis, lineWidth: 2)
+                        
+                        // value lines
+                        LineShape(xVals: trackHelper.time, yVals: trackHelper.altitudePlotVals)
+                            .stroke(Color.plotAltitude, lineWidth: 2)
+    //                    LineShape(xVals: trackHelper.time, yVals: trackHelper.speedPlotVals)
+    //                        .stroke(Color.plotSpeed, lineWidth: 1)
+                        
+                        // scrubber
+                        LineShape(xVals: xVertVals, yVals: yVertVals)
+                            .stroke(Color.plotVertical, lineWidth: 4)
                     }
-                    
-                    // axis
-                    LineShape(xVals: trackHelper.axisXVals, yVals: trackHelper.axisYVals)
-                        .stroke(Color.plotAxis, lineWidth: 2)
-                    
-                    // value lines
-                    LineShape(xVals: trackHelper.time, yVals: trackHelper.altitudePlotVals)
-                        .stroke(Color.plotAltitude, lineWidth: 2)
-//                    LineShape(xVals: trackHelper.time, yVals: trackHelper.speedPlotVals)
-//                        .stroke(Color.plotSpeed, lineWidth: 1)
-                    
-                    // scrubber
-                    LineShape(xVals: xVertVals, yVals: yVertVals)
-                        .stroke(Color.plotVertical, lineWidth: 4)
+                    #if os(iOS)
+                    .onTouch() { location in
+                        plotSize = geometry.size
+                        handleTouch(at: location)
+                    }
+                    #endif
+                    .onAppear { plotSize = geometry.size }
                 }
-                #if os(iOS)
-                .onTouch() { location in
-                    plotSize = geometry.size
-                    handleTouch(at: location)
-                }
-                #endif
-                .task { plotSize = geometry.size }
             }
+            .padding(.bottom, hasSafeAreaInsets ? 0 : 16)
         }
         .font(.footnote.monospacedDigit())
         .foregroundColor(.text)
@@ -110,8 +114,9 @@ struct TrackPlotView: View {
     
     // MARK: - Init
     
-    init(track: Track) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>) {
         self.track = track
+        self._hasSafeAreaInsets = hasSafeAreaInsets
         self.trackHelper = TrackHelper(track: track, forPlotting: true)
     }
     

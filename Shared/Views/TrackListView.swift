@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TrackListView: View {
     
+    @Binding var hasSafeAreaInsets: Bool
+    
     @State private var isTracking = false
 //    @State private var selectedTrack: Track?
     
@@ -42,7 +44,7 @@ struct TrackListView: View {
             List() {
                 ForEach(tracks) { track in
                     ZStack(alignment: .leading) {
-                        NavigationLink(destination: TrackDetailView(track: track)) {
+                        NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)) {
                             EmptyView()
                         }
                         .opacity(0)
@@ -83,6 +85,7 @@ struct TrackListView: View {
                 
                 Spacer()
             }
+            .padding(.bottom, hasSafeAreaInsets ? 0 : 16)
             
             NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) { EmptyView() }
             #endif
@@ -135,8 +138,8 @@ struct TrackListView: View {
 
 // MARK: - Previews
 
-struct TrackListView_Previews: PreviewProvider {
-    static var previews: some View {
-        TrackListView()
-    }
-}
+//struct TrackListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TrackListView()
+//    }
+//}

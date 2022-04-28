@@ -51,6 +51,36 @@ enum Func {
         #endif  
     }
     
+    static var hasSafeAreaInsets: Bool {
+        #if os(iOS)
+        let insets = safeAreaInsets
+        return insets.leading != 0 || insets.bottom != 0
+        #else
+        return false
+        #endif
+    }
+    
+    static var safeAreaInsets: EdgeInsets {
+        #if os(iOS)
+        // based on https://developer.apple.com/forums/thread/687420
+        let keyWindow = UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .map { $0 as? UIWindowScene }
+            .compactMap { $0 }
+            .first?.windows
+            .filter { $0.isKeyWindow }
+            .first
+        
+        guard let edgeInsets = keyWindow?.safeAreaInsets
+        else { return EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0) }
+        
+        return EdgeInsets(top: edgeInsets.top, leading: edgeInsets.left, bottom: edgeInsets.bottom, trailing: edgeInsets.right)
+        
+        #else
+        return EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        #endif
+    }
+    
     static func sourceFileNameFromFullPath(_ file: String) -> String {
         let fileComponents1 = file.components(separatedBy: "/")
         let lastComponent1 = fileComponents1.last!

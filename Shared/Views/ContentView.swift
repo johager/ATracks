@@ -9,13 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     
-    init() {
+    @Binding var hasSafeAreaInsets: Bool
+    
+    init(hasSafeAreaInsets: Binding<Bool>) {
+        self._hasSafeAreaInsets = hasSafeAreaInsets
         Appearance.customizeAppearance()
     }
     
     var body: some View {
         NavigationView {
-            TrackListView()
+            TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets)
             //SettingsView()
             #if os(iOS)
             LocationServicesView()
@@ -26,8 +29,8 @@ struct ContentView: View {
 
 // MARK: - Previews
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
