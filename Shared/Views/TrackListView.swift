@@ -66,26 +66,43 @@ struct TrackListView: View {
             .listStyle(.plain)
             
             #if os(iOS)
-            HStack {
-                Spacer()
+            VStack(spacing: 0) {
+                Rectangle()
+                    .fill(Color.border)
+                    .frame(height: 1)
+                    .edgesIgnoringSafeArea(.all)
                 
-                Button(action: startTracking) {
-                    Text("Start")
+                HStack {
+                    Spacer()
+                    
+                    Button(action: startTracking) {
+                        Text("Start")
+                    }
+                    .disabled(isTracking)
+                    .buttonStyle(AAButtonStyle(isEnabled: !isTracking))
+                    
+                    Spacer()
+                    
+                    Button(action: stopTracking) {
+                        Text(stopTrackingText)
+                    }
+                    .disabled(!isTracking)
+                    .buttonStyle(AAButtonStyle(isEnabled: isTracking))
+                    
+                    Spacer()
                 }
-                .disabled(isTracking)
-                .buttonStyle(AAButtonStyle(isEnabled: !isTracking))
-                
-                Spacer()
-                
-                Button(action: stopTracking) {
-                    Text(stopTrackingText)
-                }
-                .disabled(!isTracking)
-                .buttonStyle(AAButtonStyle(isEnabled: isTracking))
-                
-                Spacer()
+                .padding(.top, 16)
+                .padding(.bottom, hasSafeAreaInsets ? 0 : 16)
             }
-            .padding(.bottom, hasSafeAreaInsets ? 0 : 16)
+//            .background() {
+//                Rectangle()
+//                    .fill(Color.border)
+//                    .frame(height: 1)
+//                Color.tabBarBackground
+//                    .edgesIgnoringSafeArea(.all)
+//            }
+            .background(Color.tabBarBackground)
+            
             
             NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) { EmptyView() }
             #endif

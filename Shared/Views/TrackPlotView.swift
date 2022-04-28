@@ -39,7 +39,7 @@ struct TrackPlotView: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                        Text("Ave: ")
+                        Text("Avg: ")
                         Text("Gain: ")
                     }
                     VStack(alignment: .trailing) {
