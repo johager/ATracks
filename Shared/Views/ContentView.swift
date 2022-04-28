@@ -22,20 +22,13 @@ struct ContentView: View {
         NavigationView {
             TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets)
             //SettingsView()
-            #if os(iOS)
-            LocationServicesView()
-            #endif
         }
         #if os(iOS)
         .sheet(isPresented: $isOnboarding) {
-            AboutView(isOnboarding: true)
+            AboutView(isOnboarding: $isOnboarding)
         }
         #endif
-        .onAppear {
-            if DataStateHelper.shouldOnboard {
-                isOnboarding = true
-            }
-        }
+        .onAppear { isOnboarding = OnboardingHelper.shouldOnboard }
     }
 }
 
