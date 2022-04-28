@@ -12,6 +12,10 @@ extension Color {
         return color(light: .white, dark: .black)
     }
     
+    static var border: Color {
+        return color(light: medium2Green, dark: dark2Green)
+    }
+    
     static var headerBackground: Color {
         return color(light: light1HGreen, dark: dark3HGreen)
     }
@@ -34,6 +38,10 @@ extension Color {
     
     static var navigationShadow: Color {
         return color(light: avantiGreen, dark: dark2Green)
+    }
+    
+    static var tabBarBackground: Color {
+        return color(light: light2Green, dark: dark6Green)
     }
     
     static var text: Color {
@@ -152,6 +160,7 @@ extension Color {
     static let darkGreen = Color(red: 0, green: 0.22, blue: 0.19)  // 35% black
     static let dark2Green = Color(red: 0, green: 0.18, blue: 0.16)  // 45% black
     static let dark3HGreen = Color(red: 0, green: 0.13, blue: 0.11)  // 60% black
+    static let dark6Green = Color(red: 0, green: 0.05, blue: 0.04)  // 85% black
     static let mediumGreen = Color(red: 56/255.0, green: 119/255.0, blue: 109/255.0)  // approx 22% white
     static let medium2Green = Color(red: 128/255.0, green: 170/255.0, blue: 164/255.0)  // 50% white
     static let medium3Green = Color(red: 179/255.0, green: 204/255.0, blue: 201/255.0)  // 70% white

@@ -15,7 +15,7 @@ struct TrackStatsView: View {
         HStack(spacing: 0) {
             VStack(alignment: .trailing) {
                 Text("Duration: ")
-                Text("Ave Speed: ")
+                Text("Avg Speed: ")
             }
             VStack(alignment: .leading) {
                 Text(track.duration.stringWithUnits)

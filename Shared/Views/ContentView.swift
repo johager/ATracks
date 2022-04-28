@@ -20,6 +20,7 @@ struct ContentView: View {
         NavigationView {
             TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets)
             //SettingsView()
+            BlankView()
         }
     }
 }
