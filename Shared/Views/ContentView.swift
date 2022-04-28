@@ -20,9 +20,6 @@ struct ContentView: View {
         NavigationView {
             TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets)
             //SettingsView()
-            #if os(iOS)
-            LocationServicesView()
-            #endif
         }
     }
 }

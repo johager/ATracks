@@ -14,6 +14,9 @@ import HealthKit
 struct ATracksApp: App {
     @Environment(\.scenePhase) var scenePhase
     
+    @State private var hasOnboarded = false
+    @State private var isOnboarding = false
+    
     @State var hasSafeAreaInsets = false
     
     let coreDataStack = CoreDataStack.shared
@@ -22,8 +25,34 @@ struct ATracksApp: App {
         WindowGroup {
             ContentView(hasSafeAreaInsets: $hasSafeAreaInsets)
                 .environment(\.managedObjectContext, coreDataStack.context)
+                .onAppear {
+                    if OnboardingHelper.shouldOnboard {
+                        //print("=== \(file).\(#function) - onAppear - shouldOnboard ===")
+                        isOnboarding = true
+                    } else {
+                        //print("=== \(file).\(#function) - onAppear - shouldOnboard not ===")
+                        hasOnboarded = true
+                    }
+                }
+                .onChange(of: hasOnboarded) { _ in
+                    print("=== \(file).\(#function) - onChange - hasOnboarded: \(hasOnboarded) ===")
+                    #if os(iOS)
+                    LocationManager.shared.sceneDidBecomeActive()
+                    #endif
+                    Task { await checkHealthKit() }
+                }
+                .onChange(of: isOnboarding) { _ in
+                    //print("=== \(file).\(#function) - onChange - isOnboarding: \(isOnboarding) ===")
+                    if !isOnboarding {
+                        hasOnboarded = true
+                    }
+                }
                 .onChange(of: scenePhase) { scenePhaseChanged(to: $0) }
-                .task { await checkHealthKit() }
+                #if os(iOS)
+                .sheet(isPresented: $isOnboarding) {
+                    AboutView(isOnboarding: $isOnboarding)
+                }
+                #endif
         }
     }
     
@@ -44,23 +73,27 @@ struct ATracksApp: App {
     func scenePhaseChanged(to phase: ScenePhase) {
         switch phase {
         case .active:
-            print("=== \(file).\(#function) - active ===")
+            print("=== \(file).\(#function) - active, hasOnboarded: \(hasOnboarded) ===")
             #if os(iOS)
             hasSafeAreaInsets = Func.hasSafeAreaInsets
-            LocationManager.shared.sceneDidBecomeActive()
+            if hasOnboarded {
+                LocationManager.shared.sceneDidBecomeActive()
+            }
             #endif
             //doSpecialStartUp()
         #if os(iOS)
         case .inactive:
-            print("=== \(file).\(#function) - inactive ===")
+            print("=== \(file).\(#function) - inactive, hasOnboarded: \(hasOnboarded) ===")
             #if os(iOS)
-            LocationManager.shared.sceneDidBecomeInActive()
+            if hasOnboarded {
+                LocationManager.shared.sceneDidBecomeInActive()
+            }
             #endif
         #endif
         case .background:
-            print("=== \(file).\(#function) - background ===")
+            print("=== \(file).\(#function) - background, hasOnboarded: \(hasOnboarded) ===")
         default:
-            print("=== \(file).\(#function) - phase: \(phase) ===")
+            print("=== \(file).\(#function) - phase: \(phase), hasOnboarded: \(hasOnboarded) ===")
         }
     }
     
