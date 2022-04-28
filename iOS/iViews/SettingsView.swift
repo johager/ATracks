@@ -68,26 +68,26 @@ struct SettingsView: View {
             
             // Tracking Settings
             
-//            Section {
-//                SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
-////                Text("Setting2")
-////                    .ignoresSafeArea()
-////                    .listRowBackground(Color.headerBackground)
-////                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
-//
-//            } header: {
-//                Text("Tracking Settings")
-//                    .font(.title3)
-//                    .bold()
-//                    .foregroundColor(.headerText)
-//                    .kerning(1)
-//                    .textCase(.uppercase)
-//            }
+            Section {
+                SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
+//                Text("Setting2")
+//                    .ignoresSafeArea()
+//                    .listRowBackground(Color.headerBackground)
+//                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
+
+            } header: {
+                Text("Tracking Settings")
+                    .font(.title3)
+                    .bold()
+                    .foregroundColor(.headerText)
+                    .kerning(1)
+                    .textCase(.uppercase)
+            }
 ////            .listRowBackground(Color.red.edgesIgnoringSafeArea(.all))
             
-            SettingsSectionView(title: "Tracking Settings")
-            
-            SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
+//            SettingsSectionView(title: "Tracking Settings")
+//            
+//            SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
             
 //            // Map Settings
 //
