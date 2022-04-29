@@ -30,7 +30,9 @@ class HealthKitManager {
     
     // MARK: - Methods
     
-    func requestPermission () async -> Bool {
+    func requestPermission() async -> Bool {
+        
+        guard HKHealthStore.isHealthDataAvailable() else { return false }
 
         let stepsCount = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
 
@@ -43,32 +45,31 @@ class HealthKitManager {
         return true
     }
     
-    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date()) async -> Int32? {
+    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start) async -> Int32? {
+        print("=== \(file).\(#function) - hasAccess: \(hasAccess)")
         
         guard hasAccess else { return nil }
 
         let numSteps = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Int32?, Error>) in
 
             let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
-            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
-//            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: [])
-//            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: [.strictStartDate, .strictEndDate])
+            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: dateOptions.queryOptions)
 
             let query = HKStatisticsQuery(quantityType: stepsQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum]) { _, result, error in
                 if let error = error {
-                    print("=== \(self.file) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
+                    print("=== \(self.file).\(#function) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
                     return continuation.resume(returning: nil)
                 }
 
                 guard let sum = result?.sumQuantity()
                 else {
-                    print("=== \(self.file) - error retrieving steps: no result or valid sum.")
+                    print("=== \(self.file).\(#function) - error retrieving steps: no result or valid sum.")
                     return continuation.resume(returning: nil)
                 }
                 
                 let numSteps = Int32(sum.doubleValue(for: .count()))
 
-                print("=== \(self.file) - retrieved steps - numSteps: \(numSteps)")
+                print("=== \(self.file).\(#function) - retrieved steps - numSteps: \(numSteps)")
                 continuation.resume(returning: numSteps)
             }
 

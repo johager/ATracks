@@ -45,7 +45,7 @@ struct TrackStatsView: View {
             let file = "TrackStatsView"
             print("=== \(file).task - start date: \(dateFormatter.string(from: track.date))==")
             print("--- \(file).task -   end date: \(dateFormatter.string(from: endDate))")
-            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, andEndingAt: endDate) else { return }
+            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, andEndingAt: endDate, dateOptions: .start) else { return }
             print("--- \(file).task -   numSteps: \(numSteps)")
         }
         #endif

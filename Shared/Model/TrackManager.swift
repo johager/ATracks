@@ -18,17 +18,12 @@ class TrackManager {
     
     static let shared = TrackManager()
     
-    var track: Track!
-    var tracks = [Track]()
-    var trackPoints = [TrackPoint]()
-    
     var delegate: TrackManagerDelegate?
     
-    private let trackFetchRequest = Track.fetchRequest
+    private var tracks = [Track]()
     
-    var coreDataStack: CoreDataStack { CoreDataStack.shared }
-    
-    var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
+    private var coreDataStack: CoreDataStack { CoreDataStack.shared }
+    private var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
     
     lazy var deviceName = Func.deviceName
     lazy var deviceUUID = Func.deviceUUID
@@ -39,35 +34,45 @@ class TrackManager {
     
     private init() {
 //        print("=== TrackManager.\(#function) ===")
-        trackFetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
-        //fetchTracks()
-        //describeTrackPoints()
-    }
-    
-    func describeTrackPoints() {
-        for trackPoint in trackPoints {
-            print("\(trackPoint.timestamp.stringForTrack), \(trackPoint.speed * 2.23694) mph")
-        }
     }
     
     // MARK: - CRUD for Tracks
     
     @discardableResult func createTrack(name: String) -> Track {
         let track = Track(name: name, deviceName: deviceName, deviceUUID: deviceUUID)
-        tracks.insert(track, at: 0)
         coreDataStack.saveContext()
         return track
     }
     
-    func fetchTracks() {
+    func updateSteps() {
         print("=== \(file).\(#function) ===")
+        #if os(iOS)
+        
+        let fetchRequest = Track.fetchRequest
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        
         do {
-            tracks = try viewContext.fetch(trackFetchRequest)
+            let tracks = try viewContext.fetch(fetchRequest)
+            for track in tracks {
+                print("--- \(file).\(#function) - name: \(track.name), isTracking: \(track.isTracking)")
+                if track.isTracking {
+                    continue
+                }
+                guard let endDate = track.trackPoints.last?.timestamp else { continue }
+                
+                Task.init {
+                    guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, andEndingAt: endDate, dateOptions: .start) else { return }
+                    print("--- \(file).\(#function) - name: \(track.name), steps saved/new: \(track.steps)/\(numSteps)")
+                    track.steps = numSteps
+                    track.hasFinalSteps = true
+                }
+            }
         } catch {
             print("--- \(file).\(#function) - error: \(error)")
             print(error.localizedDescription)
         }
+        #endif
     }
     
     // MARK: - CRUD for TrackPoints
@@ -77,7 +82,6 @@ class TrackManager {
         print("=== \(file).\(#function) - horizontalAccuracy: \(location.horizontalAccuracy), verticalAccuracy: \(location.verticalAccuracy), altitude: \(location.altitude) ===")
         
         let trackPoint = TrackPoint(clLocation: location, track: track)
-        trackPoints.append(trackPoint)
         coreDataStack.saveContext()
         delegate?.didMakeNewTrackPoint(trackPoint)
         #if os(iOS)
@@ -86,25 +90,6 @@ class TrackManager {
             track.steps = numSteps
         }
         #endif
-    }
-    
-    func fetchTrackPoints(for track: Track? = nil) {
-        
-        if let track = track {
-            trackPoints = track.trackPoints
-            return
-        }
-        
-        let trackPointFetchRequest = TrackPoint.fetchRequest
-        trackPointFetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
-        
-        do {
-            trackPoints = try viewContext.fetch(trackPointFetchRequest)
-            trackPoints.sort { $0.timestamp < $1.timestamp }
-        } catch {
-            print("=== \(file).\(#function) - error: \(error)")
-            print(error.localizedDescription)
-        }
     }
     
     func stopTracking(_ track: Track) {

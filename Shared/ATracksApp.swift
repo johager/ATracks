@@ -124,9 +124,9 @@ struct ATracksApp: App {
         #if os(iOS)
         print("=== \(file).\(#function) ===")
         
-        guard HKHealthStore.isHealthDataAvailable() else { return }
-        
         guard await HealthKitManager.shared.requestPermission() == true else { return }
+        
+        TrackManager.shared.updateSteps()
         #endif
     }
 }
