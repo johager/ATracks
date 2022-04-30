@@ -14,6 +14,8 @@ struct LocationServicesView: View {
     @State private var significantLocationChangeMonitoringAvailable = "false"
     @State private var headingAvailable = "false"
     
+    // MARK: - View
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("locationServicesEnabled: \(locationServicesEnabled)")

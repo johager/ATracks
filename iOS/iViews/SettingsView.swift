@@ -26,6 +26,8 @@ struct SettingsView: View {
     
     let file = "SettingsView"
     
+    // MARK: - View
+    
     var body: some View {
 //        Form {
         List() {

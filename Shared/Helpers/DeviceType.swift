@@ -5,11 +5,23 @@
 //  Created by James Hager on 4/29/22.
 //
 
-import Foundation
+import SwiftUI
 
 enum DeviceType {
     
-    case iPhone
-    case iPad
+    case phone
+    case pad
     case mac
+    
+    static func current() -> DeviceType {
+        #if os(iOS)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .phone
+        } else {
+            return .pad
+        }
+        #else
+        return .mac
+        #endif
+    }
 }

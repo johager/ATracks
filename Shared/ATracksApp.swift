@@ -19,23 +19,6 @@ struct ATracksApp: App {
     
     @State var hasSafeAreaInsets = false
     
-    #if os(iOS)
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    #endif
-    
-    var deviceType: DeviceType {
-        #if os(iOS)
-        if verticalSizeClass == .regular && horizontalSizeClass == .regular {
-            return .iPad
-        } else {
-            return .iPhone
-        }
-        #else
-        return .mac
-        #endif
-    }
-    
     let coreDataStack = CoreDataStack.shared
     
     let file = "ATracksApp"
@@ -48,13 +31,16 @@ struct ATracksApp: App {
 //        print("=== \(file).\(#function) - useAutoStop: \(useAutoStop) ===")
         print("=== \(file).\(#function) - deviceName: \(Func.deviceName) ===")
         print("=== \(file).\(#function) - deviceUUID: \(Func.deviceUUID) ===")
+        #if os(iOS)
+        print("=== \(file).\(#function) - userInterfaceIdiom: \(UIDevice.current.userInterfaceIdiom) ===")
+        #endif
     }
     
     // MARK: - Scene
     
     var body: some Scene {
         WindowGroup {
-            ContentView(hasSafeAreaInsets: $hasSafeAreaInsets, deviceType: deviceType)
+            ContentView(hasSafeAreaInsets: $hasSafeAreaInsets)
                 .environment(\.managedObjectContext, coreDataStack.context)
                 .onAppear {
                     if OnboardingHelper.shouldOnboard {

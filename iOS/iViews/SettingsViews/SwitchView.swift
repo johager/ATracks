@@ -12,6 +12,8 @@ struct SwitchView: View {
     @State var switchText: String
     @Binding var switchVal: Bool
     
+    // MARK: - View
+    
     var body: some View {
         Toggle("", isOn: $switchVal)
             .toggleStyle(AAToggleStyle(label: switchText))

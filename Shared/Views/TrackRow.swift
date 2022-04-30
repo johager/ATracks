@@ -11,16 +11,29 @@ struct TrackRow: View {
     
     @ObservedObject var track: Track
     
+    // MARK: - View
+    
     var body: some View {
+//        VStack(alignment: .leading) {
         HStack(alignment: .center) {
-            Text(track.name)
-                .font(.body.monospacedDigit())
-                .foregroundColor(.text)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(track.name)
+                    .font(.body.monospacedDigit())
+                    .foregroundColor(.text)
+                Text(track.dateString)
+                    .offset(x: 16)
+            }
             Spacer()
-            Text(String(format: "%.2f", track.distance) + " mi")
-                .font(.footnote.monospacedDigit())
-                .foregroundColor(.textSecondary)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(String(format: "%.2f", track.distance) + " mi")
+                Text(track.duration.stringWithUnits)
+            }
         }
+//            Text("isTracking: " + String(track.isTracking))
+//                .offset(x: 16)
+//        }
+        .font(.footnote.monospacedDigit())
+        .foregroundColor(.textSecondary)
     }
 }
 

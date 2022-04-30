@@ -10,7 +10,6 @@ import SwiftUI
 struct TrackListView: View {
     
     @Binding var hasSafeAreaInsets: Bool
-    var deviceType: DeviceType
     
     @State private var isTracking = false
 //    @State private var selectedTrack: Track?
@@ -40,12 +39,14 @@ struct TrackListView: View {
     
     let file = "TrackListView"
     
+    // MARK: - View
+    
     var body: some View {
         VStack {
             List() {
                 ForEach(tracks) { track in
                     ZStack(alignment: .leading) {
-                        NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, deviceType: deviceType)) {
+                        NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)) {
                             EmptyView()
                         }
                         .opacity(0)

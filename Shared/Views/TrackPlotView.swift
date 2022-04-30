@@ -11,7 +11,7 @@ struct TrackPlotView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
-    var displayTall: Bool
+    var displayOnSide: Bool
     
     @State private var plotSize = CGSize(width: 100, height: 100)
     @State private var xVertVals: [Double] = [2, 2]
@@ -19,12 +19,15 @@ struct TrackPlotView: View {
     
     private var trackHelper: TrackHelper
     
+    private var deviceType: DeviceType { DeviceType.current() }
+    private var isPad: Bool { deviceType == .pad }
+    
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayTall: Bool = false) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false) {
         self.track = track
         self._hasSafeAreaInsets = hasSafeAreaInsets
-        self.displayTall = displayTall
+        self.displayOnSide = displayOnSide
         self.trackHelper = TrackHelper(track: track, forPlotting: true)
     }
     
@@ -39,7 +42,7 @@ struct TrackPlotView: View {
                 }
                 Spacer()
                 if trackHelper.hasAltitudeData {
-                    if displayTall {
+                    if displayOnSide {
                         VStack(alignment: .trailing, spacing: 4) {
                             Text("Max: ")
                             Text("Min: ")
@@ -73,7 +76,7 @@ struct TrackPlotView: View {
                     }
                 }
             }
-            .padding(.top, displayTall ? 0 : 8)
+            .padding(.top, displayOnSide ? 0 : 8)
             .padding(.bottom, 16)
             
             GeometryReader { geometry in
@@ -128,12 +131,12 @@ struct TrackPlotView: View {
                 .onAppear { plotSize = geometry.size }
             }
             .frame(height: 90)
-            .padding(.bottom, hasSafeAreaInsets ? (displayTall ? 8 : 0) : 16)
+            .padding(.bottom, hasSafeAreaInsets ? (displayOnSide ? 8 : (isPad ? 8 : 0)) : 16)
         }
         .font(.footnote.monospacedDigit())
         .foregroundColor(.text)
-        .padding(.leading, displayTall ? 16 : 32)
-        .padding(.trailing, displayTall ? 8 : 32)
+        .padding(.leading, displayOnSide ? 16 : 32)
+        .padding(.trailing, displayOnSide ? (hasSafeAreaInsets ? 8 : 16) : 32)
     }
     
     // MARK: - Methods

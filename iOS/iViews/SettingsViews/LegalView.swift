@@ -14,6 +14,8 @@ struct LegalView: View {
         ["Graphics Images", "Some images are from www.flaticon.com and were designed by Smashicons."]
     ]
     
+    // MARK: - View
+    
     var body: some View {
         List() {
             ForEach(0..<itemInfo.count, id: \.self) { index in

@@ -21,6 +21,8 @@ struct AboutView: View {
         "Your data is stored in your own private iCloud account, and no one without access to your Apple ID can access that data."
     ]
     
+    // MARK: - View
+    
     var body: some View {
         ZStack {
             List() {

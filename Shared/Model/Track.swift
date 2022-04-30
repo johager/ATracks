@@ -47,6 +47,9 @@ class Track: NSManagedObject, Identifiable {
         }
     }
     
+    let timezone = "MDT"
+    var dateString: String { date.stringForTrack(timezone: timezone) }
+    
     var trackPoints: [TrackPoint] {
         guard let trackPointsSet = trackPointsSet as? Set<TrackPoint> else { return [] }
         return Array(trackPointsSet).sorted { $0.timestamp < $1.timestamp }

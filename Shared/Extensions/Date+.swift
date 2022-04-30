@@ -15,16 +15,16 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
-    var stringForTrack: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
-        return dateFormatter.string(from: self)
-    }
-    
     var stringForTrackName: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd, h:mm a"
+        return dateFormatter.string(from: self)
+    }
+    
+    func stringForTrack(timezone: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd, h:mm a"
+        dateFormatter.timeZone = TimeZone(abbreviation: timezone)
         return dateFormatter.string(from: self)
     }
 }

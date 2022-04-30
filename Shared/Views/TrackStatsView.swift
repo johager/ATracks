@@ -10,63 +10,87 @@ import SwiftUI
 struct TrackStatsView: View {
     
     @ObservedObject var track: Track
-    var displayTall: Bool
+    @Binding var hasSafeAreaInsets: Bool
+    var displayOnSide: Bool
+    
+    private var deviceType: DeviceType { DeviceType.current() }
+    private var isPhone: Bool { deviceType == .phone }
     
     // MARK: - Init
     
-    init(track: Track, displayTall: Bool = false) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false) {
         self.track = track
-        self.displayTall = displayTall
+        self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.displayOnSide = displayOnSide
     }
     
     // MARK: - View
     
     var body: some View {
         Group {
-            if displayTall {
-                HStack(spacing: 0) {
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("Distance: ")
-                        Text("Duration: ")
-                        Text("Avg Speed: ")
-                        Text("Steps: ")
-                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
-                    }
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("\(String(format: "%.2f", track.distance)) mi")
-                        Text(track.duration.stringWithUnits)
-                        Text("\(track.aveSpeed.stringForSpeed) mph")
-                        Text(track.steps.stringWithNA)
-                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
-                    }
+            if displayOnSide {
+                VStack {
+                    Text(track.dateString)
+                    Spacer()
+                    HStack(spacing: 0) {
+                        VStack(alignment: .trailing, spacing: 4) {
+                            Text("Distance: ")
+                            Text("Duration: ")
+                            Text("Avg Speed: ")
+                            Text("Steps: ")
+                                .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                        }
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(String(format: "%.2f", track.distance)) mi")
+                            Text(track.duration.stringWithUnits)
+                            Text("\(track.aveSpeed.stringForSpeed) mph")
+                            Text(track.steps.stringWithNA)
+                                .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                        }
 
-                }
-                
-            } else {
-                HStack(spacing: 0) {
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("Duration: ")
-                        Text("Avg Speed: ")
-                    }
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(track.duration.stringWithUnits)
-                        Text("\(track.aveSpeed.stringForSpeed) mph")
                     }
                     Spacer()
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("Distance: ")
-                        Text("Steps: ")
-                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                }
+                .padding(.top, 8)
+                
+            } else {
+                VStack(spacing: 4) {
+                    if isPhone {
+                        Text(track.dateString)
                     }
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("\(String(format: "%.2f", track.distance)) mi")
-                        Text(track.steps.stringWithNA)
-                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                    HStack(spacing: 0) {
+                        VStack(alignment: .trailing, spacing: 4) {
+                            Text("Duration: ")
+                            Text("Avg Speed: ")
+                        }
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(track.duration.stringWithUnits)
+                            Text("\(track.aveSpeed.stringForSpeed) mph")
+                        }
+                        Spacer()
+                        if !isPhone {
+                            VStack(spacing: 4) {
+                                Text(track.dateString)
+                                Text("")
+                            }
+                            Spacer()
+                        }
+                        VStack(alignment: .trailing, spacing: 4) {
+                            Text("Distance: ")
+                            Text("Steps: ")
+                                .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                        }
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(String(format: "%.2f", track.distance)) mi")
+                            Text(track.steps.stringWithNA)
+                                .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                        }
                     }
                 }
                 .padding([.top, .bottom], 8)
-                .padding(.leading, displayTall ? 16 : 32)
-                .padding(.trailing, displayTall ? 8 : 32)
+                .padding(.leading, displayOnSide ? 16 : 32)
+                .padding(.trailing, displayOnSide ? 8 : 32)
+                .padding(.trailing, displayOnSide ? (hasSafeAreaInsets ? 8 : 16) : 32)
             }
         }
         .font(.footnote)

@@ -11,7 +11,6 @@ struct TrackDetailView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
-    var deviceType: DeviceType
     
     #if os(iOS)
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
@@ -23,6 +22,8 @@ struct TrackDetailView: View {
         }
     }
     #endif
+    
+    // MARK: - View
     
     var body: some View {
         GeometryReader {  geometry in
@@ -53,20 +54,20 @@ struct TrackDetailView: View {
                     
                     VStack(spacing: 0) {
                         Spacer()
-                        TrackStatsView(track: track, displayTall: true)
+                        TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
                         Spacer()
                         Rectangle()
                             .edgesIgnoringSafeArea([.trailing, .leading])
                             .foregroundColor(.border)
                             .frame(height: 0.5)
                         Spacer()
-                        TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayTall: true)
+                        TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
                     }
                 }
                 
             } else {
                 VStack(spacing: 0) {
-                    TrackStatsView(track: track)
+                    TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                     Rectangle()
                         .edgesIgnoringSafeArea([.trailing, .leading])
                         .foregroundColor(.border)
@@ -99,22 +100,23 @@ struct TrackDetailView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        
     }
     
     // MARKL - Methods
     
     func shouldShowSideBySide(for geometry: GeometryProxy) -> Bool {
-        #if os(iOS)
+//        #if os(iOS)
         let file = "TrackDetailView"
+        let deviceType = DeviceType.current()
         let gSize = geometry.size
         print("=== \(file).\(#function) - deviceType: \(deviceType) ===")
         print("=== \(file).\(#function) - gSize width/height: \(gSize.width)/\(gSize.height) ===")
-        print("=== \(file).\(#function) - \(deviceType == .iPhone && gSize.width > gSize.height) ===")
-        return deviceType == .iPhone && gSize.width > gSize.height
-        #else
-        return false
-        #endif
+//        print("=== \(file).\(#function) - \(deviceType == .phone && gSize.width > gSize.height) ===")
+//        return deviceType == .phone && gSize.width > gSize.height
+        return gSize.width > gSize.height
+//        #else
+//        return false
+//        #endif
     }
     
     #if os(iOS)

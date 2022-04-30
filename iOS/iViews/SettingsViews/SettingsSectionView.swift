@@ -11,6 +11,8 @@ struct SettingsSectionView: View {
     
     @State var title: String
     
+    // MARK: - View
+    
     var body: some View {
         HStack {
             Text(title)

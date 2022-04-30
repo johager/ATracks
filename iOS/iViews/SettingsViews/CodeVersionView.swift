@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct CodeVersionView: View, Identifiable {
+    
     var id = "codeVersionView"
+    
+    // MARK: - View
     
     var body: some View {
         Text("\(AppInfo.appNameWithFullVersion)\n© \(AppInfo.copyrightYear) Avanti Applications, LLC")
