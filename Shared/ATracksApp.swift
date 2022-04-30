@@ -19,11 +19,42 @@ struct ATracksApp: App {
     
     @State var hasSafeAreaInsets = false
     
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    #endif
+    
+    var deviceType: DeviceType {
+        #if os(iOS)
+        if verticalSizeClass == .regular && horizontalSizeClass == .regular {
+            return .iPad
+        } else {
+            return .iPhone
+        }
+        #else
+        return .mac
+        #endif
+    }
+    
     let coreDataStack = CoreDataStack.shared
+    
+    let file = "ATracksApp"
+    
+    // MARK: - Init
+    
+    init() {
+        DataStateHelper.checkDataState()
+//        let useAutoStop = UserDefaults.standard.bool(forKey: LocationManagerSettings.useAutoStopKey)
+//        print("=== \(file).\(#function) - useAutoStop: \(useAutoStop) ===")
+        print("=== \(file).\(#function) - deviceName: \(Func.deviceName) ===")
+        print("=== \(file).\(#function) - deviceUUID: \(Func.deviceUUID) ===")
+    }
+    
+    // MARK: - Scene
     
     var body: some Scene {
         WindowGroup {
-            ContentView(hasSafeAreaInsets: $hasSafeAreaInsets)
+            ContentView(hasSafeAreaInsets: $hasSafeAreaInsets, deviceType: deviceType)
                 .environment(\.managedObjectContext, coreDataStack.context)
                 .onAppear {
                     if OnboardingHelper.shouldOnboard {
@@ -55,19 +86,6 @@ struct ATracksApp: App {
                 #endif
         }
     }
-    
-    let file = "ATracksApp"
-    
-    // MARK: - Init
-    
-    init() {
-        DataStateHelper.checkDataState()
-//        let useAutoStop = UserDefaults.standard.bool(forKey: LocationManagerSettings.useAutoStopKey)
-//        print("=== \(file).\(#function) - useAutoStop: \(useAutoStop) ===")
-        print("=== \(file).\(#function) - deviceName: \(Func.deviceName) ===")
-        print("=== \(file).\(#function) - deviceUUID: \(Func.deviceUUID) ===")
-    }    
-    
     // MARK: - ScenePhase Methods
     
     func scenePhaseChanged(to phase: ScenePhase) {

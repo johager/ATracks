@@ -10,9 +10,6 @@ import CoreLocation
 
 struct LocationServicesView: View {
     
-//    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-//    @Environment(\.verticalSizeClass) var verticalSizeClass
-//    var isiPad: Bool { verticalSizeClass == .regular && horizontalSizeClass == .regular }
     @State private var locationServicesEnabled = "false"
     @State private var significantLocationChangeMonitoringAvailable = "false"
     @State private var headingAvailable = "false"

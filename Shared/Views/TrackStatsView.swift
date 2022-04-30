@@ -10,33 +10,67 @@ import SwiftUI
 struct TrackStatsView: View {
     
     @ObservedObject var track: Track
+    var displayTall: Bool
+    
+    // MARK: - Init
+    
+    init(track: Track, displayTall: Bool = false) {
+        self.track = track
+        self.displayTall = displayTall
+    }
+    
+    // MARK: - View
     
     var body: some View {
-        HStack(spacing: 0) {
-            VStack(alignment: .trailing) {
-                Text("Duration: ")
-                Text("Avg Speed: ")
-            }
-            VStack(alignment: .leading) {
-                Text(track.duration.stringWithUnits)
-                Text("\(track.aveSpeed.stringForSpeed) mph")
-            }
-            Spacer()
-            VStack(alignment: .trailing) {
-                Text("Distance: ")
-                Text("Steps: ")
-                    .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
-            }
-            VStack(alignment: .leading) {
-                Text("\(String(format: "%.2f", track.distance)) mi")
-                Text(track.steps.stringWithNA)
-                    .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+        Group {
+            if displayTall {
+                HStack(spacing: 0) {
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("Distance: ")
+                        Text("Duration: ")
+                        Text("Avg Speed: ")
+                        Text("Steps: ")
+                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("\(String(format: "%.2f", track.distance)) mi")
+                        Text(track.duration.stringWithUnits)
+                        Text("\(track.aveSpeed.stringForSpeed) mph")
+                        Text(track.steps.stringWithNA)
+                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                    }
+
+                }
+                
+            } else {
+                HStack(spacing: 0) {
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("Duration: ")
+                        Text("Avg Speed: ")
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(track.duration.stringWithUnits)
+                        Text("\(track.aveSpeed.stringForSpeed) mph")
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("Distance: ")
+                        Text("Steps: ")
+                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("\(String(format: "%.2f", track.distance)) mi")
+                        Text(track.steps.stringWithNA)
+                            .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                    }
+                }
+                .padding([.top, .bottom], 8)
+                .padding(.leading, displayTall ? 16 : 32)
+                .padding(.trailing, displayTall ? 8 : 32)
             }
         }
         .font(.footnote)
         .foregroundColor(.text)
-        .padding([.top, .bottom], 8)
-        .padding([.trailing, .leading], 32)
         #if os(iOS)
         .task {
             guard let endDate = track.trackPoints.last?.timestamp else { return }

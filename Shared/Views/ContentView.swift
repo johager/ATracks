@@ -10,15 +10,17 @@ import SwiftUI
 struct ContentView: View {
     
     @Binding var hasSafeAreaInsets: Bool
+    var deviceType: DeviceType
     
-    init(hasSafeAreaInsets: Binding<Bool>) {
+    init(hasSafeAreaInsets: Binding<Bool>, deviceType: DeviceType) {
         self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.deviceType = deviceType
         Appearance.customizeAppearance()
     }
     
     var body: some View {
         NavigationView {
-            TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets)
+            TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets, deviceType: deviceType)
             //SettingsView()
             BlankView()
         }
