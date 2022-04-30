@@ -59,9 +59,24 @@ struct TrackListView: View {
 //                    .listRowBackground(track == selectedTrack ? Color.listRowSelectedBackground : .white)
                     #if os(iOS)
                     .listRowSeparatorTint(.listRowSeparator)
+                    .swipeActions(allowsFullSwipe: false) {
+                        Button(action: { delete(track) } ) {
+                            Label("Delete", systemImage: "trash.fill")
+                        }
+                        .tint(.listRowSwipeDelete)
+                        Button(action: { edit(track) } ) {
+                            Label("Edit", systemImage: "square.and.pencil")
+                        }
+                        .tint(.listRowSwipeEdit)
+                        Button(action: { startTracking(useNameOf: track) } ) {
+//                            Label("Start", systemImage: "stopwatch")
+                            Label("Start", systemImage: "timer")
+                        }
+                        .tint(.listRowSwipeStart)
+                    }
                     #endif
                 }
-                .onDelete(perform: delete)
+//                .onDelete(perform: delete)
 //                .listRowBackground(Color.listRowSelectedBackground)
                 
             }
@@ -77,7 +92,7 @@ struct TrackListView: View {
                 HStack {
                     Spacer()
                     
-                    Button(action: startTracking) {
+                    Button(action: { startTracking() }) {
                         Text("Start")
                     }
                     .disabled(isTracking)
@@ -132,16 +147,31 @@ struct TrackListView: View {
     
     // MARK: - Methods
     
-    func delete(at offsets: IndexSet) {
-        guard let index = offsets.first else { return }
-        CoreDataStack.shared.context.delete(tracks[index])
+//    func delete(at offsets: IndexSet) {
+//        guard let index = offsets.first else { return }
+//        CoreDataStack.shared.context.delete(tracks[index])
+//        CoreDataStack.shared.saveContext()
+//    }
+    
+    func delete(_ track: Track) {
+        print("=== \(file).\(#function) ===")
+        CoreDataStack.shared.context.delete(track)
         CoreDataStack.shared.saveContext()
     }
     
-    func startTracking() {
+    func edit(_ track: Track) {
+        print("=== \(file).\(#function) ===")
+    }
+    
+    func startTracking(useNameOf track: Track) {
+        print("=== \(file).\(#function) ===")
+        startTracking(name: track.name)
+    }
+    
+    func startTracking(name: String? = nil) {
         print("=== \(file).\(#function) ===")
         #if os(iOS)
-        LocationManager.shared.startTracking()
+        LocationManager.shared.startTracking(name: name)
         isTracking = true
         #endif
     }

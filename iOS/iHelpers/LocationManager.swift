@@ -75,11 +75,11 @@ class LocationManager: NSObject {
         locationManager.stopUpdatingLocation()
     }
     
-    func startTracking() {
+    func startTracking(name: String? = nil) {
         print("=== \(file).\(#function) ===")
         isTracking = true
         
-        let trackName = Date().stringForTrackName
+        let trackName = name ?? Date().stringForTrackName
         print("--- \(file).\(#function) - trackName: \(trackName)")
         
         track = TrackManager.shared.createTrack(name: trackName)
