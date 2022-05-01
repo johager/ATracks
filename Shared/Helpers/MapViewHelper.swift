@@ -22,6 +22,8 @@ class MapViewHelper: NSObject {
     
     var track: Track!
     
+    private var showIsTracking: Bool { track.isTracking && track.deviceUUID == Func.deviceUUID }
+    
     private var lastTrackPoint: TrackPoint?
     
     private var startPointAnnotation: MKPointAnnotation!
@@ -76,24 +78,20 @@ class MapViewHelper: NSObject {
     // MARK: - Public Methods
     
     func setUpView(forTrack track: Track) {
+        print("=== \(file).\(#function)  ===")
+        
         self.track = track
         
-//        let shouldTrackPoint = !(track.isTracking && track.deviceUUID == Func.deviceUUID)
-        let shouldTrackPoint = true
-        print("=== \(file).\(#function) - shouldTrackPoint: \(shouldTrackPoint) ===")
-        
-        setUpView(shouldTrackPoint: shouldTrackPoint)
+        setUpView()
         setUpTracking()
         
-        if shouldTrackPoint {
-            NotificationCenter.default.addObserver(self,
-                selector: #selector(handleDidStopTrackingNotification(_:)),
-                name: .didStopTracking, object: nil)
-            
-            NotificationCenter.default.addObserver(self,
-                selector: #selector(handleShowInfoForLocationNotification(_:)),
-                name: .showInfoForLocation, object: nil)
-        }
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(handleDidStopTrackingNotification(_:)),
+            name: .didStopTracking, object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(handleShowInfoForLocationNotification(_:)),
+            name: .showInfoForLocation, object: nil)
     }
     
     func updateView(forTrack track: Track) {
@@ -118,7 +116,7 @@ class MapViewHelper: NSObject {
     
     // MARK: - Private Methods
     
-    private func setUpView(shouldTrackPoint: Bool) {
+    private func setUpView() {
         mapView.isPitchEnabled = false
         mapView.showsCompass = true
         
@@ -135,9 +133,7 @@ class MapViewHelper: NSObject {
         scaleView.scaleVisibility = .visible
         #endif
         
-        if shouldTrackPoint {
-            addLatLonLabel()
-        }
+        addLatLonLabel()
     }
     
     func addLatLonLabel() {
@@ -174,14 +170,14 @@ class MapViewHelper: NSObject {
     
     private func setUpTracking() {
         #if os(iOS)
-        if track.isTracking {
-                setMapToTrack()
-            } else {
-                setMapNoTrack()
-            }
+        if showIsTracking {
+            setMapToTrack()
+        } else {
+            setMapNoTrack()
+        }
         
         #elseif os(macOS)
-            setMapNoTrack()
+        setMapNoTrack()
         #endif
     }
     
