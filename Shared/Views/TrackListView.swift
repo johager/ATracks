@@ -178,8 +178,11 @@ struct TrackListView: View {
     
     func delete(_ track: Track) {
         //print("=== \(file).\(#function) ===")
-        CoreDataStack.shared.context.delete(track)
-        CoreDataStack.shared.saveContext()
+        if track.isTracking {
+            LocationManager.shared.stopTracking(andDelete: true)
+        } else {
+            TrackManager.shared.delete(track)
+        }
     }
     
     func edit(_ track: Track) {
@@ -220,7 +223,6 @@ struct TrackListView: View {
         //print("=== \(file).\(#function) - name: '\(name)' ===")
         #if os(iOS)
         LocationManager.shared.startTracking(name: name)
-        isTracking = true
         #endif
     }
     
@@ -228,7 +230,6 @@ struct TrackListView: View {
         //print("=== \(file).\(#function) ===")
         #if os(iOS)
         LocationManager.shared.stopTracking()
-        isTracking = false
         #endif
     }
     

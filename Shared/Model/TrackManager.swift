@@ -83,6 +83,22 @@ class TrackManager {
         #endif
     }
     
+    func stopTracking(_ track: Track) {
+        track.isTracking = false
+        coreDataStack.saveContext()
+    }
+    
+    func stopTrackingAndDelete(_ track: Track) {
+        track.isTracking = false
+        viewContext.delete(track)
+        coreDataStack.saveContext()
+    }
+    
+    func delete(_ track: Track) {
+        viewContext.delete(track)
+        coreDataStack.saveContext()
+    }
+    
     // MARK: - CRUD for TrackPoints
     
     func createTrackPoint(from location: CLLocation, in track: Track) {
@@ -98,10 +114,5 @@ class TrackManager {
             track.steps = numSteps
         }
         #endif
-    }
-    
-    func stopTracking(_ track: Track) {
-        track.isTracking = false
-        coreDataStack.saveContext()
     }
 }
