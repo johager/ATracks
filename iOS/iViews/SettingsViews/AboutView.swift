@@ -55,7 +55,16 @@ struct AboutView: View {
                 }
                 
                 Section {
-                    Text("The location and elevation data is obtained from the GPS in your device. You must allow ATracks to use your location. The app will first ask permission to \"Allow Once\" or \"Allow While Using App\". Select \"Allow While Using App\" so that your track can be followed. This will only allow tracking while the app is active. After you grant permission for \"Allow While Using App\" and start tracking, exit the app so that you can be prompted to allow background tracking by selecting \"Change to Always Allow.\" If you don't allow background tracking, the app will not provide accurate locations while you are tracking your activity if the app is not active.")
+                    Text("Location Set Up")
+                        .font(.title3)
+                        .bold()
+                        .foregroundColor(.headerText)
+                    Text("The location and elevation data is obtained from the GPS in your device. You must allow ATracks to track your location. Location access \"While Using the App\" will allow ATracks to track your location only when the app is active, and \"Always\" will allow ATracks to track your location while the app is in the background.")
+                    Text("The app will first ask permission to \"Allow Once\" or \"Allow While Using App\". Select \"Allow While Using App\" so that your track can be followed. This will only allow tracking while the app is active. After you grant permission for \"Allow While Using App\" and start tracking, exit the app so that you can be prompted to allow background tracking by selecting \"Change to Always Allow.\"")
+                    Text("Alternatively, you can go to the device Settings > ATracks > Location and select \"Always\".")
+                    Text("Steps Set Up")
+                        .font(.title3)
+                        .bold()
                     Text("The steps data is obtained from the Apple Health app, and you must allow ATracks to read \"Steps.\"")
                 } header: {
                     Text("Set Up")
@@ -81,8 +90,7 @@ struct AboutView: View {
                 .listRowSeparator(.hidden)
                 
                 Section {
-                    Text("The step data is not available from the Health App immediately, so there is always a lag in the data. Final data is usually available 24 hours after completing your activity.")
-                    Text("Note that this version of the app does not try to update steps after tracking stops. The app will be updated soon to do this.")
+                    Text("The step data is not available from the Health App immediately, so there is always a lag in the data. Final data is usually available a couple of hours after completing your activity.")
                 } header: {
                     Text("Steps")
                         .font(.title3)
