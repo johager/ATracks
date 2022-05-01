@@ -75,14 +75,10 @@ class LocationManager: NSObject {
         locationManager.stopUpdatingLocation()
     }
     
-    func startTracking(name: String? = nil) {
-        print("=== \(file).\(#function) ===")
+    func startTracking(name: String) {
+        print("=== \(file).\(#function) - name: '\(name)' ===")
         isTracking = true
-        
-        let trackName = name ?? Date().stringForTrackName
-        print("--- \(file).\(#function) - trackName: \(trackName)")
-        
-        track = TrackManager.shared.createTrack(name: trackName)
+        track = TrackManager.shared.createTrack(name: name)
     }
     
     func stopTracking() {

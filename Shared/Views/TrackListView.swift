@@ -17,6 +17,25 @@ struct TrackListView: View {
     #if os(iOS)
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     @State private var isShowingSettingsView = false
+    
+    @State private var isShowingAddEditTrackName = false
+    
+    @State private var trackBeingEdited: Track?
+    
+    @State private var trackName: String? = nil {
+        didSet {
+            if let trackName = trackName {
+                print("=== \(file).\(#function) didSet: '\(trackName)' ===")
+            } else {
+                print("=== \(file).\(#function) didSet: nil ===")
+            }
+        }
+    }
+    @State private var trackNameAlertTitle = ""
+    @State private var trackNameAlertMessage: String?
+    @State private var trackNameAlertDoneTitle = ""
+    @State private var trackNameAlertForAdd = true
+    
     private var stopTrackingText: String {
         if locationManagerSettings.useAutoStop {
             return "[Stop]"
@@ -64,10 +83,12 @@ struct TrackListView: View {
                             Label("Delete", systemImage: "trash.fill")
                         }
                         .tint(.listRowSwipeDelete)
+                        
                         Button(action: { edit(track) } ) {
                             Label("Edit", systemImage: "square.and.pencil")
                         }
                         .tint(.listRowSwipeEdit)
+                        
                         Button(action: { startTracking(useNameOf: track) } ) {
 //                            Label("Start", systemImage: "stopwatch")
                             Label("Start", systemImage: "timer")
@@ -76,7 +97,6 @@ struct TrackListView: View {
                     }
                     #endif
                 }
-//                .onDelete(perform: delete)
 //                .listRowBackground(Color.listRowSelectedBackground)
                 
             }
@@ -92,7 +112,7 @@ struct TrackListView: View {
                 HStack {
                     Spacer()
                     
-                    Button(action: { startTracking() }) {
+                    Button(action: startButtonTapped) {
                         Text("Start")
                     }
                     .disabled(isTracking)
@@ -100,7 +120,7 @@ struct TrackListView: View {
                     
                     Spacer()
                     
-                    Button(action: stopTracking) {
+                    Button(action: stopButtonTapped) {
                         Text(stopTrackingText)
                     }
                     .disabled(!isTracking)
@@ -143,44 +163,95 @@ struct TrackListView: View {
         .onReceive(NotificationCenter.default.publisher(for: .didStopTracking)) { _ in
             isTracking = false
         }
+        #if os(iOS)
+        .trackNameAlert(isPresented: $isShowingAddEditTrackName) {
+            return TrackNameAlert(title: $trackNameAlertTitle, message: $trackNameAlertMessage, text: $trackName, doneTitle: $trackNameAlertDoneTitle) { trackName in
+                handleAddEditTrackName(trackName)
+            }
+        }
+        #endif
     }
     
     // MARK: - Methods
     
-//    func delete(at offsets: IndexSet) {
-//        guard let index = offsets.first else { return }
-//        CoreDataStack.shared.context.delete(tracks[index])
-//        CoreDataStack.shared.saveContext()
-//    }
-    
     func delete(_ track: Track) {
-        print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) ===")
         CoreDataStack.shared.context.delete(track)
         CoreDataStack.shared.saveContext()
     }
     
     func edit(_ track: Track) {
-        print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) - name: \(track.name) ===")
+        #if os(iOS)
+        trackBeingEdited = track
+        trackName = track.name
+        trackNameAlertTitle = "Edit Track Name"
+        trackNameAlertMessage = "Set it blank to use the default track name."
+        trackNameAlertDoneTitle = "Save"
+        trackNameAlertForAdd = false
+        isShowingAddEditTrackName = true
+        #endif
     }
     
     func startTracking(useNameOf track: Track) {
-        print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) ===")
         startTracking(name: track.name)
     }
     
-    func startTracking(name: String? = nil) {
-        print("=== \(file).\(#function) ===")
+    func startButtonTapped() {
+        //print("=== \(file).\(#function) ===")
+        #if os(iOS)
+        trackName = nil
+        trackNameAlertTitle = "Add Track"
+        trackNameAlertMessage = "Leave blank for the default track name."
+        trackNameAlertDoneTitle = "Start Tracking"
+        trackNameAlertForAdd = true
+        isShowingAddEditTrackName = true
+        #endif
+    }
+    
+    func startTracking(name: String) {
+        //print("=== \(file).\(#function) - name: '\(name)' ===")
         #if os(iOS)
         LocationManager.shared.startTracking(name: name)
         isTracking = true
         #endif
     }
     
-    func stopTracking() {
-        print("=== \(file).\(#function) ===")
+    func stopButtonTapped() {
+        //print("=== \(file).\(#function) ===")
         #if os(iOS)
         LocationManager.shared.stopTracking()
         isTracking = false
+        #endif
+    }
+    
+    func handleAddEditTrackName(_ trackName: String?) {
+        // trackName == nil  : cancel was tapped
+        // trackName == ""   : use default
+        
+        #if os(iOS)
+        
+        defer {
+            trackBeingEdited = nil
+        }
+        
+        guard let trackName = trackName else { return }
+        
+        var name = trackName.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if trackNameAlertForAdd {
+            if name.isEmpty {
+                name = Date().stringForTrackName
+            }
+            startTracking(name: name)
+        } else {
+            guard let track = trackBeingEdited else { return }
+            if name.isEmpty {
+                name = track.date.stringForTrackName
+            }
+            TrackManager.shared.update(track, with: name)
+        }
         #endif
     }
 }
