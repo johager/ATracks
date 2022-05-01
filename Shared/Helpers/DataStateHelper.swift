@@ -11,7 +11,7 @@ import CoreData
 enum DataStateHelper {
     
     static let dataStateKey = "dataState"
-    static let dataStateCurrent = 4
+    static let dataStateCurrent = 5
     
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
@@ -27,6 +27,7 @@ enum DataStateHelper {
         //    2: Use dataStateKey to determine if userDefaultSettings have been set
         //    3: DataModel 2: Track altitude info and hasFinalSteps
         //    4: DataModel 3: Track.deviceName, deviceUUID, and isTracking
+        //    5: LocationManagerSettings.useDefaultTrackName
         
         let userDefaults = UserDefaults.standard
         
@@ -46,20 +47,27 @@ enum DataStateHelper {
         }
         
         let context = CoreDataStack.shared.context
+        var shouldSaveContext = false
         
         if dataStateSaved < 2 {
             userDefaults.removeObject(forKey: userDefaultsCreatedKey)
         }
         
         if dataStateSaved < 3 {
-            prepForDataState3(context:  context)
+            prepForDataState3(context: context, shouldSaveContext: &shouldSaveContext)
         }
         
         if dataStateSaved < 4 {
-            prepForDataState4(context:  context)
+            prepForDataState4(context: context, shouldSaveContext: &shouldSaveContext)
         }
         
-        CoreDataStack.shared.saveContext()
+        if dataStateSaved < 5 {
+            prepForDataState5()
+        }
+        
+        if shouldSaveContext {
+            CoreDataStack.shared.saveContext()
+        }
         
         setDataStateCurrent()
         userDefaults.synchronize()
@@ -82,7 +90,7 @@ enum DataStateHelper {
     
     // MARK: - Data State Conversion Methods
     
-    static func prepForDataState3(context:  NSManagedObjectContext) {
+    static func prepForDataState3(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
         // DataModel 2: Track altitude info and hasFinalSteps
         print("=== \(file).\(#function) ===")
         
@@ -90,6 +98,9 @@ enum DataStateHelper {
         
         do {
             let tracks = try context.fetch(fetchRequest)
+            if tracks.count > 0 {
+                shouldSaveContext = true
+            }
             for track in tracks {
                 track.setTrackSummaryData()
             }
@@ -98,7 +109,7 @@ enum DataStateHelper {
         }
     }
     
-    static func prepForDataState4(context:  NSManagedObjectContext) {
+    static func prepForDataState4(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
         // DataModel 3: Track.deviceName, deviceUUID, and isTracking
         print("=== \(file).\(#function) ===")
         
@@ -116,6 +127,9 @@ enum DataStateHelper {
         
         do {
             let tracks = try context.fetch(fetchRequest)
+            if tracks.count > 0 {
+                shouldSaveContext = true
+            }
             for track in tracks {
                 print("--- \(file).\(#function) - name: \(track.name), isTracking: \(track.isTracking)")
                 if let firstTrackPoint = track.trackPoints.first {
@@ -133,5 +147,13 @@ enum DataStateHelper {
         } catch let error as NSError {
             print("Fetch error: \(error.localizedDescription)\n---\n\(error.userInfo)")
         }
+    }
+    
+    static func prepForDataState5() {
+        // LocationManagerSettings.useDefaultTrackName
+        
+        #if os(iOS)
+        UserDefaults.standard.set(LocationManagerSettings.useDefaultTrackNameDefault, forKey: LocationManagerSettings.useDefaultTrackNameKey)
+        #endif
     }
 }

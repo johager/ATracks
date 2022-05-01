@@ -36,6 +36,8 @@ struct TrackListView: View {
     @State private var trackNameAlertDoneTitle = ""
     @State private var trackNameAlertForAdd = true
     
+    var defaultTrackName: String { Date().stringForTrackName }
+    
     private var stopTrackingText: String {
         if locationManagerSettings.useAutoStop {
             return "[Stop]"
@@ -201,6 +203,10 @@ struct TrackListView: View {
     func startButtonTapped() {
         //print("=== \(file).\(#function) ===")
         #if os(iOS)
+        if locationManagerSettings.useDefaultTrackName {
+            startTracking(name: defaultTrackName)
+            return
+        }
         trackName = nil
         trackNameAlertTitle = "Add Track"
         trackNameAlertMessage = "Leave blank for the default track name."
@@ -242,7 +248,7 @@ struct TrackListView: View {
         
         if trackNameAlertForAdd {
             if name.isEmpty {
-                name = Date().stringForTrackName
+                name = defaultTrackName
             }
             startTracking(name: name)
         } else {

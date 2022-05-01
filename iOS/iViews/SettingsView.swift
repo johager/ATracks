@@ -71,6 +71,7 @@ struct SettingsView: View {
             // Tracking Settings
             
             Section {
+                SwitchView(switchText: "Use Default Track Name", switchVal: $locationManagerSettings.useDefaultTrackName)
                 SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
 //                Text("Setting2")
 //                    .ignoresSafeArea()
