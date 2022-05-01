@@ -80,7 +80,7 @@ struct AboutView: View {
                     Text("The app can be set up to require that you \"Start\" and \"Stop\" tracking each excursion or have the app Auto-Stop the tracking.")
                     Text("Auto-Stop will stop the tracking if you are more than 20 yds away from your starting point more than 30 seconds after starting to track, and then return within 8 yds of your starting point.")
                 } header: {
-                    Text("Tracking - Auto Stop")
+                    Text("Tracking & Auto Stop")
                         .font(.title3)
                         .bold()
                         .foregroundColor(.headerText)
