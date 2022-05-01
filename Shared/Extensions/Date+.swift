@@ -27,4 +27,11 @@ extension Date {
         dateFormatter.timeZone = TimeZone(abbreviation: timezone)
         return dateFormatter.string(from: self)
     }
+    
+    func stringForTrackName(timezone: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd, h:mm a"
+        dateFormatter.timeZone = TimeZone(abbreviation: timezone)
+        return dateFormatter.string(from: self)
+    }
 }

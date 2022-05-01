@@ -49,6 +49,7 @@ class Track: NSManagedObject, Identifiable {
     }
     
     var dateString: String { date.stringForTrack(timezone: timezone) }
+    var defaultName: String { date.stringForTrackName(timezone: timezone) }
     
     var trackPoints: [TrackPoint] {
         guard let trackPointsSet = trackPointsSet as? Set<TrackPoint> else { return [] }

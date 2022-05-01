@@ -248,7 +248,7 @@ struct TrackListView: View {
         } else {
             guard let track = trackBeingEdited else { return }
             if name.isEmpty {
-                name = track.date.stringForTrackName
+                name = track.defaultName
             }
             TrackManager.shared.update(track, with: name)
         }
