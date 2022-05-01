@@ -45,6 +45,14 @@ class TrackManager {
         return track
     }
     
+    func update(_ track: Track, with name: String) {
+        if name == track.name {
+            return
+        }
+        track.name = name
+        coreDataStack.saveContext()
+    }
+    
     func updateSteps() {
         print("=== \(file).\(#function) ===")
         #if os(iOS)

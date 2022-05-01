@@ -36,6 +36,20 @@ extension Color {
         return color(light: medium3Green, dark: darkGreen)
     }
     
+    static var listRowSwipeDelete: Color {
+        let lightColor = Color(red: 0.9, green: 0, blue: 0)
+        let darkColor = Color(red: 0.75, green: 0, blue: 0)
+        return color(light: lightColor, dark: darkColor)
+    }
+    
+    static var listRowSwipeEdit: Color {
+        return color(light: avantiOrange, dark: darkOrange)
+    }
+    
+    static var listRowSwipeStart: Color {
+        return color(light: mediumGreen, dark: darkGreen)
+    }
+    
     static var navigationShadow: Color {
         return color(light: avantiGreen, dark: dark2Green)
     }
@@ -110,7 +124,7 @@ extension Color {
     
     static var track: Color {
         let lightColor = Color(red: 0.9, green: 0, blue: 0)
-        let darkColor = Color(red: 0.95, green: 0, blue: 0)
+        let darkColor = Color(red: 0.75, green: 0, blue: 0)
         return color(light: lightColor, dark: darkColor)
     }
     
@@ -170,6 +184,7 @@ extension Color {
     static let light2Green = Color(red: 242/255.0, green: 246/255.0, blue: 246/255.0)  // 95% white
 
     static let avantiOrange = Color(red: 230/255.0, green: 160/255.0, blue: 12/255.0)
+    static let darkOrange = Color(red: 150/255.0, green: 104/255.0, blue: 9/255.0)  // 35% black
     
     static let lightGray = Color(white: 245/255.0)
 }

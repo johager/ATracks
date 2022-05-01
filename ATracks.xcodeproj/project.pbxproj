@@ -89,6 +89,7 @@
 		F8E00683281B7A9E00FD679C /* HealthKitDateOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00682281B7A9E00FD679C /* HealthKitDateOptions.swift */; };
 		F8E00685281CA1FF00FD679C /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00684281CA1FF00FD679C /* DeviceType.swift */; };
 		F8E00686281CA1FF00FD679C /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00684281CA1FF00FD679C /* DeviceType.swift */; };
+		F8E0068E281EC7F700FD679C /* AddEditTrackName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */; };
 		F8F686FC2814E7B000991442 /* DataStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F686FB2814E7B000991442 /* DataStateHelper.swift */; };
 		F8F686FD2814E7B000991442 /* DataStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F686FB2814E7B000991442 /* DataStateHelper.swift */; };
 		F8F686FF2814E99B00991442 /* LocationManagerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F686FE2814E99B00991442 /* LocationManagerSettings.swift */; };
@@ -176,6 +177,7 @@
 		F8E0067F281B375A00FD679C /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
 		F8E00682281B7A9E00FD679C /* HealthKitDateOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitDateOptions.swift; sourceTree = "<group>"; };
 		F8E00684281CA1FF00FD679C /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
+		F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditTrackName.swift; sourceTree = "<group>"; };
 		F8F686FB2814E7B000991442 /* DataStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStateHelper.swift; sourceTree = "<group>"; };
 		F8F686FE2814E99B00991442 /* LocationManagerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerSettings.swift; sourceTree = "<group>"; };
 		F8F687012814EA8300991442 /* SwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchView.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 		F868D6AC280EF06800EC3D30 /* iViews */ = {
 			isa = PBXGroup;
 			children = (
+				F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */,
 				F8D3FFCC2819A5FB00887790 /* LocationServicesView.swift */,
 				F868D697280DF99400EC3D30 /* MapView.swift */,
 				F868D6C7280F6C5000EC3D30 /* SettingsView.swift */,
@@ -590,6 +593,7 @@
 				F868D6E328109BA300EC3D30 /* Notification.Name+.swift in Sources */,
 				F868D698280DF99400EC3D30 /* MapView.swift in Sources */,
 				F868D67E280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
+				F8E0068E281EC7F700FD679C /* AddEditTrackName.swift in Sources */,
 				F868D6E628109CA200EC3D30 /* Key.swift in Sources */,
 				F868D65A280DAD4600EC3D30 /* ATracksApp.swift in Sources */,
 				F8233CA82811AA2100536A0F /* Int32+.swift in Sources */,
@@ -798,7 +802,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30c;
+				CURRENT_PROJECT_VERSION = 30e;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -836,7 +840,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30c;
+				CURRENT_PROJECT_VERSION = 30e;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -876,7 +880,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 25c;
+				CURRENT_PROJECT_VERSION = 25e;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -905,7 +909,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 25c;
+				CURRENT_PROJECT_VERSION = 25e;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
