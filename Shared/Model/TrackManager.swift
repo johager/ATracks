@@ -88,13 +88,12 @@ class TrackManager {
         coreDataStack.saveContext()
     }
     
-    func stopTrackingAndDelete(_ track: Track) {
-        track.isTracking = false
-        viewContext.delete(track)
-        coreDataStack.saveContext()
-    }
-    
     func delete(_ track: Track) {
+        #if os(iOS)
+        if track.isTracking {
+            LocationManager.shared.stopTracking(forDelete: true)
+        }
+        #endif
         viewContext.delete(track)
         coreDataStack.saveContext()
     }

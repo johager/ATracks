@@ -178,11 +178,7 @@ struct TrackListView: View {
     
     func delete(_ track: Track) {
         //print("=== \(file).\(#function) ===")
-        if track.isTracking {
-            LocationManager.shared.stopTracking(andDelete: true)
-        } else {
-            TrackManager.shared.delete(track)
-        }
+        TrackManager.shared.delete(track)
     }
     
     func edit(_ track: Track) {
