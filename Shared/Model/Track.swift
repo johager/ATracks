@@ -26,6 +26,7 @@ class Track: NSManagedObject, Identifiable {
     @NSManaged var isTracking: Bool
     @NSManaged var name: String
     @NSManaged var steps: Int32
+    @NSManaged var timezone: String
     
     @NSManaged var trackPointsSet: NSSet?
     
@@ -47,7 +48,6 @@ class Track: NSManagedObject, Identifiable {
         }
     }
     
-    let timezone = "MDT"
     var dateString: String { date.stringForTrack(timezone: timezone) }
     
     var trackPoints: [TrackPoint] {
@@ -66,6 +66,7 @@ class Track: NSManagedObject, Identifiable {
         self.deviceUUID = deviceUUID
         self.date = date
         self.isTracking = isTracking
+        self.timezone = TimeZone.current.abbreviation() ?? "GMT"
     }
     
     // MARK: - Methods

@@ -178,6 +178,7 @@
 		F8E00682281B7A9E00FD679C /* HealthKitDateOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitDateOptions.swift; sourceTree = "<group>"; };
 		F8E00684281CA1FF00FD679C /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
 		F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditTrackName.swift; sourceTree = "<group>"; };
+		F8E0068F281F0F5A00FD679C /* ATracks 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ATracks 4.xcdatamodel"; sourceTree = "<group>"; };
 		F8F686FB2814E7B000991442 /* DataStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStateHelper.swift; sourceTree = "<group>"; };
 		F8F686FE2814E99B00991442 /* LocationManagerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerSettings.swift; sourceTree = "<group>"; };
 		F8F687012814EA8300991442 /* SwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchView.swift; sourceTree = "<group>"; };
@@ -802,7 +803,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30e;
+				CURRENT_PROJECT_VERSION = 30f;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -840,7 +841,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30e;
+				CURRENT_PROJECT_VERSION = 30f;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -880,7 +881,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 25e;
+				CURRENT_PROJECT_VERSION = 25f;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -909,7 +910,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 25e;
+				CURRENT_PROJECT_VERSION = 25f;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1015,11 +1016,12 @@
 		F868D66B280DAE3200EC3D30 /* ATracks.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				F8E0068F281F0F5A00FD679C /* ATracks 4.xcdatamodel */,
 				F8F687A8281979AC00991442 /* ATracks 3.xcdatamodel */,
 				F8F68774281851F800991442 /* ATracks 2.xcdatamodel */,
 				F868D66C280DAE3200EC3D30 /* ATracks.xcdatamodel */,
 			);
-			currentVersion = F8F687A8281979AC00991442 /* ATracks 3.xcdatamodel */;
+			currentVersion = F8E0068F281F0F5A00FD679C /* ATracks 4.xcdatamodel */;
 			path = ATracks.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

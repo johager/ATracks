@@ -22,6 +22,7 @@ class CoreDataStack: NSObject {
     
     var context: NSManagedObjectContext { persistentContainer.viewContext }
     
+    //lazy var persistentContainer: NSPersistentContainer = {
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let container = NSPersistentCloudKitContainer(name: modelName)
         container.persistentStoreDescriptions.first?.url = persistentStoreURL
