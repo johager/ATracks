@@ -11,7 +11,7 @@ import CoreData
 enum DataStateHelper {
     
     static let dataStateKey = "dataState"
-    static let dataStateCurrent = 5
+    static let dataStateCurrent = 6
     
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
@@ -28,6 +28,7 @@ enum DataStateHelper {
         //    3: DataModel 2: Track altitude info and hasFinalSteps
         //    4: DataModel 3: Track.deviceName, deviceUUID, and isTracking
         //    5: LocationManagerSettings.useDefaultTrackName
+        //    6: DisplaySettings
         
         let userDefaults = UserDefaults.standard
         
@@ -65,6 +66,10 @@ enum DataStateHelper {
             prepForDataState5()
         }
         
+        if dataStateSaved < 6 {
+            DisplaySettings.shared.setDefaults()
+        }
+        
         if shouldSaveContext {
             CoreDataStack.shared.saveContext()
         }
@@ -83,6 +88,7 @@ enum DataStateHelper {
     
     static func setUserDefaultSettings() {
         print("=== \(file).\(#function) ===")
+        DisplaySettings.shared.setDefaults()
         #if os(iOS)
         LocationManagerSettings.shared.setDefaults()
         #endif

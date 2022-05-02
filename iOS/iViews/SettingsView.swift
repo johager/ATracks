@@ -10,6 +10,7 @@ import MessageUI
 
 struct SettingsView: View {
     
+    @ObservedObject var displaySettings = DisplaySettings.shared
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
@@ -80,13 +81,25 @@ struct SettingsView: View {
 
             } header: {
                 Text("Tracking Settings")
-                    .font(.title3)
-                    .bold()
-                    .foregroundColor(.headerText)
-                    .kerning(1)
-                    .textCase(.uppercase)
+                    .settingsHeader
             }
 ////            .listRowBackground(Color.red.edgesIgnoringSafeArea(.all))
+            ///
+
+            // Display Settings
+            
+            Section {
+                SwitchView(switchText: "Map Satellite View", switchVal: $displaySettings.mapViewSatellite)
+                SwitchView(switchText: "Map On Right In Landscape", switchVal: $displaySettings.placeMapOnRightInLandscape)
+//                Text("Setting2")
+//                    .ignoresSafeArea()
+//                    .listRowBackground(Color.headerBackground)
+//                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
+
+            } header: {
+                Text("Display Settings")
+                    .settingsHeader
+            }
             
 //            SettingsSectionView(title: "Tracking Settings")
 //            
@@ -144,6 +157,7 @@ struct SettingsView: View {
         .alert("Reset All Settings", isPresented: $isShowingResetSettings) {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) {
+                displaySettings.setDefaults()
                 locationManagerSettings.setDefaults()
             }
         } message: {

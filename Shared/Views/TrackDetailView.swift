@@ -31,6 +31,11 @@ struct TrackDetailView: View {
         GeometryReader {  geometry in
             if shouldShowSideBySide(for: geometry) {
                 HStack(spacing: 0) {
+                    if DisplaySettings.shared.placeMapOnRightInLandscape {
+                        DetailsOnRightView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                        VerticalRectangleDivider()
+                    }
+                    
                     ZStack {
                         MapView(track: track)
                             .edgesIgnoringSafeArea([.trailing, .leading, .bottom])
@@ -49,25 +54,13 @@ struct TrackDetailView: View {
                     }
                     .frame(width: geometry.size.width * 0.6)
                     
-                    Rectangle()
-                        .edgesIgnoringSafeArea([.top, .bottom])
-                        .foregroundColor(.border)
-                        .frame(width: 0.5)
-                    
-                    VStack(spacing: 0) {
-                        Spacer()
-                        TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
-                        Spacer()
-                        Rectangle()
-                            .edgesIgnoringSafeArea([.trailing, .leading])
-                            .foregroundColor(.border)
-                            .frame(height: 0.5)
-                        Spacer()
-                        TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
+                    if !DisplaySettings.shared.placeMapOnRightInLandscape {
+                        VerticalRectangleDivider()
+                        DetailsOnRightView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                     }
                 }
                 
-            } else {
+            } else {  // not sideBySide
                 VStack(spacing: 0) {
                     TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                     Rectangle()
@@ -127,6 +120,40 @@ struct TrackDetailView: View {
         LocationManager.shared.stopTracking()
     }
     #endif
+}
+
+struct VerticalRectangleDivider: View {
+    
+    var body: some View {
+        Rectangle()
+            .edgesIgnoringSafeArea([.top, .bottom])
+            .foregroundColor(.border)
+            .frame(width: 0.5)
+    }
+}
+
+struct DetailsOnRightView: View {
+    
+    @ObservedObject var track: Track
+    @Binding var hasSafeAreaInsets: Bool
+    
+    private var showIsTracking: Bool { track.isTracking && track.deviceUUID == Func.deviceUUID }
+    
+    // MARK: - View
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
+            Spacer()
+            Rectangle()
+                .edgesIgnoringSafeArea([.trailing, .leading])
+                .foregroundColor(.border)
+                .frame(height: 0.5)
+            Spacer()
+            TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
+        }
+    }
 }
 
 // MARK: - Previews

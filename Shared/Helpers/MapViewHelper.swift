@@ -120,6 +120,12 @@ class MapViewHelper: NSObject {
         mapView.isPitchEnabled = false
         mapView.showsCompass = true
         
+        if DisplaySettings.shared.mapViewSatellite {
+            mapView.mapType = .hybrid
+        } else {
+            mapView.mapType = .standard
+        }
+        
         view.addSubview(mapView)
         mapView.pin(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor)
         

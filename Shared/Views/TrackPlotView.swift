@@ -21,6 +21,31 @@ struct TrackPlotView: View {
     
     private var deviceType: DeviceType { DeviceType.current() }
     private var isPad: Bool { deviceType == .pad }
+    private var onRight: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
+    
+    private var leadingSpace: CGFloat {
+        if displayOnSide {
+            if hasSafeAreaInsets {
+                return onRight ? 8 : 16
+            } else {
+                return 16
+            }
+        } else {
+            return 32
+        }
+    }
+
+    private var trailingSpace: CGFloat {
+        if displayOnSide {
+            if hasSafeAreaInsets {
+                return onRight ? 16 : 8
+            } else {
+                return 16
+            }
+        } else {
+            return 32
+        }
+    }
     
     // MARK: - Init
     
@@ -135,8 +160,8 @@ struct TrackPlotView: View {
         }
         .font(.footnote.monospacedDigit())
         .foregroundColor(.text)
-        .padding(.leading, displayOnSide ? 16 : 32)
-        .padding(.trailing, displayOnSide ? (hasSafeAreaInsets ? 8 : 16) : 32)
+        .padding(.leading, leadingSpace)
+        .padding(.trailing, trailingSpace)
     }
     
     // MARK: - Methods

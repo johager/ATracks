@@ -40,11 +40,7 @@ struct AboutView: View {
                         }
                     } header: {
                         Text("About")
-                            .font(.title3)
-                            .bold()
-                            .foregroundColor(.headerText)
-                            .kerning(1)
-                            .textCase(.uppercase)
+                            .settingsHeader
                     }
                     .listRowSeparator(.hidden)
                 } else {
@@ -56,23 +52,16 @@ struct AboutView: View {
                 
                 Section {
                     Text("Location Set Up")
-                        .font(.title3)
-                        .bold()
-                        .foregroundColor(.headerText)
+                        .settingsSubHeader
                     Text("The location and elevation data is obtained from the GPS in your device. You must allow ATracks to track your location. Location access \"While Using the App\" will allow ATracks to track your location only when the app is active, and \"Always\" will allow ATracks to track your location while the app is in the background.")
                     Text("The app will first ask permission to \"Allow Once\" or \"Allow While Using App\". Select \"Allow While Using App\" so that your track can be followed. This will only allow tracking while the app is active. After you grant permission for \"Allow While Using App\" and start tracking, exit the app so that you can be prompted to allow background tracking by selecting \"Change to Always Allow.\"")
                     Text("Alternatively, you can go to the device Settings > ATracks > Location and select \"Always\".")
                     Text("Steps Set Up")
-                        .font(.title3)
-                        .bold()
+                        .settingsSubHeader
                     Text("The steps data is obtained from the Apple Health app, and you must allow ATracks to read \"Steps.\"")
                 } header: {
                     Text("Set Up")
-                        .font(.title3)
-                        .bold()
-                        .foregroundColor(.headerText)
-                        .kerning(1)
-                        .textCase(.uppercase)
+                        .settingsHeader
                 }
                 .listRowSeparator(.hidden)
                 
@@ -81,11 +70,7 @@ struct AboutView: View {
                     Text("Auto-Stop will stop the tracking if you are more than 20 yds away from your starting point more than 30 seconds after starting to track, and then return within 8 yds of your starting point.")
                 } header: {
                     Text("Tracking & Auto Stop")
-                        .font(.title3)
-                        .bold()
-                        .foregroundColor(.headerText)
-                        .kerning(1)
-                        .textCase(.uppercase)
+                        .settingsHeader
                 }
                 .listRowSeparator(.hidden)
                 
@@ -93,11 +78,7 @@ struct AboutView: View {
                     Text("The step data is not available from the Health App immediately, so there is always a lag in the data. Final data is usually available a couple of hours after completing your activity.")
                 } header: {
                     Text("Steps")
-                        .font(.title3)
-                        .bold()
-                        .foregroundColor(.headerText)
-                        .kerning(1)
-                        .textCase(.uppercase)
+                        .settingsHeader
                 }
                 .listRowSeparator(.hidden)
             }

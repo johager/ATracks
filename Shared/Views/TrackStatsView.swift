@@ -15,6 +15,31 @@ struct TrackStatsView: View {
     
     private var deviceType: DeviceType { DeviceType.current() }
     private var isPhone: Bool { deviceType == .phone }
+    private var onRight: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
+    
+    private var leadingSpace: CGFloat {
+        if displayOnSide {
+            if hasSafeAreaInsets {
+                return onRight ? 8 : 16
+            } else {
+                return 16
+            }
+        } else {
+            return 32
+        }
+    }
+
+    private var trailingSpace: CGFloat {
+        if displayOnSide {
+            if hasSafeAreaInsets {
+                return onRight ? 16 : 8
+            } else {
+                return 16
+            }
+        } else {
+            return 32
+        }
+    }
     
     // MARK: - Init
     
@@ -88,9 +113,8 @@ struct TrackStatsView: View {
                     }
                 }
                 .padding([.top, .bottom], 8)
-                .padding(.leading, displayOnSide ? 16 : 32)
-                .padding(.trailing, displayOnSide ? 8 : 32)
-                .padding(.trailing, displayOnSide ? (hasSafeAreaInsets ? 8 : 16) : 32)
+                .padding(.leading, leadingSpace)
+                .padding(.trailing, trailingSpace)
             }
         }
         .font(.footnote)
