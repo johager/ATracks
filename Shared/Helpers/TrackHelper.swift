@@ -30,7 +30,11 @@ class TrackHelper {
     var yAxisMax: Double!
     var yAxisDelta: Double!
     var yAxisScale: Double!
-    var yAxisNumGridLines: Int16 = 0
+    var yAxisNumGridLines: Int16 = 0 {
+        didSet {
+            print("=== \(file).\(#function) - didSet: \(yAxisNumGridLines) ===")
+        }
+    }
     
     var hasAltitudeData: Bool { yAxisNumGridLines > 0 }
     
@@ -322,5 +326,11 @@ class TrackHelper {
         NotificationCenter.default.post(name: .showInfoForLocation, object: nil, userInfo: userInfo)
         
         return true
+    }
+    
+    // MARK: - Static Methods
+    
+    static func trackIsTrackingOnThisDevice(_ track: Track) -> Bool {
+        return track.isTracking && track.deviceUUID == TrackManager.shared.deviceUUID
     }
 }

@@ -12,7 +12,7 @@ struct TrackDetailView: View {
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
     
-    private var showIsTracking: Bool { track.isTracking && track.deviceUUID == Func.deviceUUID }
+    private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
     #if os(iOS)
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
@@ -40,7 +40,7 @@ struct TrackDetailView: View {
                         MapView(track: track)
                             .edgesIgnoringSafeArea([.trailing, .leading, .bottom])
                         #if os(iOS)
-                        if showIsTracking {
+                        if trackIsTrackingOnThisDevice {
                             VStack {
                                 Spacer()
                                 Button(action: stopTracking) {
@@ -71,7 +71,7 @@ struct TrackDetailView: View {
                         MapView(track: track)
                                 .edgesIgnoringSafeArea([.trailing, .leading])
                         #if os(iOS)
-                        if showIsTracking {
+                        if trackIsTrackingOnThisDevice {
                             VStack {
                                 Spacer()
                                 Button(action: stopTracking) {
@@ -136,8 +136,6 @@ struct DetailsOnRightView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
-    
-    private var showIsTracking: Bool { track.isTracking && track.deviceUUID == Func.deviceUUID }
     
     // MARK: - View
     

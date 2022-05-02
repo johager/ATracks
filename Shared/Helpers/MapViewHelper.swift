@@ -22,7 +22,7 @@ class MapViewHelper: NSObject {
     
     var track: Track!
     
-    private var showIsTracking: Bool { track.isTracking && track.deviceUUID == Func.deviceUUID }
+    private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
     private var lastTrackPoint: TrackPoint?
     
@@ -176,7 +176,7 @@ class MapViewHelper: NSObject {
     
     private func setUpTracking() {
         #if os(iOS)
-        if showIsTracking {
+        if trackIsTrackingOnThisDevice {
             setMapToTrack()
         } else {
             setMapNoTrack()
