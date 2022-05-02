@@ -58,7 +58,8 @@ struct TrackListResultsView: View {
         let fetchRequest = Track.fetchRequest
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]
         if !searchText.isEmpty {
-            fetchRequest.predicate = NSPredicate(format: "%K CONTAINS [c] %@", Track.nameKey, searchText)
+            //fetchRequest.predicate = NSPredicate(format: "%K CONTAINS [c] %@", Track.nameKey, searchText)
+            fetchRequest.predicate = SearchHelper().predicate(from: searchText)
         }
         _tracks = FetchRequest(fetchRequest:fetchRequest, animation: .default)
     }

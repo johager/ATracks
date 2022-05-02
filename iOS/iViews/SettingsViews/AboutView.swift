@@ -81,6 +81,17 @@ struct AboutView: View {
                         .settingsHeader
                 }
                 .listRowSeparator(.hidden)
+                
+                Section {
+                    Text("Search tracks by track name by pulling down on the track list to reveal the search bar.")
+                    Text("The search is case-insensitive.")
+                    Text("Search for exact matches by placing the search text in quotes.")
+                    Text("Ignore items by prefacing the search text with a minus sign.")
+                } header: {
+                    Text("Search")
+                        .settingsHeader
+                }
+                .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
             
