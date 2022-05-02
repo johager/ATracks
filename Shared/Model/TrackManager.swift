@@ -88,14 +88,21 @@ class TrackManager {
         coreDataStack.saveContext()
     }
     
-    func delete(_ track: Track) {
-        #if os(iOS)
+    func didDelete(_ track: Track) -> Bool {
+        
         if track.isTracking {
+            // don't delete a track when isTracking on another device
+            guard track.deviceName == deviceName else { return false }
+            
+            #if os(iOS)
             LocationManager.shared.stopTracking(forDelete: true)
+            #endif
         }
-        #endif
+        
         viewContext.delete(track)
         coreDataStack.saveContext()
+        
+        return true
     }
     
     // MARK: - CRUD for TrackPoints

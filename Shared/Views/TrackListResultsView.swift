@@ -13,6 +13,7 @@ struct TrackListResultsView: View {
     
     @State private var isTracking = false
 //    @State private var selectedTrack: Track?
+    @State private var isShowingDeleteAlert = false
     
     #if os(iOS)
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
@@ -160,13 +161,18 @@ struct TrackListResultsView: View {
             }
         }
         #endif
+        .alert("You cannot delete a track when another device is actively tracking it.", isPresented: $isShowingDeleteAlert) {
+            Button("OK", role: .cancel) { }
+        }
     }
     
     // MARK: - Methods
     
     func delete(_ track: Track) {
         //print("=== \(file).\(#function) ===")
-        TrackManager.shared.delete(track)
+        if !TrackManager.shared.didDelete(track) {
+            isShowingDeleteAlert = true
+        }
     }
     
     func edit(_ track: Track) {
