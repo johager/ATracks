@@ -33,6 +33,7 @@ class Track: NSManagedObject, Identifiable {
     // MARK: - Static Properties
     
     static let dateKey = "date"
+    static let nameKey = "name"
     
     // MARK: - Properties
 
