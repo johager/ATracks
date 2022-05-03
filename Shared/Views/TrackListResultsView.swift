@@ -68,7 +68,7 @@ struct TrackListResultsView: View {
     // MARK: - View
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             List() {
                 ForEach(tracks) { track in
                     ZStack(alignment: .leading) {
@@ -108,6 +108,7 @@ struct TrackListResultsView: View {
                 
             }
             .listStyle(.plain)
+            .padding(.bottom, 0)
             
             #if os(iOS)
             VStack(spacing: 0) {

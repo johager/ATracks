@@ -23,6 +23,7 @@ struct TrackPlotView: View {
     
     private var deviceType: DeviceType { DeviceType.current() }
     private var isPad: Bool { deviceType == .pad }
+    private var isPhone: Bool { deviceType == .phone }
     private var placeMapOnRightInLandscape: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
     
     private var leadingSpace: CGFloat {
@@ -119,7 +120,7 @@ struct TrackPlotView: View {
                             HStack {
                                 ZStack {
                                     ForEach((0...trackHelper.yAxisNumGridLines), id: \.self) {
-                                        let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height)
+                                        let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height, deviceType: deviceType)
                                         Text(text)
                                             .offset(x: offset.x, y: offset.y)
                                     }
@@ -164,11 +165,7 @@ struct TrackPlotView: View {
             .frame(height: 90)
             .padding(.bottom, hasSafeAreaInsets ? (displayOnSide ? 8 : (isPad ? 8 : 0)) : 16)
         }
-        #if os(iOS)
-        .font(.footnote.monospacedDigit())
-        #else
-        .font(.body.monospacedDigit())
-        #endif
+        .font(isPhone ? .footnote.monospacedDigit() : .body.monospacedDigit())
         .foregroundColor(.text)
         .padding(.leading, leadingSpace)
         .padding(.trailing, trailingSpace)

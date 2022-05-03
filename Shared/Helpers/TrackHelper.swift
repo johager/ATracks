@@ -284,13 +284,20 @@ class TrackHelper {
         return (xVals, yVals)
     }
     
-    func gridLabelInfo(forIndex index: Int16, andPlotHeight plotHeight: CGFloat) -> (text: String, offset: CGPoint) {
+    func gridLabelInfo(forIndex index: Int16, andPlotHeight plotHeight: CGFloat, deviceType: DeviceType) -> (text: String, offset: CGPoint) {
         
         let y = gridY(for: index)
         let yVal = yFor(y)
         
         let text = y.stringAsInt
-        let offset = CGPoint(x: 6, y: plotHeight * (1 - yVal) - 17)
+        
+        let dy: CGFloat
+        if deviceType == .pad {
+            dy = 20.5
+        } else {
+            dy = 17
+        }
+        let offset = CGPoint(x: 6, y: plotHeight * (1 - yVal) - dy)
         
         //print("=== \(file).\(#function) - yVal: \(yVal), text: \(text), offset: \(offset) ===")
         

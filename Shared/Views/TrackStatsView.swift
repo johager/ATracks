@@ -117,11 +117,7 @@ struct TrackStatsView: View {
                 .padding(.trailing, trailingSpace)
             }
         }
-        #if os(iOS)
-        .font(.footnote)
-        #else
-        .font(.body)
-        #endif
+        .font(isPhone ? .footnote : .body)
         .foregroundColor(.text)
         #if os(iOS)
         .task {

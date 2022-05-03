@@ -29,6 +29,8 @@ class MapViewHelper: NSObject {
     private var startPointAnnotation: MKPointAnnotation!
     private var trackPointAnnotation: MKPointAnnotation!
     
+    private var isPhone: Bool { DeviceType.current() == .phone }
+    
     private var region: MKCoordinateRegion {
         guard let trackPointsSet = track.trackPointsSet,
               trackPointsSet.count > 1
@@ -168,7 +170,7 @@ class MapViewHelper: NSObject {
     func addLatLonLabel() {
         #if os(iOS)
         trackPointCalloutLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote)
+        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: isPhone ? .footnote : .body)
         let monospacedNumbersDescriptor = descriptor.addingAttributes([
             UIFontDescriptor.AttributeName.featureSettings: [
                 [UIFontDescriptor.FeatureKey.type: kNumberSpacingType,

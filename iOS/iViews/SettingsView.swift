@@ -13,6 +13,8 @@ struct SettingsView: View {
     @ObservedObject var displaySettings = DisplaySettings.shared
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     
+//    @State var isShowingCannotRecommendAlert = false
+    
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
     
@@ -40,6 +42,17 @@ struct SettingsView: View {
                 Text("About")
             }
             .listRowSeparatorTint(.listRowSeparator)
+            
+//            Button(action: { showRecommend() }) {
+//                HStack {
+//                    Text("Recommend ATracks")
+//                        .foregroundColor(recommendColor())
+//                    Spacer()
+//                    NavigationLink.empty
+//                }
+//            }
+//            .disabled(!UIApplication.shared.canOpenURL(AppInfo.appStoreURL))
+//            .listRowSeparatorTint(.listRowSeparator)
             
             Button(action: { isShowingMailView = true }) {
                 HStack {
@@ -145,6 +158,12 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
         #endif
         
+//        .alert("Cannot Connect", isPresented: $isShowingCannotRecommendAlert) {
+//            Button("OK", role: .cancel) { }
+//        } message: {
+//            Text("Sorry, we can't connect to the App Store now. Please try again later.")
+//        }
+        
         .onChange(of: isShowingMailView) { _ in
             handleMFMailComposeResult()
         }
@@ -169,6 +188,14 @@ struct SettingsView: View {
     
     // MARK: - Methods
     
+//    func recommendColor() -> Color {
+//        if UIApplication.shared.canOpenURL(AppInfo.appStoreURL) {
+//            return .text
+//        } else {
+//            return .textInactive
+//        }
+//    }
+    
     func supportColor() -> Color {
         if MFMailComposeViewController.canSendMail() {
             return .text
@@ -176,6 +203,15 @@ struct SettingsView: View {
             return .textInactive
         }
     }
+    
+//    func showRecommend() {
+//        if UIApplication.shared.canOpenURL(AppInfo.appStoreURL) {
+//            UIApplication.shared.open(AppInfo.appStoreURL)
+//            return
+//        }
+//
+//        isShowingCannotRecommendAlert = true
+//    }
     
     func handleMFMailComposeResult() {
         //print("=== \(file).\(#function) ===")
