@@ -182,7 +182,7 @@ struct TrackListResultsView: View {
         trackBeingEdited = track
         trackName = track.name
         trackNameAlertTitle = "Edit Track Name"
-        trackNameAlertMessage = "Set it blank to use the default track name."
+        trackNameAlertMessage = "Set it blank to use the default, timestamp track name."
         trackNameAlertDoneTitle = "Save"
         trackNameAlertForAdd = false
         isShowingAddEditTrackName = true
@@ -203,8 +203,8 @@ struct TrackListResultsView: View {
         }
         trackName = nil
         trackNameAlertTitle = "Add Track"
-        trackNameAlertMessage = "Leave blank for the default track name."
-        trackNameAlertDoneTitle = "Start Tracking"
+        trackNameAlertMessage = "Leave blank for the default, timestamp track name."
+        trackNameAlertDoneTitle = "Start"
         trackNameAlertForAdd = true
         isShowingAddEditTrackName = true
         #endif

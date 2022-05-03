@@ -52,7 +52,8 @@ class TrackNameAlertViewController: UIViewController {
             textField.text = self.text.wrappedValue
             textField.placeholder = "Track name..."
             textField.autocorrectionType = .no
-            textField.autocapitalizationType = .none
+            textField.autocapitalizationType = .words
+            textField.smartQuotesType = .no
             textField.clearButtonMode = .always
         }
         
@@ -79,6 +80,8 @@ class TrackNameAlertViewController: UIViewController {
     }
 }
 
+// MARK: -
+
 struct TrackNameAlert {
     
     // MARK: Properties
@@ -95,6 +98,8 @@ struct TrackNameAlert {
     }
 }
 
+// MARK: -
+
 extension TrackNameAlert: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = TrackNameAlertViewController
@@ -107,6 +112,8 @@ extension TrackNameAlert: UIViewControllerRepresentable {
         // no update needed
     }
 }
+
+// MARK: -
 
 struct TrackNameAlertWrapper<PresentingView: View>: View {
     
@@ -123,6 +130,8 @@ struct TrackNameAlertWrapper<PresentingView: View>: View {
         }
     }
 }
+
+// MARK: -
 
 extension View {
     func trackNameAlert(isPresented: Binding<Bool>, content: @escaping () -> TrackNameAlert) -> some View {
