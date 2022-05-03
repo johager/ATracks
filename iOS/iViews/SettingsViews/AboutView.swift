@@ -93,9 +93,7 @@ struct AboutView: View {
                 
                 Section {
                     Text("Search tracks by track name by pulling down on the track list to reveal the search bar.")
-                    Text("The search is not case-sensitive.")
-                    Text("Search for exact matches by placing the search text in quotes.")
-                    Text("Ignore items by prefacing the search text with a minus sign.")
+                    Text("The search is not case-sensitive, and supports partial, exact\u{00a0}(\"\"), AND\u{00a0}(+), and NOT\u{00a0}(-) searching.")
                 } header: {
                     Text("Search")
                         .settingsHeader

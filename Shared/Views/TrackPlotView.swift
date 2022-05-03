@@ -164,7 +164,11 @@ struct TrackPlotView: View {
             .frame(height: 90)
             .padding(.bottom, hasSafeAreaInsets ? (displayOnSide ? 8 : (isPad ? 8 : 0)) : 16)
         }
+        #if os(iOS)
         .font(.footnote.monospacedDigit())
+        #else
+        .font(.body.monospacedDigit())
+        #endif
         .foregroundColor(.text)
         .padding(.leading, leadingSpace)
         .padding(.trailing, trailingSpace)
