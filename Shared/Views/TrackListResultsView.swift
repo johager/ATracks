@@ -22,21 +22,21 @@ struct TrackListResultsView: View {
     
     @State private var trackBeingEdited: Track?
     
-    @State private var trackName: String? = nil {
-        didSet {
-            if let trackName = trackName {
-                print("=== \(file).\(#function) didSet: '\(trackName)' ===")
-            } else {
-                print("=== \(file).\(#function) didSet: nil ===")
-            }
-        }
-    }
+    @State private var trackName: String? = nil
     @State private var trackNameAlertTitle = ""
     @State private var trackNameAlertMessage: String?
     @State private var trackNameAlertDoneTitle = ""
     @State private var trackNameAlertForAdd = true
     
     var defaultTrackName: String { Date().stringForTrackName }
+    
+    private var startTrackingText: String {
+        if locationManagerSettings.useDefaultTrackName {
+            return "Start"
+        } else {
+            return "Start\u{2026}"
+        }
+    }
     
     private var stopTrackingText: String {
         if locationManagerSettings.useAutoStop {
@@ -121,7 +121,7 @@ struct TrackListResultsView: View {
                     Spacer()
                     
                     Button(action: startButtonTapped) {
-                        Text("Start")
+                        Text(startTrackingText)
                     }
                     .disabled(isTracking)
                     .buttonStyle(AAButtonStyle(isEnabled: !isTracking))
