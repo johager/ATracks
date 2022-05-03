@@ -54,7 +54,7 @@ struct TrackListResultsView: View {
     // MARK: - Init
     
     init(hasSafeAreaInsets: Binding<Bool>, searchText: String) {
-        print("=== TrackListResultsView.\(#function) - searchText: '\(searchText)' ===")
+        //print("=== TrackListResultsView.\(#function) - searchText: '\(searchText)' ===")
         self._hasSafeAreaInsets = hasSafeAreaInsets
         let fetchRequest = Track.fetchRequest
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]

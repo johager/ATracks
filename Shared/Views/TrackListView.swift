@@ -37,9 +37,6 @@ struct TrackListView: View {
             .frame(minWidth: 250)
 //            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Track name..."))
             .searchable(text: $searchText, prompt: Text("Track name..."))
-            .onChange(of: searchText) { _ in
-                print("=== \(file).\(#function) - searchText: '\(searchText)' ===")
-            }
         #if os(iOS)
         NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) { EmptyView() }
         #endif
