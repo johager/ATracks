@@ -20,12 +20,8 @@ struct TrackRow: View {
                 Text(track.name)
                     .font(.body.monospacedDigit())
                     .foregroundColor(.text)
-                if track.isFault {
-                    Text("")
-                } else {
-                    Text(track.dateString)
-                        .offset(x: 16)
-                }
+                Text(track.dateString)
+                    .offset(x: 16)
             }
             Spacer()
             VStack(alignment: .leading, spacing: 4) {

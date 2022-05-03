@@ -49,7 +49,13 @@ class Track: NSManagedObject, Identifiable {
         }
     }
     
-    var dateString: String { date.stringForTrack(timezone: timezone) }
+    var dateString: String {
+        if isFault {
+            return ""
+        }
+        return date.stringForTrack(timezone: timezone)
+    }
+    
     var defaultName: String { date.stringForTrackName(timezone: timezone) }
     
     var trackPoints: [TrackPoint] {

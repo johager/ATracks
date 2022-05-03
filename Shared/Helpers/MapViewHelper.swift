@@ -33,20 +33,44 @@ class MapViewHelper: NSObject {
         guard let trackPointsSet = track.trackPointsSet,
               trackPointsSet.count > 1
         else {
+            #if os(iOS)
+            if trackIsTrackingOnThisDevice {
+                if let location = LocationManager.shared.location {
+                    return MKCoordinateRegion(
+                        center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),
+                        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                    )
+                }
+            }
+            #endif
             return MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: 37.33, longitude: -122.01),
-                span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
+                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             )
         }
         
-        let trackCoordinates = track.trackPoints.map { $0.clLocationCoordinate2D }
-        let trackLats = trackCoordinates.map { $0.latitude }
-        let trackLons = trackCoordinates.map { $0.longitude }
+        #if os(iOS)
+        if trackIsTrackingOnThisDevice {
+            if let location = LocationManager.shared.location {
+                return MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),
+                    span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                )
+            }
+        }
+        #endif
         
-        let minLat = trackLats.min()!
-        let maxLat = trackLats.max()!
-        let minLon = trackLons.min()!
-        let maxLon = trackLons.max()!
+        var minLat: Double = 100
+        var maxLat: Double = -100
+        var minLon: Double = 200
+        var maxLon: Double = -200
+        
+        for trackPoint in track.trackPoints {
+            minLat = min(minLat, trackPoint.latitude)
+            maxLat = max(maxLat, trackPoint.latitude)
+            minLon = min(minLon, trackPoint.longitude)
+            maxLon = max(maxLon, trackPoint.longitude)
+        }
         
         return MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2, longitude: (minLon + maxLon) / 2),
@@ -64,7 +88,6 @@ class MapViewHelper: NSObject {
         #elseif os(macOS)
             return CLLocationCoordinate2D(latitude: 37.33, longitude: -122.01)
         #endif
-        
     }
     
     lazy var file = Func.sourceFileNameFromFullPath(#file)
@@ -203,10 +226,19 @@ class MapViewHelper: NSObject {
         mapView.userTrackingMode = .followWithHeading
         let mapCamera = MKMapCamera(lookingAtCenter: center, fromDistance: 1500, pitch: 0, heading: 0)
         mapView.camera = mapCamera
-//        mapView.cameraZoomRange = MKMapView.CameraZoomRange(minCenterCoordinateDistance: 1000)
+        mapView.cameraZoomRange = MKMapView.CameraZoomRange(minCenterCoordinateDistance: 1000)
         #endif
         
         lastTrackPoint = track.trackPoints.last
+        
+        Func.afterDelay(0.7) {
+            self.centerMap()
+        }
+    }
+    
+    func centerMap() {
+        print("=== \(file).\(#function) ===")
+        mapView.setRegion(region, animated: true)
     }
     
     func moveTrackMarker(to clLocationCoordinate2D: CLLocationCoordinate2D) {

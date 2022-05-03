@@ -8,7 +8,13 @@
 import Foundation
 import MapKit
 
-class MapViewCoordinator: NSObject, MKMapViewDelegate {
+#if os(iOS)
+import UIKit
+#else
+import AppKit
+#endif
+
+class MapViewCoordinator: NSObject {
     
     var parent: MapView
     
@@ -16,9 +22,24 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
     
     init(_ parent: MapView) {
         self.parent = parent
+        super.init()
+        #if os(iOS)
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        #else
+        let gestureRecognizer = NSClickGestureRecognizer(target: self, action: #selector(handleTap))
+        #endif
+        parent.mapViewHelper.mapView.addGestureRecognizer(gestureRecognizer)
     }
     
     // MARK: - Methods
+    
+    @objc func handleTap(_ gesture: Any) {
+        print("=== \(file).\(#function) ===")
+        parent.mapViewHelper.centerMap()
+    }
+}
+
+extension MapViewCoordinator: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
@@ -34,7 +55,7 @@ class MapViewCoordinator: NSObject, MKMapViewDelegate {
         return MKOverlayRenderer()
     }
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {        
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "annotationID")
         
         if let aaPointAnnotation = annotation as? AAPointAnnotation {
