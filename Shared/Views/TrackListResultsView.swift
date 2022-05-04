@@ -156,6 +156,7 @@ struct TrackListResultsView: View {
             isTracking = false
         }
         #if os(iOS)
+        .ignoresSafeArea(.keyboard)
         .trackNameAlert(isPresented: $isShowingAddEditTrackName) {
             return TrackNameAlert(title: $trackNameAlertTitle, message: $trackNameAlertMessage, text: $trackName, doneTitle: $trackNameAlertDoneTitle) { trackName in
                 handleAddEditTrackName(trackName)

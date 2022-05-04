@@ -22,6 +22,7 @@ struct BlankView: View {
             #endif
         }
         #if os(iOS)
+        .ignoresSafeArea(.keyboard)
         .navigationBarTitleDisplayMode(.inline)
         #endif
     }

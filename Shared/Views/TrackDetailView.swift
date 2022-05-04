@@ -93,6 +93,7 @@ struct TrackDetailView: View {
         }
         .navigationTitle(track.name)
         #if os(iOS)
+        .ignoresSafeArea(.keyboard)
         .navigationBarTitleDisplayMode(.inline)
         #endif
     }
