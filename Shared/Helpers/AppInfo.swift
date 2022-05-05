@@ -19,7 +19,7 @@ enum AppInfo {
     
     static var codeVersionAndBundle: String { "\(version)_\(bundle)" }
     
-    static let appStoreURL = URL(string: "")!
+    static let appStoreURL = URL(string: "itms-apps://itunes.apple.com/us/app/atracks/id1619330372")!
     
     static let copyrightYear = "2022"
     

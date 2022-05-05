@@ -18,7 +18,8 @@ struct AboutView: View {
     
     let introText: [String] = [
         "ATracks records location, elevation, and step data for your outdoor activities. Data is stored locally so that you'll always have it, and data is synched to other devices with the same Apple ID so you can view your excursions on larger screens.",
-        "Your data is stored in your own private iCloud account, and no one without access to your Apple ID can access that data."
+        "Your data is stored in your own private iCloud account, and no one without access to your Apple ID can access that data.",
+        "Step data is obtained from the Apple Health app."
     ]
     
     // MARK: - View

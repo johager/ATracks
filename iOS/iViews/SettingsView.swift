@@ -13,7 +13,8 @@ struct SettingsView: View {
     @ObservedObject var displaySettings = DisplaySettings.shared
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     
-//    @State var isShowingCannotRecommendAlert = false
+    @State var isShowingCannotRecommendAlert = false
+    @State var isShowingCannotSendMail = false
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
@@ -24,15 +25,11 @@ struct SettingsView: View {
     
     @State var isShowingResetSettings = false
     
-//    @State var mapDisplayOption = "Regular"
-//    let mapDisplayOptions = ["Regular", "Satellite"]
-    
     let file = "SettingsView"
     
     // MARK: - View
     
     var body: some View {
-//        Form {
         List() {
             CodeVersionView()
             
@@ -43,21 +40,20 @@ struct SettingsView: View {
             }
             .listRowSeparatorTint(.listRowSeparator)
             
-//            Button(action: { showRecommend() }) {
-//                HStack {
-//                    Text("Recommend ATracks")
-//                        .foregroundColor(recommendColor())
-//                    Spacer()
-//                    NavigationLink.empty
-//                }
-//            }
-//            .disabled(!UIApplication.shared.canOpenURL(AppInfo.appStoreURL))
-//            .listRowSeparatorTint(.listRowSeparator)
+            Button(action: { showRecommend() }) {
+                HStack {
+                    Text("Recommend ATracks")
+                        .foregroundColor(.text)
+                    Spacer()
+                    NavigationLink.empty
+                }
+            }
+            .listRowSeparatorTint(.listRowSeparator)
             
-            Button(action: { isShowingMailView = true }) {
+            Button(action: { showMail() }) {
                 HStack {
                     Text("Support")
-                        .foregroundColor(supportColor())
+                        .foregroundColor(.text)
                     Spacer()
                     NavigationLink.empty
                 }
@@ -65,7 +61,6 @@ struct SettingsView: View {
             .sheet(isPresented: $isShowingMailView) {
                 MailView(result: self.$result)
             }
-            .disabled(!MFMailComposeViewController.canSendMail())
             .listRowSeparatorTint(.listRowSeparator)
             
             NavigationLink(destination: LegalView()) {
@@ -87,82 +82,39 @@ struct SettingsView: View {
             Section {
                 SwitchView(switchText: "Use Default Track Name", switchVal: $locationManagerSettings.useDefaultTrackName)
                 SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
-//                Text("Setting2")
-//                    .ignoresSafeArea()
-//                    .listRowBackground(Color.headerBackground)
-//                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
-
             } header: {
                 Text("Tracking Settings")
                     .settingsHeader
             }
-////            .listRowBackground(Color.red.edgesIgnoringSafeArea(.all))
-            ///
 
             // Display Settings
             
             Section {
                 SwitchView(switchText: "Map Satellite View", switchVal: $displaySettings.mapViewSatellite)
                 SwitchView(switchText: "Map On Right In Landscape", switchVal: $displaySettings.placeMapOnRightInLandscape)
-//                Text("Setting2")
-//                    .ignoresSafeArea()
-//                    .listRowBackground(Color.headerBackground)
-//                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
 
             } header: {
                 Text("Display Settings")
                     .settingsHeader
             }
-            
-//            SettingsSectionView(title: "Tracking Settings")
-//            
-//            SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
-            
-//            // Map Settings
-//
-//            Section {
-//
-//                Picker(selection: $mapDisplayOption, label: Text("Map Display Option")) {
-//                    ForEach(mapDisplayOptions, id: \.self) { option in
-//                        Text(option)
-//                    }
-//                }
-//
-//
-////                Text("Setting2")
-////                    .ignoresSafeArea()
-////                    .listRowBackground(Color.headerBackground)
-////                    .listRowInsets(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 16))
-//
-//
-//            } header: {
-//                Text("Map Settings")
-////                    .font(.headline)
-//                    .font(.title3)
-//                    .bold()
-//                    .foregroundColor(.headerText)
-//                    .kerning(1)
-//                    .textCase(.uppercase)
-//
-////                    .listRowInsets(EdgeInsets(top: -8, leading: 0, bottom: 0, trailing: 0))
-//            }
-////            .listRowBackground(Color.headerBackground)
-////            .headerProminence(.increased)
-////            .background(Color.red)
         }
-        
-//        .ignoresSafeArea()
         .listStyle(.plain)
         .navigationTitle("Settings")
         #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
         #endif
         
-//        .alert("Cannot Connect", isPresented: $isShowingCannotRecommendAlert) {
-//            Button("OK", role: .cancel) { }
-//        } message: {
-//            Text("Sorry, we can't connect to the App Store now. Please try again later.")
-//        }
+        .alert("Cannot Connect", isPresented: $isShowingCannotRecommendAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Sorry, we can't connect to the App Store now. Please try again later.")
+        }
+        
+        .alert("Cannot Send Mail", isPresented: $isShowingCannotSendMail) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Sorry, your device is not set up to send mail.")
+        }
         
         .onChange(of: isShowingMailView) { _ in
             handleMFMailComposeResult()
@@ -182,39 +134,33 @@ struct SettingsView: View {
         } message: {
             Text("Reset all settings to the default values?")
         }
-//        }
-//        .background(Color.listRowSelectedBackground)
     }
     
     // MARK: - Methods
     
-//    func recommendColor() -> Color {
-//        if UIApplication.shared.canOpenURL(AppInfo.appStoreURL) {
-//            return .text
-//        } else {
-//            return .textInactive
-//        }
-//    }
-    
-    func supportColor() -> Color {
-        if MFMailComposeViewController.canSendMail() {
-            return .text
-        } else {
-            return .textInactive
+    func showRecommend() {
+
+        guard UIApplication.shared.canOpenURL(AppInfo.appStoreURL)
+        else {
+            isShowingCannotRecommendAlert = true
+            return
         }
+
+        UIApplication.shared.open(AppInfo.appStoreURL)
     }
     
-//    func showRecommend() {
-//        if UIApplication.shared.canOpenURL(AppInfo.appStoreURL) {
-//            UIApplication.shared.open(AppInfo.appStoreURL)
-//            return
-//        }
-//
-//        isShowingCannotRecommendAlert = true
-//    }
+    func showMail() {
+        
+        guard MFMailComposeViewController.canSendMail()
+        else {
+            isShowingCannotSendMail = true
+            return
+        }
+        
+        isShowingMailView = true
+    }
     
     func handleMFMailComposeResult() {
-        //print("=== \(file).\(#function) ===")
         
         guard !isShowingMailView,
               let result = result

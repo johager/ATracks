@@ -13,7 +13,7 @@ extension Color {
     }
     
     static var border: Color {
-        return color(light: medium2Green, dark: dark2Green)
+        return color(light: medium2Green, dark: darkGreen)
     }
     
     static var headerBackground: Color {

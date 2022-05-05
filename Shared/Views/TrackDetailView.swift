@@ -38,7 +38,7 @@ struct TrackDetailView: View {
                     
                     ZStack {
                         MapView(track: track)
-                            .edgesIgnoringSafeArea([.trailing, .leading, .bottom])
+                            .edgesIgnoringSafeArea(.all)
                         #if os(iOS)
                         if trackIsTrackingOnThisDevice {
                             VStack {
@@ -69,7 +69,7 @@ struct TrackDetailView: View {
                         .frame(height: 0.5)
                     ZStack {
                         MapView(track: track)
-                                .edgesIgnoringSafeArea([.trailing, .leading])
+                            .edgesIgnoringSafeArea([.top, .trailing, .leading])
                         #if os(iOS)
                         if trackIsTrackingOnThisDevice {
                             VStack {
