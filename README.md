@@ -23,3 +23,13 @@ The app was developed using Swift and SwiftUI. Some features required bridging t
 ### Technology
 
 Swift, SwiftUI, AppKit, UIKit, CoreData, CoreLocation, HealthKit, MapKit
+
+### iOS App Screen Shots
+
+![Track List](https://avantiapplications.com/images/at_ss1_tracks_01_half.png)
+
+![Track Detail](https://avantiapplications.com/images/at_ss2_track_01_half.png)
+
+### App Store
+
+The iOS version was released to the App Store on May 5, 2022 https://itunes.apple.com/us/app/atracks/id1619330372
