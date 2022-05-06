@@ -32,4 +32,4 @@ Swift, SwiftUI, AppKit, UIKit, CoreData, CoreLocation, HealthKit, MapKit
 
 ### App Store
 
-The iOS version was released to the App Store on May 5, 2022 https://itunes.apple.com/us/app/atracks/id1619330372
+The iOS version was released to the App Store on May 5, 2022. Get it at https://itunes.apple.com/us/app/atracks/id1619330372
