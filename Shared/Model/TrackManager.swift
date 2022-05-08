@@ -65,26 +65,43 @@ class TrackManager {
         print("=== \(file).\(#function) ===")
         #if os(iOS)
         
+        // dateForHasFinalSteps: if find steps, set hasFinalSteps true when stopDate < dateForHasFinalSteps
+        // dateForForceHasFinalSteps: if don't find steps, set hasFinalSteps true when stopDate < dateForForceHasFinalSteps
+        
+        guard let dateForHasFinalSteps = Calendar.current.date(byAdding: .day, value: -1, to: Date()),
+              let dateForForceHasFinalSteps = Calendar.current.date(byAdding: .day, value: -14, to: Date())
+        else { return }
+        
         let fetchRequest = Track.fetchRequest
+        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Track.hasFinalStepsKey, NSNumber(value: false), Track.isTrackingKey, NSNumber(value: false))
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
         do {
             let tracks = try viewContext.fetch(fetchRequest)
             for track in tracks {
-                print("--- \(file).\(#function) - name: \(track.name), isTracking: \(track.isTracking)")
-                if track.isTracking {
-                    continue
-                }
+                let trackName = "\(track.name) (\(track.defaultName))"
+                print("--- \(file).\(#function) - name: \(trackName)")
+                
                 guard let stopDate = track.trackPoints.last?.timestamp else { continue }
                 let startDate = track.date
                 
                 Task.init {
-                    guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: startDate, andEndingAt: stopDate, dateOptions: .start) else { return }
+                    let numSteps = await HealthKitManager.shared.readSteps(beginningAt: startDate, andEndingAt: stopDate, dateOptions: .start)
                     viewContext.performAndWait {
-                        print("--- \(file).\(#function) - name: \(track.name), steps saved/new: \(track.steps)/\(numSteps)")
-                        track.steps = numSteps
-                        track.hasFinalSteps = true
-                        coreDataStack.saveContext()
+                        if let numSteps = numSteps {
+                            let hasFinalStepsToSet = stopDate < dateForHasFinalSteps
+                            print("--- \(file).\(#function) - name: \(trackName), steps saved/new: \(track.steps)/\(numSteps), hasFinalStepsToSet: \(hasFinalStepsToSet)")
+                            track.steps = numSteps
+                            track.hasFinalSteps = stopDate < dateForHasFinalSteps
+                            coreDataStack.saveContext()
+                        } else {
+                            let hasFinalStepsToSet = stopDate < dateForForceHasFinalSteps
+                            print("--- \(file).\(#function) - name: \(trackName), hasFinalStepsToSet: \(hasFinalStepsToSet)")
+                            if hasFinalStepsToSet {
+                                track.hasFinalSteps = stopDate < dateForHasFinalSteps
+                                coreDataStack.saveContext()
+                            }
+                        }
                     }
                 }
             }

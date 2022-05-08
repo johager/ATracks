@@ -103,12 +103,12 @@ struct TrackStatsView: View {
                         VStack(alignment: .trailing, spacing: 4) {
                             Text("Distance: ")
                             Text("Steps: ")
-                                .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                                .foregroundColor(track.hasFinalSteps ? .text : .textNoData)
                         }
                         VStack(alignment: .leading, spacing: 4) {
                             Text("\(String(format: "%.2f", track.distance)) mi")
                             Text(track.steps.stringWithNA)
-                                .foregroundColor(track.hasFinalSteps ? .text : .textInactive)
+                                .foregroundColor(track.hasFinalSteps ? .text : .textNoData)
                         }
                     }
                 }

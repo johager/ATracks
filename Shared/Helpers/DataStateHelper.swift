@@ -11,7 +11,7 @@ import CoreData
 enum DataStateHelper {
     
     static let dataStateKey = "dataState"
-    static let dataStateCurrent = 7
+    static let dataStateCurrent = 8
     
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
@@ -30,6 +30,7 @@ enum DataStateHelper {
         //    5: LocationManagerSettings.useDefaultTrackName
         //    6: DisplaySettings
         //    7: DisplaySettings.placeButtonsOnRightInLandscape
+        //    8: New Track.hasFinalSteps
         
         let userDefaults = UserDefaults.standard
         
@@ -40,6 +41,8 @@ enum DataStateHelper {
             userDefaults.synchronize()
             return
         }
+        
+        //UserDefaults.standard.set(7, forKey: dataStateKey)
         
         let dataStateSaved = savedDataState()
         print("=== \(file).\(#function) - dataState saved/current: \(dataStateSaved)/\(dataStateCurrent) ===")
@@ -75,6 +78,10 @@ enum DataStateHelper {
             prepForDataState7()
         }
         
+        if dataStateSaved < 8 {
+            prepForDataState8(context: context, shouldSaveContext: &shouldSaveContext)
+        }
+        
         if shouldSaveContext {
             CoreDataStack.shared.saveContext()
         }
@@ -97,6 +104,29 @@ enum DataStateHelper {
         #if os(iOS)
         LocationManagerSettings.shared.setDefaults()
         #endif
+    }
+    
+    static func performBatchUpdate(_ batchUpdateRequest: NSBatchUpdateRequest, in context: NSManagedObjectContext, purpose: String? = nil) {
+        
+        if let purpose = purpose {
+            let entityName = batchUpdateRequest.entityName
+            print("=== \(file).\(#function) - \(entityName): \(purpose) ===")
+        }
+        
+        batchUpdateRequest.resultType = .updatedObjectIDsResultType
+        
+        do {
+            let result = try context.execute(batchUpdateRequest) as? NSBatchUpdateResult
+            
+            guard let objectIDArray = result?.result as? [NSManagedObjectID] else { return }
+            
+            let changes = [NSUpdatedObjectsKey : objectIDArray]
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+            
+        } catch {
+            let updateError = error as NSError
+            print("\(updateError), \(updateError.userInfo)")
+        }
     }
     
     // MARK: - Data State Conversion Methods
@@ -168,12 +198,33 @@ enum DataStateHelper {
         #endif
     }
     
-    static func prepForDataState7(){
+    static func prepForDataState7() {
         // DisplaySettings.placeButtonsOnRightInLandscape
         print("=== \(file).\(#function) ===")
         
         #if os(iOS)
         UserDefaults.standard.set(DisplaySettings.placeButtonsOnRightInLandscapeDefault, forKey: DisplaySettings.placeButtonsOnRightInLandscapeKey)
         #endif
+    }
+    
+    //
+    static func prepForDataState8(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
+        // New Track.hasFinalSteps
+        print("=== \(file).\(#function) ===")
+        
+        guard DeviceType.current() == .phone else { return }
+        
+        let batchUpdateRequest = NSBatchUpdateRequest(entityName: DataType.track.entityName)
+        batchUpdateRequest.predicate = NSPredicate(format: "%K == %@", Track.altitudeIsValidKey, NSNumber(value: true))
+        batchUpdateRequest.propertiesToUpdate = [Track.hasFinalStepsKey: false]
+        
+        performBatchUpdate(batchUpdateRequest, in: context, purpose: "Set hasFinalSteps false for altitudeIsValid")
+        
+        batchUpdateRequest.predicate = NSPredicate(format: "%K == %@", Track.altitudeIsValidKey, NSNumber(value: false))
+        batchUpdateRequest.propertiesToUpdate = [Track.hasFinalStepsKey: true]
+        
+        performBatchUpdate(batchUpdateRequest, in: context, purpose: "Set hasFinalSteps true for !altitudeIsValid")
+        
+        shouldSaveContext = true
     }
 }

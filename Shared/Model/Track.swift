@@ -32,7 +32,10 @@ class Track: NSManagedObject, Identifiable {
     
     // MARK: - Static Properties
     
+    static let altitudeIsValidKey = "altitudeIsValid"
     static let dateKey = "date"
+    static let hasFinalStepsKey = "hasFinalSteps"
+    static let isTrackingKey = "isTracking"
     static let nameKey = "name"
     
     // MARK: - Properties
