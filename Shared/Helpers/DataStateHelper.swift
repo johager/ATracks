@@ -210,6 +210,12 @@ enum DataStateHelper {
     //
     static func prepForDataState8(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
         // New Track.hasFinalSteps
+        
+        #if targetEnvironment(simulator)
+        print("=== \(file).\(#function) - simulator ===")
+        return
+        #endif
+        
         print("=== \(file).\(#function) ===")
         
         guard DeviceType.current() == .phone else { return }

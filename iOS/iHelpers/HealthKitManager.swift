@@ -32,6 +32,10 @@ class HealthKitManager {
     
     func requestPermission() async -> Bool {
         
+        #if targetEnvironment(simulator)
+        return false
+        #endif
+        
         guard HKHealthStore.isHealthDataAvailable() else { return false }
 
         let stepsCount = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
