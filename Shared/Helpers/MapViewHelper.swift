@@ -232,14 +232,18 @@ class MapViewHelper: NSObject {
         #endif
         
         lastTrackPoint = track.trackPoints.last
-        
-        Func.afterDelay(0.7) {
-            self.centerMap()
-        }
     }
     
     func centerMap() {
         print("=== \(file).\(#function) ===")
+        
+        #if os(iOS)
+        if trackIsTrackingOnThisDevice {
+            setMapToTrack()
+            return
+        }
+        #endif
+        
         mapView.setRegion(region, animated: true)
     }
     
