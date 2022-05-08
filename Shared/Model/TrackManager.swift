@@ -54,6 +54,14 @@ class TrackManager {
     }
     
     func updateSteps() {
+        #if os(iOS)
+        CoreDataStack.shared.context.perform {
+            self.doUpdateSteps()
+        }
+        #endif
+    }
+    
+    func doUpdateSteps() {
         print("=== \(file).\(#function) ===")
         #if os(iOS)
         
@@ -67,13 +75,17 @@ class TrackManager {
                 if track.isTracking {
                     continue
                 }
-                guard let endDate = track.trackPoints.last?.timestamp else { continue }
+                guard let stopDate = track.trackPoints.last?.timestamp else { continue }
+                let startDate = track.date
                 
                 Task.init {
-                    guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, andEndingAt: endDate, dateOptions: .start) else { return }
-                    print("--- \(file).\(#function) - name: \(track.name), steps saved/new: \(track.steps)/\(numSteps)")
-                    track.steps = numSteps
-                    track.hasFinalSteps = true
+                    guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: startDate, andEndingAt: stopDate, dateOptions: .start) else { return }
+                    viewContext.performAndWait {
+                        print("--- \(file).\(#function) - name: \(track.name), steps saved/new: \(track.steps)/\(numSteps)")
+                        track.steps = numSteps
+                        track.hasFinalSteps = true
+                        coreDataStack.saveContext()
+                    }
                 }
             }
         } catch {

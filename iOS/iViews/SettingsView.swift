@@ -90,6 +90,7 @@ struct SettingsView: View {
             // Display Settings
             
             Section {
+                SwitchView(switchText: "Start/Stop On Right In Landscape", switchVal: $displaySettings.placeButtonsOnRightInLandscape)
                 SwitchView(switchText: "Map Satellite View", switchVal: $displaySettings.mapViewSatellite)
                 SwitchView(switchText: "Map On Right In Landscape", switchVal: $displaySettings.placeMapOnRightInLandscape)
 

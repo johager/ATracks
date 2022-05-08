@@ -11,7 +11,7 @@ import CoreData
 enum DataStateHelper {
     
     static let dataStateKey = "dataState"
-    static let dataStateCurrent = 6
+    static let dataStateCurrent = 7
     
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
@@ -29,6 +29,7 @@ enum DataStateHelper {
         //    4: DataModel 3: Track.deviceName, deviceUUID, and isTracking
         //    5: LocationManagerSettings.useDefaultTrackName
         //    6: DisplaySettings
+        //    7: DisplaySettings.placeButtonsOnRightInLandscape
         
         let userDefaults = UserDefaults.standard
         
@@ -68,6 +69,10 @@ enum DataStateHelper {
         
         if dataStateSaved < 6 {
             DisplaySettings.shared.setDefaults()
+        }
+        
+        if dataStateSaved < 7 {
+            prepForDataState7()
         }
         
         if shouldSaveContext {
@@ -160,6 +165,15 @@ enum DataStateHelper {
         
         #if os(iOS)
         UserDefaults.standard.set(LocationManagerSettings.useDefaultTrackNameDefault, forKey: LocationManagerSettings.useDefaultTrackNameKey)
+        #endif
+    }
+    
+    static func prepForDataState7(){
+        // DisplaySettings.placeButtonsOnRightInLandscape
+        print("=== \(file).\(#function) ===")
+        
+        #if os(iOS)
+        UserDefaults.standard.set(DisplaySettings.placeButtonsOnRightInLandscapeDefault, forKey: DisplaySettings.placeButtonsOnRightInLandscapeKey)
         #endif
     }
 }

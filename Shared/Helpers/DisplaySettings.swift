@@ -13,6 +13,9 @@ class DisplaySettings: ObservableObject {
     static let mapViewSatelliteKey = "mapViewSatellite"
     static let mapViewSatelliteDefault = false
     
+    static let placeButtonsOnRightInLandscapeKey = "placeButtonsOnRightInLandscape"
+    static let placeButtonsOnRightInLandscapeDefault = false
+    
     static let placeMapOnRightInLandscapeKey = "placeMapOnRightInLandscape"
     static let placeMapOnRightInLandscapeDefault = false
     
@@ -25,6 +28,16 @@ class DisplaySettings: ObservableObject {
             UserDefaults.standard.synchronize()
         }
     }
+    
+    #if os(iOS)
+    @Published var placeButtonsOnRightInLandscape: Bool {
+        didSet {
+            print("=== \(file).\(#function) didSet - \(placeButtonsOnRightInLandscape) ===")
+            UserDefaults.standard.set(placeButtonsOnRightInLandscape, forKey: DisplaySettings.placeButtonsOnRightInLandscapeKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    #endif
     
     @Published var placeMapOnRightInLandscape: Bool {
         didSet {
@@ -41,6 +54,9 @@ class DisplaySettings: ObservableObject {
     init() {
         let userDefaults = UserDefaults.standard
         mapViewSatellite = userDefaults.bool(forKey: DisplaySettings.mapViewSatelliteKey)
+        #if os(iOS)
+        placeButtonsOnRightInLandscape = userDefaults.bool(forKey: DisplaySettings.placeButtonsOnRightInLandscapeKey)
+        #endif
         placeMapOnRightInLandscape = userDefaults.bool(forKey: DisplaySettings.placeMapOnRightInLandscapeKey)
     }
     
@@ -48,6 +64,9 @@ class DisplaySettings: ObservableObject {
     
     func setDefaults() {
         mapViewSatellite = DisplaySettings.mapViewSatelliteDefault
+        #if os(iOS)
+        placeButtonsOnRightInLandscape = DisplaySettings.placeButtonsOnRightInLandscapeDefault
+        #endif
         placeMapOnRightInLandscape = DisplaySettings.placeMapOnRightInLandscapeDefault
     }
 }

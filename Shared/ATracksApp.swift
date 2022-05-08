@@ -100,12 +100,11 @@ struct ATracksApp: App {
     
     func doSpecialStartUp() {
         let coreDataStack = CoreDataStack.shared
-        let context = coreDataStack.context
         
         let fetchRequest = Track.fetchRequest
         
         do {
-            let tracks = try context.fetch(fetchRequest)
+            let tracks = try coreDataStack.context.fetch(fetchRequest)
             print("=== \(file).\(#function) - tracks.count: \(tracks.count) ===")
             
             for track in tracks {

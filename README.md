@@ -22,7 +22,7 @@ The app was developed using Swift and SwiftUI. Some features required bridging t
 
 ### Technology
 
-Swift, SwiftUI, AppKit, UIKit, CoreData, CoreLocation, HealthKit, MapKit
+Swift, SwiftUI, AppKit, UIKit, CoreData, CoreLocation, HealthKit, MapKit, XCTest
 
 ### iOS App Screen Shots
 

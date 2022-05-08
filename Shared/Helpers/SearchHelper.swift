@@ -15,10 +15,9 @@ class SearchHelper {
     var match = false
     var pieceChars = [Character]()
     
-    var firstPredicateComponent = true
     var predicate: NSPredicate!
     
-    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    //lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     func resetParams() {
         inWord = false
@@ -88,9 +87,8 @@ class SearchHelper {
         
         //print("--- \(file).\(#function) - newPredicateComponent: \(newPredicateComponent)")
         
-        if firstPredicateComponent {
+        if predicate == nil {
             predicate = newPredicateComponent
-            firstPredicateComponent = false
             
         } else {
             if and || not {

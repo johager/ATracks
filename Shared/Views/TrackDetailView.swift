@@ -29,11 +29,11 @@ struct TrackDetailView: View {
     
     var body: some View {
         GeometryReader {  geometry in
-            if shouldShowSideBySide(for: geometry) {
+            if geometry.isLandscape {
                 HStack(spacing: 0) {
                     if DisplaySettings.shared.placeMapOnRightInLandscape {
-                        DetailsOnRightView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
-                        VerticalRectangleDivider()
+                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                        VerticalDividerView()
                     }
                     
                     ZStack {
@@ -55,12 +55,12 @@ struct TrackDetailView: View {
                     .frame(width: geometry.size.width * 0.6)
                     
                     if !DisplaySettings.shared.placeMapOnRightInLandscape {
-                        VerticalRectangleDivider()
-                        DetailsOnRightView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                        VerticalDividerView()
+                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                     }
                 }
                 
-            } else {  // not sideBySide
+            } else {  // geometry is portrait
                 VStack(spacing: 0) {
                     TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                     Rectangle()
@@ -100,21 +100,6 @@ struct TrackDetailView: View {
     
     // MARKL - Methods
     
-    func shouldShowSideBySide(for geometry: GeometryProxy) -> Bool {
-//        #if os(iOS)
-        let file = "TrackDetailView"
-        let deviceType = DeviceType.current()
-        let gSize = geometry.size
-        print("=== \(file).\(#function) - deviceType: \(deviceType) ===")
-        print("=== \(file).\(#function) - gSize width/height: \(gSize.width)/\(gSize.height) ===")
-//        print("=== \(file).\(#function) - \(deviceType == .phone && gSize.width > gSize.height) ===")
-//        return deviceType == .phone && gSize.width > gSize.height
-        return gSize.width > gSize.height
-//        #else
-//        return false
-//        #endif
-    }
-    
     #if os(iOS)
     func stopTracking() {
         print("=== TrackDetailView.\(#function) ===")
@@ -123,17 +108,7 @@ struct TrackDetailView: View {
     #endif
 }
 
-struct VerticalRectangleDivider: View {
-    
-    var body: some View {
-        Rectangle()
-            .edgesIgnoringSafeArea([.top, .bottom])
-            .foregroundColor(.border)
-            .frame(width: 0.5)
-    }
-}
-
-struct DetailsOnRightView: View {
+struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
