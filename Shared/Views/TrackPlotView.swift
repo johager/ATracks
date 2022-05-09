@@ -154,12 +154,10 @@ struct TrackPlotView: View {
                     LineShape(xVals: xVertVals, yVals: yVertVals)
                         .stroke(Color.plotVertical, lineWidth: 4)
                 }
-                #if os(iOS)
                 .onTouch() { location in
                     plotSize = geometry.size
                     handleTouch(at: location)
                 }
-                #endif
                 .onAppear { plotSize = geometry.size }
             }
             .frame(height: 90)
@@ -179,6 +177,10 @@ struct TrackPlotView: View {
         guard trackHelper.hasAltitudeData,
               !trackIsTrackingOnThisDevice
         else { return }
+        
+        #if os(macOS)
+        guard location.x > 0, location.y > 0, location.y < plotSize.height else { return }
+        #endif
         
         let xFraction = location.x / plotSize.width
         //print("=== TrackPlotView.\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")

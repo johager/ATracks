@@ -15,7 +15,8 @@ class MapViewHelper: NSObject {
     var trackPointCalloutLabel: AALabelWithPadding!
     #else
     let view = NSView()
-    var trackPointCalloutLabel: NSTextField!
+    var trackPointCalloutLabel: NSView!
+    var trackPointCalloutTextField: NSTextField!
     #endif
     
     let mapView = MKMapView()
@@ -164,10 +165,10 @@ class MapViewHelper: NSObject {
         scaleView.scaleVisibility = .visible
         #endif
         
-        addLatLonLabel()
+        addTrackPointCalloutLabel()
     }
     
-    func addLatLonLabel() {
+    func addTrackPointCalloutLabel() {
         #if os(iOS)
         trackPointCalloutLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
         let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: isPhone ? .footnote : .body)
@@ -183,20 +184,46 @@ class MapViewHelper: NSObject {
         trackPointCalloutLabel.textAlignment = .center
         trackPointCalloutLabel.text = ""
         trackPointCalloutLabel.textColor = UIColor(.trackPointCalloutText)
-        trackPointCalloutLabel.isHidden = true
         
         trackPointCalloutLabel.layer.backgroundColor = UIColor(.trackPointCalloutBackground).cgColor
         trackPointCalloutLabel.layer.borderColor = UIColor(.trackPointCalloutBorder).cgColor
         trackPointCalloutLabel.layer.borderWidth = 0.5
-        trackPointCalloutLabel.layer.cornerRadius = 6
+        trackPointCalloutLabel.layer.cornerRadius = isPhone ? 6 : 8
+        
+        let bottomMargin: CGFloat = 8
         
         #else
-        trackPointCalloutLabel = NSTextField()
+        trackPointCalloutLabel = NSView()
+        trackPointCalloutTextField = NSTextField(wrappingLabelWithString: "")
+        
+        let descriptor = NSFontDescriptor.preferredFontDescriptor(forTextStyle: .body)
+        let monospacedNumbersDescriptor = descriptor.addingAttributes([
+            NSFontDescriptor.AttributeName.featureSettings: [
+                [NSFontDescriptor.FeatureKey.typeIdentifier: kNumberSpacingType,
+                 NSFontDescriptor.FeatureKey.selectorIdentifier: kMonospacedNumbersSelector]
+            ]
+        ])
+        trackPointCalloutTextField.font = NSFont(descriptor: monospacedNumbersDescriptor, size: 0)
+        trackPointCalloutTextField.alignment = .center
+        trackPointCalloutTextField.textColor = NSColor(.text)
+        
+        trackPointCalloutLabel.addSubview(trackPointCalloutTextField)
+        trackPointCalloutTextField.pin(top: trackPointCalloutLabel.topAnchor, trailing: trackPointCalloutLabel.trailingAnchor, bottom: trackPointCalloutLabel.bottomAnchor, leading: trackPointCalloutLabel.leadingAnchor, margin: [4, 8, 4, 8])
+        
+        trackPointCalloutLabel.wantsLayer = true
+        trackPointCalloutLabel.layer?.backgroundColor = NSColor(.trackPointCalloutBackground).cgColor
+        trackPointCalloutLabel.layer?.borderColor = NSColor(.trackPointCalloutBorder).cgColor
+        trackPointCalloutLabel.layer?.borderWidth = 0.5
+        trackPointCalloutLabel.layer?.cornerRadius = 8
+        
+        let bottomMargin: CGFloat = 16
         #endif
+        
+        trackPointCalloutLabel.isHidden = true
         
         view.addSubview(trackPointCalloutLabel)
         trackPointCalloutLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        trackPointCalloutLabel.pin(top: nil, trailing: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, leading: nil, margin: [0, 0, 8, 0])
+        trackPointCalloutLabel.pin(top: nil, trailing: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, leading: nil, margin: [0, 0, bottomMargin, 0])
     }
     
     private func setUpTracking() {
@@ -259,7 +286,7 @@ class MapViewHelper: NSObject {
         mapView.addAnnotation(trackPointAnnotation)
     }
     
-    func updateLatLonLabel(for clLocationCoordinate2D: CLLocationCoordinate2D, elevation: Any?) {
+    func updateTrackPointCalloutLabel(for clLocationCoordinate2D: CLLocationCoordinate2D, elevation: Any?) {
         
         var string = clLocationCoordinate2D.stringWithThreeDecimals
         
@@ -270,7 +297,7 @@ class MapViewHelper: NSObject {
         #if os(iOS)
             trackPointCalloutLabel.text = string
         #else
-            trackPointCalloutLabel.stringValue = string
+            trackPointCalloutTextField.stringValue = string
         #endif
         
         trackPointCalloutLabel.isHidden = false
@@ -293,7 +320,7 @@ class MapViewHelper: NSObject {
         
         moveTrackMarker(to: clLocationCoordinate2D)
         
-        updateLatLonLabel(for: clLocationCoordinate2D, elevation: userInfo[Key.elevation])
+        updateTrackPointCalloutLabel(for: clLocationCoordinate2D, elevation: userInfo[Key.elevation])
     }
 }
 
