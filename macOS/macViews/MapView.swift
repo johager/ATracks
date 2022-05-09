@@ -20,15 +20,15 @@ struct MapView: NSViewRepresentable {
     
     // MARK: - NSViewRepresentable
     
-    func makeNSView(context: Context) -> MKMapView {
+    func makeNSView(context: Context) -> NSView {
         //print(#function)
         mapViewHelper.setUpView(forTrack: track)
         mapViewHelper.mapView.delegate = context.coordinator
         
-        return mapViewHelper.mapView
+        return mapViewHelper.view
     }
     
-    func updateNSView(_ view: MKMapView, context: Context) {
+    func updateNSView(_ view: NSView, context: Context) {
         //print(#function)
         mapViewHelper.updateView(forTrack: track)
     }
