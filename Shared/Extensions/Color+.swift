@@ -67,7 +67,7 @@ extension Color {
     }
     
     static var textNoData: Color {
-        return color(light: Color(white: 0.6), dark: Color(white: 0.5))
+        return color(light: Color(white: 0.5), dark: Color(white: 0.6))
     }
     
     static var textSecondary: Color {

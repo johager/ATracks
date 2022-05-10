@@ -112,6 +112,16 @@ class TrackManager {
         #endif
     }
     
+    func stopTracking() {
+        let batchUpdateRequest = NSBatchUpdateRequest(entityName: DataType.track.entityName)
+        batchUpdateRequest.predicate = NSPredicate(format: "%K == %@", Track.isTrackingKey, NSNumber(value: true))
+        batchUpdateRequest.propertiesToUpdate = [Track.isTrackingKey: false]
+        
+        viewContext.execute(batchUpdateRequest, purpose: "Set Track.isTracking false")
+        
+        coreDataStack.saveContext()
+    }
+    
     func stopTracking(_ track: Track) {
         track.isTracking = false
         coreDataStack.saveContext()

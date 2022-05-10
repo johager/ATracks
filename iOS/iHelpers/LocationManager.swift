@@ -77,6 +77,11 @@ class LocationManager: NSObject {
     
     func startTracking(name: String) {
         print("=== \(file).\(#function) - name: '\(name)' ===")
+        
+        if isTracking {
+            stopTracking()
+        }
+        
         isTracking = true
         track = TrackManager.shared.createTrack(name: name)
     }
@@ -88,7 +93,11 @@ class LocationManager: NSObject {
         firstLocation = nil
         shouldCheckAutoStop = false
         if !forDelete {
-            TrackManager.shared.stopTracking(track)
+            if let track = track {
+                TrackManager.shared.stopTracking(track)
+            } else {
+                TrackManager.shared.stopTracking()
+            }
         }
         track = nil
     }

@@ -106,29 +106,6 @@ enum DataStateHelper {
         #endif
     }
     
-    static func performBatchUpdate(_ batchUpdateRequest: NSBatchUpdateRequest, in context: NSManagedObjectContext, purpose: String? = nil) {
-        
-        if let purpose = purpose {
-            let entityName = batchUpdateRequest.entityName
-            print("=== \(file).\(#function) - \(entityName): \(purpose) ===")
-        }
-        
-        batchUpdateRequest.resultType = .updatedObjectIDsResultType
-        
-        do {
-            let result = try context.execute(batchUpdateRequest) as? NSBatchUpdateResult
-            
-            guard let objectIDArray = result?.result as? [NSManagedObjectID] else { return }
-            
-            let changes = [NSUpdatedObjectsKey : objectIDArray]
-            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-            
-        } catch {
-            let updateError = error as NSError
-            print("\(updateError), \(updateError.userInfo)")
-        }
-    }
-    
     // MARK: - Data State Conversion Methods
     
     static func prepForDataState3(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
@@ -207,7 +184,6 @@ enum DataStateHelper {
         #endif
     }
     
-    //
     static func prepForDataState8(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
         // New Track.hasFinalSteps
         
@@ -224,12 +200,12 @@ enum DataStateHelper {
         batchUpdateRequest.predicate = NSPredicate(format: "%K == %@", Track.altitudeIsValidKey, NSNumber(value: true))
         batchUpdateRequest.propertiesToUpdate = [Track.hasFinalStepsKey: false]
         
-        performBatchUpdate(batchUpdateRequest, in: context, purpose: "Set hasFinalSteps false for altitudeIsValid")
+        context.execute(batchUpdateRequest, purpose: "Set hasFinalSteps false for altitudeIsValid")
         
         batchUpdateRequest.predicate = NSPredicate(format: "%K == %@", Track.altitudeIsValidKey, NSNumber(value: false))
         batchUpdateRequest.propertiesToUpdate = [Track.hasFinalStepsKey: true]
         
-        performBatchUpdate(batchUpdateRequest, in: context, purpose: "Set hasFinalSteps true for !altitudeIsValid")
+        context.execute(batchUpdateRequest, purpose: "Set hasFinalSteps true for !altitudeIsValid")
         
         shouldSaveContext = true
     }
