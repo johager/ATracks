@@ -79,24 +79,24 @@ class TrackManager {
         do {
             let tracks = try viewContext.fetch(fetchRequest)
             for track in tracks {
-                let trackName = "\(track.name) (\(track.defaultName))"
-                print("--- \(file).\(#function) - name: \(trackName)")
+                let trackName = track.debugName
+                print("--- \(file).\(#function) - trackName: \(trackName)")
                 
                 guard let stopDate = track.trackPoints.last?.timestamp else { continue }
                 let startDate = track.date
                 
                 Task.init {
-                    let numSteps = await HealthKitManager.shared.readSteps(beginningAt: startDate, andEndingAt: stopDate, dateOptions: .start)
+                    let numSteps = await HealthKitManager.shared.readSteps(beginningAt: startDate, andEndingAt: stopDate, dateOptions: .start, trackName: trackName)
                     viewContext.performAndWait {
                         if let numSteps = numSteps {
                             let hasFinalStepsToSet = stopDate < dateForHasFinalSteps
-                            print("--- \(file).\(#function) - name: \(trackName), steps saved/new: \(track.steps)/\(numSteps), hasFinalStepsToSet: \(hasFinalStepsToSet)")
+                            print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps), hasFinalStepsToSet: \(hasFinalStepsToSet)")
                             track.steps = numSteps
                             track.hasFinalSteps = stopDate < dateForHasFinalSteps
                             coreDataStack.saveContext()
                         } else {
                             let hasFinalStepsToSet = stopDate < dateForForceHasFinalSteps
-                            print("--- \(file).\(#function) - name: \(trackName), hasFinalStepsToSet: \(hasFinalStepsToSet)")
+                            print("--- \(file).\(#function) - trackName: \(trackName), hasFinalStepsToSet: \(hasFinalStepsToSet)")
                             if hasFinalStepsToSet {
                                 track.hasFinalSteps = stopDate < dateForHasFinalSteps
                                 coreDataStack.saveContext()
@@ -155,7 +155,7 @@ class TrackManager {
         delegate?.didMakeNewTrackPoint(trackPoint)
         #if os(iOS)
         Task.init {
-            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date) else { return }
+            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, trackName: track.debugName) else { return }
             track.steps = numSteps
         }
         #endif

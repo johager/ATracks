@@ -59,6 +59,7 @@ class Track: NSManagedObject, Identifiable {
         return date.stringForTrack(timezone: timezone)
     }
     
+    var debugName: String { "\(name) (\(defaultName))" }
     var defaultName: String { date.stringForTrackName(timezone: timezone) }
     
     var trackPoints: [TrackPoint] {

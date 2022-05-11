@@ -116,6 +116,10 @@ class MapViewHelper: NSObject {
             name: .didStopTracking, object: nil)
         
         NotificationCenter.default.addObserver(self,
+            selector: #selector(handleScenePhaseChangedToActive(_:)),
+            name: .scenePhaseChangedToActive, object: nil)
+        
+        NotificationCenter.default.addObserver(self,
             selector: #selector(handleShowInfoForLocationNotification(_:)),
             name: .showInfoForLocation, object: nil)
     }
@@ -308,6 +312,15 @@ class MapViewHelper: NSObject {
     @objc func handleDidStopTrackingNotification(_ notification: Notification) {
         print("=== \(file).\(#function) ===")
         setMapNoTrack()
+    }
+    
+    @objc func handleScenePhaseChangedToActive(_ notification: NSNotification) {
+        print("=== \(file).\(#function) ===")
+        #if os(iOS)
+        if trackIsTrackingOnThisDevice {
+            centerMap()
+        }
+        #endif
     }
     
     @objc func handleShowInfoForLocationNotification(_ notification: Notification) {

@@ -82,6 +82,7 @@ struct ATracksApp: App {
             }
             #endif
             //doSpecialStartUp()
+            NotificationCenter.default.post(name: .scenePhaseChangedToActive, object: nil, userInfo: nil)
         #if os(iOS)
         case .inactive:
             print("=== \(file).\(#function) - inactive, hasOnboarded: \(hasOnboarded) ===")

@@ -49,8 +49,9 @@ class HealthKitManager {
         return true
     }
     
-    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start) async -> Int32? {
-        print("=== \(file).\(#function) - hasAccess: \(hasAccess)")
+    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start, trackName: String) async -> Int32? {
+        let fileFunc = "\(file).readSteps(...)"
+        print("=== \(fileFunc) - hasAccess: \(hasAccess)")
         
         guard hasAccess else { return nil }
 
@@ -61,19 +62,19 @@ class HealthKitManager {
 
             let query = HKStatisticsQuery(quantityType: stepsQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum]) { _, result, error in
                 if let error = error {
-                    print("=== \(self.file).\(#function) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
+                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
                     return continuation.resume(returning: nil)
                 }
 
                 guard let sum = result?.sumQuantity()
                 else {
-                    print("=== \(self.file).\(#function) - error retrieving steps: no result or valid sum.")
+                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: no result or valid sum.")
                     return continuation.resume(returning: nil)
                 }
                 
                 let numSteps = Int32(sum.doubleValue(for: .count()))
 
-                print("=== \(self.file).\(#function) - retrieved steps - numSteps: \(numSteps)")
+                print("-- \(fileFunc) - \(trackName) - retrieved steps - numSteps: \(numSteps)")
                 continuation.resume(returning: numSteps)
             }
 
