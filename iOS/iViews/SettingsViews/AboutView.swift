@@ -19,7 +19,7 @@ struct AboutView: View {
     let introText: [String] = [
         "ATracks records location, elevation, and step data for your outdoor activities. Data is stored locally so that you'll always have it, and data is synched to other devices with the same Apple ID so you can view your excursions on larger screens.",
         "Your data is stored in your own private iCloud account, and no one without access to your Apple ID can access that data.",
-        "Step data is obtained from the Apple Health app."
+        "Step data is obtained from the Apple Health app, and is only imported into ATracks while ATracks is actively running on an iPhone or iPod Touch."
     ]
     
     // MARK: - View
@@ -29,6 +29,7 @@ struct AboutView: View {
             List() {
                 if isOnboarding {
                     Text("Welcome to ATracks!")
+                        .settingsSubHeader
                         .padding(.top, 24)
                         .listRowSeparator(.hidden)
                     
@@ -52,15 +53,19 @@ struct AboutView: View {
                 }
                 
                 Section {
-                    Text("Location Set Up")
-                        .settingsSubHeader
-                    Text("The location and elevation data is obtained from the GPS in your device. You must allow ATracks to track your location. Location access \"While Using the App\" will allow ATracks to track your location only when the app is active, and \"Always\" will allow ATracks to track your location while the app is in the background.")
+                    if DeviceType.current() == .phone {
+                        Text("Location Set Up")
+                            .settingsSubHeader
+                    }
+                    Text("The location and elevation data is obtained from the GPS in your device. You must allow ATracks to track your location. Providing location access \"While Using the App\" will allow ATracks to track your location only when the app is active, and \"Always\" will allow ATracks to track your location while the app is in the background.")
                     Text("The app will first ask permission to \"Allow Once\" or \"Allow While Using App\". Select \"Allow While Using App\" so that your track can be followed. This will only allow tracking while the app is active. After you grant permission for \"Allow While Using App\" and start tracking, exit the app so that you can be prompted to allow background tracking by selecting \"Change to Always Allow.\"")
                     Text("Alternatively, you can go to the device Settings > ATracks > Location and select \"Always\".")
                     
-                    Text("Steps Set Up")
-                        .settingsSubHeader
-                    Text("The steps data is obtained from the Apple Health app, and you must allow ATracks to read \"Steps.\"")
+                    if DeviceType.current() == .phone {
+                        Text("Steps Set Up")
+                            .settingsSubHeader
+                        Text("The steps data is obtained from the Apple Health app, and you must allow ATracks to read \"Steps\" on an iPhone or iPod Touch.")
+                    }
                 } header: {
                     Text("Set Up")
                         .settingsHeader
@@ -85,7 +90,7 @@ struct AboutView: View {
                 
                 Section {
                     Text("The step data is not available from the Health App immediately, so there is always a lag in the data. Final data is usually available a couple of hours after completing your activity.")
-                    Text("The Health App only runs on iPhones, so only tracks created on an iPhone will have valid step data. Also, step data can only be transferred from the Health App when ATracks is running on an iPhone.")
+                    Text("Steps are only recorded on an iPhone, iPod Touch, or Apple Watch, and step data is only transferred into ATracks when the app is running on an iPhone or iPod Touch. So, while it's possible to create a track on an iPad and use an Apple Watch to record the steps, the step data will not appear in ATracks until after you launch ATracks on an iPhone or iPod Touch.")
                 } header: {
                     Text("Steps")
                         .settingsHeader
