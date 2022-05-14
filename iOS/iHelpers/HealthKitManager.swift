@@ -49,44 +49,82 @@ class HealthKitManager {
         return true
     }
     
-    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start, trackName: String) async -> Int32? {
-        let fileFunc = "\(file).readSteps(...)"
-        print("=== \(fileFunc) - hasAccess: \(hasAccess)")
-
-        guard hasAccess else { return nil }
-
-        let numSteps = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Int32?, Error>) in
-
-            let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: dateOptions.queryOptions)
-
-            let query = HKStatisticsQuery(quantityType: stepsQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum]) { _, result, error in
-                if let error = error {
-                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
-                    return continuation.resume(returning: nil)
-                }
-
-                guard let sum = result?.sumQuantity()
-                else {
-                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: no result or valid sum.")
-                    return continuation.resume(returning: nil)
-                }
-
-                let numSteps = Int32(round(sum.doubleValue(for: .count())))
-
-                print("-- \(fileFunc) - \(trackName) - retrieved steps - numSteps: \(numSteps)")
-                continuation.resume(returning: numSteps)
-            }
-
-            hkStore.execute(query)
-        }
-
-        guard let numSteps = numSteps else { return nil }
-
-        return numSteps
-    }
+//    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start, trackName: String) async -> Int32? {
+//        let fileFunc = "\(file).readSteps(...)"
+//        print("=== \(fileFunc) - hasAccess: \(hasAccess)")
+//
+//        guard hasAccess else { return nil }
+//
+//        let numSteps = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Int32?, Error>) in
+//
+//            let stepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+//            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: dateOptions.queryOptions)
+//
+//            let query = HKStatisticsQuery(quantityType: stepCount, quantitySamplePredicate: predicate, options: [.cumulativeSum]) { _, result, error in
+//                if let error = error {
+//                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
+//                    return continuation.resume(returning: nil)
+//                }
+//
+//                guard let sum = result?.sumQuantity()
+//                else {
+//                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: no result or valid sum.")
+//                    return continuation.resume(returning: nil)
+//                }
+//
+//                let numSteps = Int32(round(sum.doubleValue(for: .count())))
+//
+//                print("-- \(fileFunc) - \(trackName) - retrieved steps - numSteps: \(numSteps)")
+//                continuation.resume(returning: numSteps)
+//            }
+//
+//            hkStore.execute(query)
+//        }
+//
+//        guard let numSteps = numSteps else { return nil }
+//
+//        return numSteps
+//    }
     
-    /*
+//    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start, trackName: String) async -> Int32? {
+//        let fileFunc = "\(file).readSteps(...)"
+//        print("=== \(fileFunc) - hasAccess: \(hasAccess)")
+//
+//        guard hasAccess else { return nil }
+//
+//        let endDateUse = Calendar.current.date(byAdding: .minute, value: 1, to: endDate)!
+//
+//        let numSteps = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Int32?, Error>) in
+//
+//            let stepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+//            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDateUse, options: dateOptions.queryOptions)
+//
+//            let query = HKStatisticsQuery(quantityType: stepCount, quantitySamplePredicate: predicate, options: [.cumulativeSum]) { _, result, error in
+//                if let error = error {
+//                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
+//                    return continuation.resume(returning: nil)
+//                }
+//
+//                guard let sum = result?.sumQuantity()
+//                else {
+//                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: no result or valid sum.")
+//                    return continuation.resume(returning: nil)
+//                }
+//
+//                let numSteps = Int32(round(sum.doubleValue(for: .count())))
+//
+//                print("-- \(fileFunc) - \(trackName) - retrieved steps - numSteps: \(numSteps)")
+//                continuation.resume(returning: numSteps)
+//            }
+//
+//            hkStore.execute(query)
+//        }
+//
+//        guard let numSteps = numSteps else { return nil }
+//
+//        return numSteps
+//    }
+    
     func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start, trackName: String) async -> Int32? {
         let fileFunc = "\(file).readSteps(...)"
         print("=== \(fileFunc) - hasAccess: \(hasAccess)")
@@ -95,13 +133,13 @@ class HealthKitManager {
 
         let numSteps = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Int32?, Error>) in
 
-            let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+            let stepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
 
-            let endDateUse = Calendar.current.date(byAdding: .minute, value: 1, to: endDate)!
+            let endDateForInterval = Calendar.current.date(byAdding: .minute, value: 1, to: endDate)!
             var interval = DateComponents()
-            interval.second = Int(endDateUse.timeIntervalSince(startDate))
+            interval.second = Int(endDateForInterval.timeIntervalSince(startDate))
             
-            let query = HKStatisticsCollectionQuery(quantityType: stepsQuantityType, quantitySamplePredicate: nil, options: [.cumulativeSum], anchorDate: startDate, intervalComponents: interval)
+            let query = HKStatisticsCollectionQuery(quantityType: stepCount, quantitySamplePredicate: nil, options: [.cumulativeSum], anchorDate: startDate, intervalComponents: interval)
             
             query.initialResultsHandler = { _, result, error in
                 if let error = error {
@@ -156,8 +194,8 @@ class HealthKitManager {
 
         return numSteps
     }
-    */
     
+    /*
     func readCurrentSteps(trackName: String = "") async -> Int32? {
         let fileFunc = "\(file).readCurrentSteps(...)"
         print("=== \(fileFunc) - hasAccess: \(hasAccess)")
@@ -171,9 +209,9 @@ class HealthKitManager {
         
         let numSteps = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Int32?, Error>) in
 
-            let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+            let stepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
 
-            let query = HKStatisticsCollectionQuery(quantityType: stepsQuantityType, quantitySamplePredicate: nil, options: [.cumulativeSum], anchorDate: startOfDay, intervalComponents: interval)
+            let query = HKStatisticsCollectionQuery(quantityType: stepCount, quantitySamplePredicate: nil, options: [.cumulativeSum], anchorDate: startOfDay, intervalComponents: interval)
             
             query.initialResultsHandler = { _, result, error in
                 if let error = error {
@@ -226,4 +264,5 @@ class HealthKitManager {
 
         return numSteps
     }
+    */
 }
