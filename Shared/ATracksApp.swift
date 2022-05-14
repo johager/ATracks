@@ -127,6 +127,12 @@ struct ATracksApp: App {
         
         guard await HealthKitManager.shared.requestPermission() == true else { return }
         
+//        if let numSteps = await HealthKitManager.shared.readCurrentSteps() {
+//            print("--- \(file).\(#function) - numSteps: \(numSteps)")
+//        } else {
+//            print("--- \(file).\(#function) - numSteps: nil")
+//        }
+        
         TrackManager.shared.updateSteps()
         #endif
     }

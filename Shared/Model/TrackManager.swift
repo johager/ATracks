@@ -25,6 +25,8 @@ class TrackManager {
     private var coreDataStack: CoreDataStack { CoreDataStack.shared }
     private var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
     
+    private var numSteps: Int32 = 0
+    
     lazy var deviceName = Func.deviceName
     lazy var deviceUUID = Func.deviceUUID
     
@@ -42,6 +44,13 @@ class TrackManager {
     @discardableResult func createTrack(name: String) -> Track {
         let track = Track(name: name, deviceName: deviceName, deviceUUID: deviceUUID)
         coreDataStack.saveContext()
+        numSteps = 0
+        #if os(iOS)
+        Task.init {
+            guard let numSteps = await HealthKitManager.shared.readCurrentSteps(trackName: track.debugName) else { return }
+            self.numSteps = numSteps
+        }
+        #endif
         return track
     }
     
@@ -72,9 +81,13 @@ class TrackManager {
               let dateForForceHasFinalSteps = Calendar.current.date(byAdding: .day, value: -14, to: Date())
         else { return }
         
+//        let recent = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        
         let fetchRequest = Track.fetchRequest
         fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Track.hasFinalStepsKey, NSNumber(value: false), Track.isTrackingKey, NSNumber(value: false))
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+//        fetchRequest.predicate = NSPredicate(format: "%K > %@ AND %K CONTAINS %@", Track.dateKey, recent as CVarArg, Track.nameKey, "Lincoln")
+//        fetchRequest.predicate = NSPredicate(format: "%K > %@", Track.dateKey, recent as CVarArg)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Track.dateKey, ascending: false)]
         
         do {
             let tracks = try viewContext.fetch(fetchRequest)
@@ -103,6 +116,9 @@ class TrackManager {
                             }
                         }
                     }
+//                    if let numSteps = numSteps {
+//                        print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps)")
+//                    }
                 }
             }
         } catch {
@@ -125,6 +141,7 @@ class TrackManager {
     func stopTracking(_ track: Track) {
         track.isTracking = false
         coreDataStack.saveContext()
+        numSteps = 0
     }
     
     func didDelete(_ track: Track) -> Bool {
@@ -155,8 +172,9 @@ class TrackManager {
         delegate?.didMakeNewTrackPoint(trackPoint)
         #if os(iOS)
         Task.init {
-            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, trackName: track.debugName) else { return }
-            track.steps = numSteps
+//            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, trackName: track.debugName) else { return }
+            guard let numSteps = await HealthKitManager.shared.readCurrentSteps(trackName: track.debugName) else { return }
+            track.steps = numSteps - self.numSteps
         }
         #endif
     }
