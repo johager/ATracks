@@ -153,6 +153,11 @@ class MapViewHelper: NSObject {
             return
         }
         
+        if trackPointAnnotation != nil {
+            mapView.removeAnnotation(trackPointAnnotation)
+            mapView.addAnnotation(trackPointAnnotation)
+        }
+        
         addEndPointAnnotation()
     }
     

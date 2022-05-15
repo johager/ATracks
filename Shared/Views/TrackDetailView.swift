@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TrackDetailView: View {
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
     
@@ -39,6 +41,7 @@ struct TrackDetailView: View {
                     ZStack {
                         MapView(track: track)
                             .edgesIgnoringSafeArea(.all)
+                            .id(colorScheme)
                         #if os(iOS)
                         if trackIsTrackingOnThisDevice {
                             VStack {
@@ -70,6 +73,7 @@ struct TrackDetailView: View {
                     ZStack {
                         MapView(track: track)
                             .edgesIgnoringSafeArea([.top, .trailing, .leading])
+                            .id(colorScheme)
                         #if os(iOS)
                         if trackIsTrackingOnThisDevice {
                             VStack {
