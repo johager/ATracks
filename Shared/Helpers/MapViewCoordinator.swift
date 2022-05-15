@@ -59,7 +59,7 @@ extension MapViewCoordinator: MKMapViewDelegate {
         let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "annotationID")
         
         if let aaPointAnnotation = annotation as? AAPointAnnotation {
-            annotationView.image = aaPointAnnotation.image(mapType: mapView.mapType, isDark: parent.isDark)
+            annotationView.image = aaPointAnnotation.image(mapType: mapView.mapType)
             annotationView.centerOffset = CGPoint(x: 0, y: aaPointAnnotation.imageOffsetY)
         }
         

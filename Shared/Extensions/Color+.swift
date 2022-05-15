@@ -132,6 +132,45 @@ extension Color {
         return color(light: lightColor, dark: darkColor)
     }
     
+    static var markerEndFill: Color {
+        return color(light: lightGreen, dark: Color(white: 0.65))
+    }
+    
+    static var markerEndFillSat: Color {
+        #if os(iOS)
+        let lightColor = medium3Green
+        #else
+        let lightColor = medium2Green
+        #endif
+        return color(light: lightColor, dark: medium3Green)
+    }
+    
+    static var markerEndShape: Color {
+        let lightColor = Color(red: 0.9, green: 0, blue: 0)
+        let darkColor = Color(red: 0.85, green: 0, blue: 0)
+        return color(light: lightColor, dark: darkColor)
+    }
+    
+    static var markerEndShapeSat: Color {
+        return Color(red: 0.9, green: 0, blue: 0)
+    }
+    
+    static var markerStartFill: Color {
+        return color(light: lightGreen, dark: avantiGreen)
+    }
+    
+    static var markerStartFillSat: Color {
+        return avantiGreen
+    }
+    
+    static var markerStartShape: Color {
+        return color(light: avantiGreen, dark: medium2Green)
+    }
+    
+    static var markerStartShapeSat: Color {
+        return color(light: medium3Green, dark: medium3Green)
+    }
+    
     // MARK: - Track Point Callout Colors
     
     static var trackPointCalloutText: Color {

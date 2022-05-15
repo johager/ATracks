@@ -27,6 +27,7 @@ class MapViewHelper: NSObject {
     
     private var lastTrackPoint: TrackPoint?
     
+    private var endPointAnnotation: MKPointAnnotation!
     private var startPointAnnotation: MKPointAnnotation!
     private var trackPointAnnotation: MKPointAnnotation!
     
@@ -104,7 +105,7 @@ class MapViewHelper: NSObject {
     // MARK: - Public Methods
     
     func setUpView(forTrack track: Track) {
-        print("=== \(file).\(#function)  ===")
+        print("=== \(file).\(#function) ===")
         
         self.track = track
         
@@ -139,9 +140,34 @@ class MapViewHelper: NSObject {
         let routeOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(routeOverlay, level: .aboveRoads)
         
-        // annotation
-        startPointAnnotation = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarker", imageOffsetY: -18)
+        // start point annotation
+        startPointAnnotation = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: true, imageOffsetY: -18)
         mapView.addAnnotation(startPointAnnotation)
+        
+        // end point annotation
+        if track.isTracking {
+            if !trackIsTrackingOnThisDevice {
+                trackPointAnnotation = AAPointAnnotation(coordinate: coordinates.last!, imageNameBase: "mapPointMarker")
+                mapView.addAnnotation(trackPointAnnotation)
+            }
+            return
+        }
+        
+        addEndPointAnnotation()
+    }
+    
+    func addEndPointAnnotation() {
+        
+        guard endPointAnnotation == nil else { return }
+        
+        let trackPoints = track.trackPoints
+        
+        guard trackPoints.count > 0,
+              trackPoints.last!.clLocation.distance(from: trackPoints.first!.clLocation) > 10
+        else { return }
+        
+        endPointAnnotation = AAPointAnnotation(coordinate: trackPoints.last!.clLocationCoordinate2D, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: false, imageOffsetY: -18)
+        mapView.addAnnotation(endPointAnnotation)
     }
     
     // MARK: - Private Methods
@@ -155,6 +181,8 @@ class MapViewHelper: NSObject {
         } else {
             mapView.mapType = .standard
         }
+        
+//        mapView.mapType = .hybrid
         
         view.addSubview(mapView)
         mapView.pin(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor)
@@ -312,6 +340,15 @@ class MapViewHelper: NSObject {
     @objc func handleDidStopTrackingNotification(_ notification: Notification) {
         print("=== \(file).\(#function) ===")
         setMapNoTrack()
+        
+        if trackPointAnnotation != nil {
+            mapView.removeAnnotation(trackPointAnnotation)
+            trackPointAnnotation = nil
+        }
+        
+        addEndPointAnnotation()
+        
+        centerMap()
     }
     
     @objc func handleScenePhaseChangedToActive(_ notification: NSNotification) {
