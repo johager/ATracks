@@ -72,9 +72,14 @@ class TrackManager {
               let dateForForceHasFinalSteps = Calendar.current.date(byAdding: .day, value: -14, to: Date())
         else { return }
         
+//        let recent = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        
         let fetchRequest = Track.fetchRequest
         fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Track.hasFinalStepsKey, NSNumber(value: false), Track.isTrackingKey, NSNumber(value: false))
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+//        fetchRequest.predicate = NSPredicate(format: "%K > %@ AND %K CONTAINS %@", Track.dateKey, recent as CVarArg, Track.nameKey, "Lincoln")
+//        fetchRequest.predicate = NSPredicate(format: "%K CONTAINS %@", Track.nameKey, "Lincoln")
+//        fetchRequest.predicate = NSPredicate(format: "%K > %@", Track.dateKey, recent as CVarArg)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Track.dateKey, ascending: false)]
         
         do {
             let tracks = try viewContext.fetch(fetchRequest)
@@ -86,7 +91,7 @@ class TrackManager {
                 let startDate = track.date
                 
                 Task.init {
-                    let numSteps = await HealthKitManager.shared.readSteps(beginningAt: startDate, andEndingAt: stopDate, dateOptions: .start, trackName: trackName)
+                    let numSteps = await HealthKitManager.shared.getSteps(from: startDate, to: stopDate, trackName: trackName)
                     viewContext.performAndWait {
                         if let numSteps = numSteps {
                             let hasFinalStepsToSet = stopDate < dateForHasFinalSteps
@@ -103,6 +108,9 @@ class TrackManager {
                             }
                         }
                     }
+//                    if let numSteps = numSteps {
+//                        print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps)")
+//                    }
                 }
             }
         } catch {
@@ -155,8 +163,11 @@ class TrackManager {
         delegate?.didMakeNewTrackPoint(trackPoint)
         #if os(iOS)
         Task.init {
-            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, trackName: track.debugName) else { return }
-            track.steps = numSteps
+            guard let numSteps = await HealthKitManager.shared.getSteps(from: track.date, trackName: track.debugName) else { return }
+            viewContext.performAndWait {
+                track.steps = numSteps
+                coreDataStack.saveContext()
+            }
         }
         #endif
     }

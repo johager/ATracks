@@ -11,7 +11,7 @@ import CoreData
 enum DataStateHelper {
     
     static let dataStateKey = "dataState"
-    static let dataStateCurrent = 8
+    static let dataStateCurrent = 9
     
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
@@ -31,6 +31,7 @@ enum DataStateHelper {
         //    6: DisplaySettings
         //    7: DisplaySettings.placeButtonsOnRightInLandscape
         //    8: New Track.hasFinalSteps
+        //    9: Get steps using HKStatisticsCollectionQuery
         
         let userDefaults = UserDefaults.standard
         
@@ -80,6 +81,10 @@ enum DataStateHelper {
         
         if dataStateSaved < 8 {
             prepForDataState8(context: context, shouldSaveContext: &shouldSaveContext)
+        }
+        
+        if dataStateSaved < 9 {
+            prepForDataState9(context: context, shouldSaveContext: &shouldSaveContext)
         }
         
         if shouldSaveContext {
@@ -208,5 +213,59 @@ enum DataStateHelper {
         context.execute(batchUpdateRequest, purpose: "Set hasFinalSteps true for !altitudeIsValid")
         
         shouldSaveContext = true
+    }
+    
+    static func prepForDataState9(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
+        // Get steps using HKStatisticsCollectionQuery
+        
+        #if targetEnvironment(simulator)
+        print("=== \(file).\(#function) - simulator ===")
+        return
+        #endif
+        
+        print("=== \(file).\(#function) ===")
+        
+        guard DeviceType.current() == .phone else { return }
+        
+        Task.init {
+            guard await HealthKitManager.shared.requestPermission() == true else { return }
+            doPrepForDataState9(context:  context)
+        }
+        
+        shouldSaveContext = true
+    }
+    
+    static func doPrepForDataState9(context:  NSManagedObjectContext) {
+        print("=== \(file).\(#function) ===")
+        
+        let fetchRequest = Track.fetchRequest
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Track.dateKey, ascending: false)]
+        
+        do {
+            let tracks = try context.fetch(fetchRequest)
+            for track in tracks {
+                let trackName = track.debugName
+                print("--- \(file).\(#function) - trackName: \(trackName)")
+                
+                guard let stopDate = track.trackPoints.last?.timestamp else { continue }
+                let startDate = track.date
+                
+                Task.init {
+                    let numSteps = await HealthKitManager.shared.getSteps(from: startDate, to: stopDate, trackName: trackName)
+                    context.performAndWait {
+                        if let numSteps = numSteps {
+                            print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps)")
+                            track.steps = numSteps
+                        }
+                    }
+//                    if let numSteps = numSteps {
+//                        print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps)")
+//                    }
+                }
+            }
+        } catch {
+            print("--- \(file).\(#function) - error: \(error)")
+            print(error.localizedDescription)
+        }
     }
 }
