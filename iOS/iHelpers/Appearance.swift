@@ -10,6 +10,8 @@ import UIKit
 
 enum Appearance {
     
+    static var isDark: Bool { UITraitCollection.current.userInterfaceStyle == .dark }
+    
     static let file = "Appearance"
     
     // MARK: - Methods

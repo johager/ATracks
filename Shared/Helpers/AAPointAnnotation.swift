@@ -5,6 +5,7 @@
 //  Created by James Hager on 4/20/22.
 //
 
+import SwiftUI
 #if os(iOS)
     import UIKit
 #elseif os(macOS)
@@ -16,6 +17,8 @@ import MapKit
 class AAPointAnnotation: MKPointAnnotation {
     
     var imageNameBase: String!
+    var imageNameBackgroundBase: String?
+    var forStart = true
     var imageOffsetY: CGFloat!
     
     // MARK: - Init
@@ -27,32 +30,57 @@ class AAPointAnnotation: MKPointAnnotation {
         self.imageOffsetY = imageOffsetY
     }
     
+    convenience init(coordinate: CLLocationCoordinate2D, imageNameBase: String, imageNameBackgroundBase: String, forStart: Bool, imageOffsetY: CGFloat = 0) {
+        self.init()
+        self.coordinate = coordinate
+        self.imageNameBase = imageNameBase
+        self.imageNameBackgroundBase = imageNameBackgroundBase
+        self.forStart = forStart
+        self.imageOffsetY = imageOffsetY
+    }
+    
     // MARK: - Methods
     
     #if os(iOS)
-        func image(mapType: MKMapType, isDark: Bool) -> UIImage? {
-            return UIImage(named: imageName(mapType: mapType, isDark: isDark))
-        }
+    func image(forMapType mapType: MKMapType) -> UIImage? {
+        guard let topImage = UIImage(named: imageNameBase)?.colored(UIColor(mainColor(forMapType: mapType)))
+        else { return nil }
+        
+        guard let imageNameBackgroundBase = imageNameBackgroundBase,
+              let backgroundImage = UIImage(named: imageNameBackgroundBase)?.colored(UIColor(backgroundColor(forMapType: mapType)))
+        else { return topImage }
+
+        return backgroundImage.overlay(topImage)
+    }
     
     #elseif os(macOS)
-        func image(mapType: MKMapType, isDark: Bool) -> NSImage? {
-            return NSImage(named: imageName(mapType: mapType, isDark: isDark))
-        }
+    func image(forMapType mapType: MKMapType) -> NSImage? {
+        guard let topImage = NSImage(named: imageNameBase)?.colored(NSColor(mainColor(forMapType: mapType)))
+        else { return nil }
+        
+        guard let imageNameBackgroundBase = imageNameBackgroundBase,
+              let backgroundImage = NSImage(named: imageNameBackgroundBase)?.colored(NSColor(backgroundColor(forMapType: mapType)))
+        else { return topImage }
+        
+        return backgroundImage.overlay(topImage)
+    }
     #endif
     
-    func imageName(mapType: MKMapType, isDark: Bool) -> String {
+    func backgroundColor(forMapType mapType: MKMapType) -> Color {
         
-        let type: String
-        if isDark {
-            type = "Sat"
+        if forStart {
+            return mapType == .standard ? .markerStartFill : .markerStartFillSat
         } else {
-            if mapType == .standard {
-                type = "Std"
-            } else {
-                type = "Sat"
-            }
+            return mapType == .standard ? .markerEndFill : .markerEndFillSat
         }
+    }
+    
+    func mainColor(forMapType mapType: MKMapType) -> Color {
         
-        return imageNameBase + type
+        if forStart {
+            return mapType == .standard ? .markerStartShape : .markerStartShapeSat
+        } else {
+            return mapType == .standard ? .markerEndShape : .markerEndShapeSat
+        }
     }
 }

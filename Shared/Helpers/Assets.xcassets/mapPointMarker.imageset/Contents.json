@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "map marker 05 108~universal@1x.png",
+      "filename" : "mapPointMarker 01 108~universal@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "map marker 05 108~universal@2x.png",
+      "filename" : "mapPointMarker 01 108~universal@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "map marker 05 108~universal@3x.png",
+      "filename" : "mapPointMarker 01 108~universal@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

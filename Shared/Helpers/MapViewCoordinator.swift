@@ -37,6 +37,24 @@ class MapViewCoordinator: NSObject {
         print("=== \(file).\(#function) ===")
         parent.mapViewHelper.centerMap()
     }
+    
+    #if os(iOS)
+    func trackColor(mapType: MKMapType) -> UIColor {
+        if mapType == .standard {
+            return UIColor(.track)
+        } else {
+            return UIColor(.trackSat)
+        }
+    }
+    #else
+    func trackColor(mapType: MKMapType) -> NSColor {
+        if mapType == .standard {
+            return NSColor(.track)
+        } else {
+            return NSColor(.trackSat)
+        }
+    }
+    #endif
 }
 
 extension MapViewCoordinator: MKMapViewDelegate {
@@ -44,11 +62,7 @@ extension MapViewCoordinator: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(overlay: overlay)
-            #if os(iOS)
-                renderer.strokeColor = UIColor(.track)
-            #elseif os(macOS)
-                renderer.strokeColor = NSColor(.track)
-            #endif
+            renderer.strokeColor = trackColor(mapType: mapView.mapType)
             renderer.lineWidth = 5
             return renderer
         }
@@ -59,7 +73,7 @@ extension MapViewCoordinator: MKMapViewDelegate {
         let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "annotationID")
         
         if let aaPointAnnotation = annotation as? AAPointAnnotation {
-            annotationView.image = aaPointAnnotation.image(mapType: mapView.mapType, isDark: parent.isDark)
+            annotationView.image = aaPointAnnotation.image(forMapType: mapView.mapType)
             annotationView.centerOffset = CGPoint(x: 0, y: aaPointAnnotation.imageOffsetY)
         }
         
