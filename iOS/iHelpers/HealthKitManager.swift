@@ -125,8 +125,8 @@ class HealthKitManager {
 //        return numSteps
 //    }
     
-    func readSteps(beginningAt startDate: Date, andEndingAt endDate: Date = Date(), dateOptions: HealthKitDateOptions = .start, trackName: String) async -> Int32? {
-        let fileFunc = "\(file).readSteps(...)"
+    func getSteps(from startDate: Date, to endDate: Date = Date(), trackName: String) async -> Int32? {
+        let fileFunc = "\(file).getSteps(...)"
         print("=== \(fileFunc) - hasAccess: \(hasAccess)")
         
         guard hasAccess else { return nil }

@@ -119,18 +119,18 @@ struct TrackStatsView: View {
         }
         .font(isPhone ? .footnote : .body)
         .foregroundColor(.text)
-        #if os(iOS)
-        .task {
-            guard let endDate = track.trackPoints.last?.timestamp else { return }
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd, h:mm:ss a"
-            let file = "TrackStatsView"
-            print("=== \(file).task - start date: \(dateFormatter.string(from: track.date))==")
-            print("--- \(file).task -   end date: \(dateFormatter.string(from: endDate))")
-            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, andEndingAt: endDate, dateOptions: .start, trackName: track.debugName) else { return }
-            print("--- \(file).task -   numSteps: \(numSteps)")
-        }
-        #endif
+//        #if os(iOS)
+//        .task {
+//            guard let endDate = track.trackPoints.last?.timestamp else { return }
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "yyyy-MM-dd, h:mm:ss a"
+//            let file = "TrackStatsView"
+//            print("=== \(file).task - start date: \(dateFormatter.string(from: track.date))==")
+//            print("--- \(file).task -   end date: \(dateFormatter.string(from: endDate))")
+//            guard let numSteps = await HealthKitManager.shared.getSteps(from: track.date, to: endDate, trackName: track.debugName) else { return }
+//            print("--- \(file).task -   numSteps: \(numSteps)")
+//        }
+//        #endif
     }
 }
 

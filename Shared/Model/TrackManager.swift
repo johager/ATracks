@@ -91,7 +91,7 @@ class TrackManager {
                 let startDate = track.date
                 
                 Task.init {
-                    let numSteps = await HealthKitManager.shared.readSteps(beginningAt: startDate, andEndingAt: stopDate, dateOptions: .start, trackName: trackName)
+                    let numSteps = await HealthKitManager.shared.getSteps(from: startDate, to: stopDate, trackName: trackName)
                     viewContext.performAndWait {
                         if let numSteps = numSteps {
                             let hasFinalStepsToSet = stopDate < dateForHasFinalSteps
@@ -163,7 +163,7 @@ class TrackManager {
         delegate?.didMakeNewTrackPoint(trackPoint)
         #if os(iOS)
         Task.init {
-            guard let numSteps = await HealthKitManager.shared.readSteps(beginningAt: track.date, trackName: track.debugName) else { return }
+            guard let numSteps = await HealthKitManager.shared.getSteps(from: track.date, trackName: track.debugName) else { return }
             viewContext.performAndWait {
                 track.steps = numSteps
                 coreDataStack.saveContext()
