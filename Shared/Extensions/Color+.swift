@@ -128,12 +128,15 @@ extension Color {
     
     static var track: Color {
         let lightColor = Color(red: 0.9, green: 0, blue: 0)
-        let darkColor = Color(red: 0.75, green: 0, blue: 0)
-        return color(light: lightColor, dark: darkColor)
+        return colorStatic(light: lightColor, dark: avantiOrange)
+    }
+    
+    static var trackSat: Color {
+        return avantiOrange
     }
     
     static var markerEndFill: Color {
-        return color(light: lightGreen, dark: Color(white: 0.65))
+        return colorStatic(light: lightGreen, dark: Color(white: 0.65))
     }
     
     static var markerEndFillSat: Color {
@@ -142,13 +145,17 @@ extension Color {
         #else
         let lightColor = medium2Green
         #endif
-        return color(light: lightColor, dark: medium3Green)
+        return colorStatic(light: lightColor, dark: medium3Green)
     }
     
     static var markerEndShape: Color {
         let lightColor = Color(red: 0.9, green: 0, blue: 0)
+        #if os(iOS)
         let darkColor = Color(red: 0.85, green: 0, blue: 0)
-        return color(light: lightColor, dark: darkColor)
+        #else
+        let darkColor = Color(red: 0.8, green: 0, blue: 0)
+        #endif
+        return colorStatic(light: lightColor, dark: darkColor)
     }
     
     static var markerEndShapeSat: Color {
@@ -156,7 +163,7 @@ extension Color {
     }
     
     static var markerStartFill: Color {
-        return color(light: lightGreen, dark: avantiGreen)
+        return colorStatic(light: lightGreen, dark: avantiGreen)
     }
     
     static var markerStartFillSat: Color {
@@ -164,11 +171,11 @@ extension Color {
     }
     
     static var markerStartShape: Color {
-        return color(light: avantiGreen, dark: medium2Green)
+        return colorStatic(light: avantiGreen, dark: medium2Green)
     }
     
     static var markerStartShapeSat: Color {
-        return color(light: medium3Green, dark: medium3Green)
+        return colorStatic(light: medium3Green, dark: medium3Green)
     }
     
     // MARK: - Track Point Callout Colors

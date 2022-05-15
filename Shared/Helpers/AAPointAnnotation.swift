@@ -42,33 +42,31 @@ class AAPointAnnotation: MKPointAnnotation {
     // MARK: - Methods
     
     #if os(iOS)
-    func image(mapType: MKMapType) -> UIImage? {
-        guard let topImage = UIImage(named: imageNameBase)?.colored(UIColor(colorForMain(mapType: mapType)))
+    func image(forMapType mapType: MKMapType) -> UIImage? {
+        guard let topImage = UIImage(named: imageNameBase)?.colored(UIColor(mainColor(forMapType: mapType)))
         else { return nil }
         
-//        return topImage
-        
         guard let imageNameBackgroundBase = imageNameBackgroundBase,
-              let backgroundImage = UIImage(named: imageNameBackgroundBase)?.colored(UIColor(colorForBackground(mapType: mapType)))
+              let backgroundImage = UIImage(named: imageNameBackgroundBase)?.colored(UIColor(backgroundColor(forMapType: mapType)))
         else { return topImage }
 
         return backgroundImage.overlay(topImage)
     }
     
     #elseif os(macOS)
-    func image(mapType: MKMapType) -> NSImage? {
-        guard let topImage = NSImage(named: imageNameBase)?.colored(NSColor(colorForMain(mapType: mapType)))
+    func image(forMapType mapType: MKMapType) -> NSImage? {
+        guard let topImage = NSImage(named: imageNameBase)?.colored(NSColor(mainColor(forMapType: mapType)))
         else { return nil }
         
         guard let imageNameBackgroundBase = imageNameBackgroundBase,
-              let backgroundImage = NSImage(named: imageNameBackgroundBase)?.colored(NSColor(colorForBackground(mapType: mapType)))
+              let backgroundImage = NSImage(named: imageNameBackgroundBase)?.colored(NSColor(backgroundColor(forMapType: mapType)))
         else { return topImage }
         
         return backgroundImage.overlay(topImage)
     }
     #endif
     
-    func colorForBackground(mapType: MKMapType) -> Color {
+    func backgroundColor(forMapType mapType: MKMapType) -> Color {
         
         if forStart {
             return mapType == .standard ? .markerStartFill : .markerStartFillSat
@@ -77,7 +75,7 @@ class AAPointAnnotation: MKPointAnnotation {
         }
     }
     
-    func colorForMain(mapType: MKMapType) -> Color {
+    func mainColor(forMapType mapType: MKMapType) -> Color {
         
         if forStart {
             return mapType == .standard ? .markerStartShape : .markerStartShapeSat

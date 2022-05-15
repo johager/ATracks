@@ -1,6 +1,6 @@
 //
 //  MapView.swift
-//  ATracks
+//  ATracks (iOS)
 //
 //  Created by James Hager on 4/18/22.
 //
