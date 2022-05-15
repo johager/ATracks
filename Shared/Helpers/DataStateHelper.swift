@@ -227,14 +227,17 @@ enum DataStateHelper {
         
         guard DeviceType.current() == .phone else { return }
         
+        #if os(iOS)
         Task.init {
             guard await HealthKitManager.shared.requestPermission() == true else { return }
             doPrepForDataState9(context:  context)
         }
         
         shouldSaveContext = true
+        #endif
     }
     
+    #if os(iOS)
     static func doPrepForDataState9(context:  NSManagedObjectContext) {
         print("=== \(file).\(#function) ===")
         
@@ -268,4 +271,5 @@ enum DataStateHelper {
             print(error.localizedDescription)
         }
     }
+    #endif
 }

@@ -105,6 +105,16 @@ struct AboutView: View {
                         .settingsHeader
                 }
                 .listRowSeparator(.hidden)
+                
+                Section {
+                    Text("A green pin marker is used to indicate the beginning of a track. If the track is one-way, the end of the track has a red pin marker.")
+                    Text("The average elevation is a time-weighted average.")
+                    Text("Touch or swipe on the elevation plot to display that point on the map and also its latitude, longitude, and elevation.")
+                } header: {
+                    Text("Display")
+                        .settingsHeader
+                }
+                .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
             

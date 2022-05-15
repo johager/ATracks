@@ -25,10 +25,8 @@ extension Color {
     
     static func colorStatic(light lightColor: Color, dark darkColor: Color) -> Color {
         if Appearance.isDark {
-            print("=== Color.\(#function) - isDark ===")
             return darkColor
         } else {
-            print("=== Color.\(#function) - !isDark ===")
             return lightColor
         }
     }
