@@ -99,7 +99,6 @@
 		F8E0067B281B1ECB00FD679C /* OnboardingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00679281B1ECB00FD679C /* OnboardingHelper.swift */; };
 		F8E00680281B375A00FD679C /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0067F281B375A00FD679C /* BlankView.swift */; };
 		F8E00681281B375A00FD679C /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0067F281B375A00FD679C /* BlankView.swift */; };
-		F8E00683281B7A9E00FD679C /* HealthKitDateOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00682281B7A9E00FD679C /* HealthKitDateOptions.swift */; };
 		F8E00685281CA1FF00FD679C /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00684281CA1FF00FD679C /* DeviceType.swift */; };
 		F8E00686281CA1FF00FD679C /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00684281CA1FF00FD679C /* DeviceType.swift */; };
 		F8E0068E281EC7F700FD679C /* AddEditTrackName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */; };
@@ -202,7 +201,6 @@
 		F8D3FFCC2819A5FB00887790 /* LocationServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServicesView.swift; sourceTree = "<group>"; };
 		F8E00679281B1ECB00FD679C /* OnboardingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingHelper.swift; sourceTree = "<group>"; };
 		F8E0067F281B375A00FD679C /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
-		F8E00682281B7A9E00FD679C /* HealthKitDateOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitDateOptions.swift; sourceTree = "<group>"; };
 		F8E00684281CA1FF00FD679C /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
 		F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditTrackName.swift; sourceTree = "<group>"; };
 		F8E0068F281F0F5A00FD679C /* ATracks 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ATracks 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -382,7 +380,6 @@
 				F8F687102816F7BD00991442 /* AALabelWithPadding.swift */,
 				F8F6870C2815AAC000991442 /* AAToggleStyle.swift */,
 				F868D6BD280F195A00EC3D30 /* Appearance.swift */,
-				F8E00682281B7A9E00FD679C /* HealthKitDateOptions.swift */,
 				F868D6C5280F479200EC3D30 /* HealthKitManager.swift */,
 				F868D683280DB63400EC3D30 /* LocationManager.swift */,
 				F8F686FE2814E99B00991442 /* LocationManagerSettings.swift */,
@@ -649,7 +646,6 @@
 				F8233CA82811AA2100536A0F /* Int32+.swift in Sources */,
 				F868D66D280DAE3200EC3D30 /* ATracks.xcdatamodeld in Sources */,
 				F868D6C6280F479200EC3D30 /* HealthKitManager.swift in Sources */,
-				F8E00683281B7A9E00FD679C /* HealthKitDateOptions.swift in Sources */,
 				F868D68B280DBD7400EC3D30 /* TrackRow.swift in Sources */,
 				F868D681280DB5F800EC3D30 /* Date+.swift in Sources */,
 				F8AA6B19282A9FA7007EBCAA /* NSManagedObjectContext+.swift in Sources */,
@@ -863,7 +859,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 37c;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -883,7 +879,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;
@@ -901,7 +897,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 37c;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -921,7 +917,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;

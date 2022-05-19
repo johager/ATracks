@@ -17,6 +17,8 @@ class LocationManager: NSObject {
     
     private let locationManager = CLLocationManager()
     
+    private var appIsActive = false
+    
     var shouldTrack = true
     
     private var isAvailGPS = false
@@ -100,6 +102,10 @@ class LocationManager: NSObject {
             }
         }
         track = nil
+        
+        if !appIsActive {
+            sceneDidBecomeInActive()
+        }
     }
     
     func startHeadingUpdates() {
@@ -148,8 +154,11 @@ class LocationManager: NSObject {
     // MARK: - Scene Lifecycle
     
     func sceneDidBecomeActive() {
+        //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack) ===")
         
         guard shouldTrack else { return }
+        
+        appIsActive = true
         
         if isTracking {
             return
@@ -159,8 +168,11 @@ class LocationManager: NSObject {
     }
     
     func sceneDidBecomeInActive() {
+        //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack) ===")
  
         guard shouldTrack else { return }
+        
+        appIsActive = false
         
         if isTracking {
             return
