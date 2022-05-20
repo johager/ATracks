@@ -14,6 +14,8 @@ import HealthKit
 struct ATracksApp: App {
     @Environment(\.scenePhase) var scenePhase
     
+    @State private var wasInactive = true
+    
     @State private var hasOnboarded = false
     @State private var isOnboarding = false
     
@@ -49,11 +51,10 @@ struct ATracksApp: App {
                     }
                 }
                 .onChange(of: hasOnboarded) { _ in
-                    print("=== \(file).\(#function) - onChange - hasOnboarded: \(hasOnboarded) ===")
+                    //print("=== \(file).\(#function) - onChange - hasOnboarded: \(hasOnboarded) ===")
                     #if os(iOS)
-                    LocationManager.shared.sceneDidBecomeActive()
+                    handleActive()
                     #endif
-                    Task { await checkHealthKit() }
                 }
                 .onChange(of: isOnboarding) { _ in
                     //print("=== \(file).\(#function) - onChange - isOnboarding: \(isOnboarding) ===")
@@ -74,12 +75,10 @@ struct ATracksApp: App {
     func scenePhaseChanged(to phase: ScenePhase) {
         switch phase {
         case .active:
-            print("=== \(file).\(#function) - active, hasOnboarded: \(hasOnboarded) ===")
+            print("=== \(file).\(#function) - active, hasOnboarded: \(hasOnboarded), wasInactive: \(wasInactive) ===")
             #if os(iOS)
             hasSafeAreaInsets = Func.hasSafeAreaInsets
-            if hasOnboarded {
-                LocationManager.shared.sceneDidBecomeActive()
-            }
+            handleActive()
             #endif
             //doSpecialStartUp()
             NotificationCenter.default.post(name: .scenePhaseChangedToActive, object: nil, userInfo: nil)
@@ -88,9 +87,10 @@ struct ATracksApp: App {
             print("=== \(file).\(#function) - inactive, hasOnboarded: \(hasOnboarded) ===")
             #if os(iOS)
             if hasOnboarded {
-                LocationManager.shared.sceneDidBecomeInActive()
+                LocationManager.shared.sceneDidBecomeInactive()
             }
             #endif
+            wasInactive = true
         #endif
         case .background:
             print("=== \(file).\(#function) - background, hasOnboarded: \(hasOnboarded) ===")
@@ -99,39 +99,47 @@ struct ATracksApp: App {
         }
     }
     
-    func doSpecialStartUp() {
-        let coreDataStack = CoreDataStack.shared
+    func handleActive() {
+        print("=== \(file).\(#function) - hasOnboarded: \(hasOnboarded), wasInactive: \(wasInactive) ===")
         
-        let fetchRequest = Track.fetchRequest
-        
-        do {
-            let tracks = try coreDataStack.context.fetch(fetchRequest)
-            print("=== \(file).\(#function) - tracks.count: \(tracks.count) ===")
-            
-            for track in tracks {
-                track.duration /= 3600
-            }
-            
-            coreDataStack.saveContext()
-            
-        } catch {
-            print("=== \(file).\(#function) - error fetching")
+        defer {
+            wasInactive = false
         }
+        
+        #if os(iOS)
+        guard hasOnboarded, wasInactive else { return }
+        LocationManager.shared.sceneDidBecomeActive()
+        Task { await updateSteps() }
+        #endif
     }
+    
+//    func doSpecialStartUp() {
+//        let coreDataStack = CoreDataStack.shared
+//
+//        let fetchRequest = Track.fetchRequest
+//
+//        do {
+//            let tracks = try coreDataStack.context.fetch(fetchRequest)
+//            print("=== \(file).\(#function) - tracks.count: \(tracks.count) ===")
+//
+//            for track in tracks {
+//                track.duration /= 3600
+//            }
+//
+//            coreDataStack.saveContext()
+//
+//        } catch {
+//            print("=== \(file).\(#function) - error fetching")
+//        }
+//    }
     
     // MARK: - HealthKit Methods
     
-    func checkHealthKit() async {
+    func updateSteps() async {
         #if os(iOS)
         print("=== \(file).\(#function) ===")
         
         guard await HealthKitManager.shared.requestPermission() == true else { return }
-        
-//        if let numSteps = await HealthKitManager.shared.readCurrentSteps() {
-//            print("--- \(file).\(#function) - numSteps: \(numSteps)")
-//        } else {
-//            print("--- \(file).\(#function) - numSteps: nil")
-//        }
         
         TrackManager.shared.updateSteps()
         #endif

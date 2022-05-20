@@ -82,7 +82,7 @@ class HealthKitManager {
                 result.enumerateStatistics(from: startDate, to: endDate) { statistics, _ in
                     if let sum = statistics.sumQuantity() {
                         sumSteps += sum.doubleValue(for: .count())
-                        print("-- \(fileFunc) - \(trackName) - retrieved steps in enumerate - sum: \(sum), sumSteps: \(sumSteps)")
+                        //print("-- \(fileFunc) - \(trackName) - retrieved steps in enumerate - sum: \(sum), sumSteps: \(sumSteps)")
                     }
                 }
                 
@@ -118,75 +118,4 @@ class HealthKitManager {
 
         return numSteps
     }
-    
-    /*
-    func readCurrentSteps(trackName: String = "") async -> Int32? {
-        let fileFunc = "\(file).readCurrentSteps(...)"
-        print("=== \(fileFunc) - hasAccess: \(hasAccess)")
-        
-        guard hasAccess else { return nil }
-        
-        let now = Date()
-        let startOfDay = Calendar.current.startOfDay(for: now)
-        var interval = DateComponents()
-        interval.day = 1
-        
-        let numSteps = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Int32?, Error>) in
-
-            let stepCount = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-
-            let query = HKStatisticsCollectionQuery(quantityType: stepCount, quantitySamplePredicate: nil, options: [.cumulativeSum], anchorDate: startOfDay, intervalComponents: interval)
-            
-            query.initialResultsHandler = { _, result, error in
-                if let error = error {
-                    print("--- \(fileFunc) - \(trackName) - error retrieving steps in initialResultsHandler: \(error.localizedDescription)\n---\n\(error)")
-                    return continuation.resume(returning: nil)
-                }
-
-                guard let result = result
-                else {
-                    print("--- \(fileFunc) - \(trackName) - error retrieving steps in initialResultsHandler: no result.")
-                    return continuation.resume(returning: nil)
-                }
-                
-                var numSteps: Int32 = 0
-                
-                result.enumerateStatistics(from: startOfDay, to: now) { statistics, _ in
-                    if let sum = statistics.sumQuantity() {
-                        numSteps = Int32(round(sum.doubleValue(for: .count())))
-                        print("-- \(fileFunc) - \(trackName) - retrieved steps in enumerate - numSteps: \(numSteps)")
-                    }
-                }
-
-                print("-- \(fileFunc) - \(trackName) - retrieved steps in initialResultsHandler - numSteps: \(numSteps)")
-                continuation.resume(returning: numSteps)
-            }
-            
-//            query.statisticsUpdateHandler = { _, statistics, _, error in
-//                if let error = error {
-//                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
-//                    return continuation.resume(returning: nil)
-//                }
-//
-//                guard let sum = statistics?.sumQuantity()
-//                else {
-//                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: no statistics or valid sum.")
-//                    return continuation.resume(returning: nil)
-//                }
-//
-//                let numSteps = Int32(sum.doubleValue(for: .count()))
-//
-//                print("-- \(fileFunc) - \(trackName) - retrieved steps - numSteps: \(numSteps)")
-//                continuation.resume(returning: numSteps)
-//                self.hkStore.stop(query)
-//            }
-
-            hkStore.execute(query)
-        }
-
-        guard let numSteps = numSteps else { return nil }
-
-        return numSteps
-    }
-    */
 }

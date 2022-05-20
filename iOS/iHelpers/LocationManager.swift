@@ -84,16 +84,12 @@ class LocationManager: NSObject {
             stopTracking()
         }
         
-        isTracking = true
         track = TrackManager.shared.createTrack(name: name)
+        isTracking = true
     }
     
     func stopTracking(forDelete: Bool = false) {
         print("=== \(file).\(#function)")
-        isTracking = false
-        location = nil
-        firstLocation = nil
-        shouldCheckAutoStop = false
         if !forDelete {
             if let track = track {
                 TrackManager.shared.stopTracking(track)
@@ -102,9 +98,13 @@ class LocationManager: NSObject {
             }
         }
         track = nil
+        isTracking = false
+        location = nil
+        firstLocation = nil
+        shouldCheckAutoStop = false
         
         if !appIsActive {
-            sceneDidBecomeInActive()
+            sceneDidBecomeInactive()
         }
     }
     
@@ -154,7 +154,7 @@ class LocationManager: NSObject {
     // MARK: - Scene Lifecycle
     
     func sceneDidBecomeActive() {
-        //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack) ===")
+        print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
         
         guard shouldTrack else { return }
         
@@ -167,10 +167,10 @@ class LocationManager: NSObject {
         startLocationUpdates()
     }
     
-    func sceneDidBecomeInActive() {
-        //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack) ===")
+    func sceneDidBecomeInactive() {
+        print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
  
-        guard shouldTrack else { return }
+        guard shouldTrack, appIsActive else { return }
         
         appIsActive = false
         

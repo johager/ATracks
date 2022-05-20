@@ -276,12 +276,15 @@ class MapViewHelper: NSObject {
         #endif
     }
     
-    private func setMapNoTrack() {
+    private func setMapNoTrack(shouldApplyRegion: Bool = true) {
         TrackManager.shared.delegate = nil
         mapView.isRotateEnabled = false
         //mapView.showsUserLocation = false
         mapView.userTrackingMode = .none
-        mapView.region = region
+        
+        if shouldApplyRegion {
+            mapView.region = region
+        }
     }
     
     private func setMapToTrack() {
@@ -344,7 +347,7 @@ class MapViewHelper: NSObject {
     
     @objc func handleDidStopTrackingNotification(_ notification: Notification) {
         print("=== \(file).\(#function) ===")
-        setMapNoTrack()
+        setMapNoTrack(shouldApplyRegion: false)
         
         if trackPointAnnotation != nil {
             mapView.removeAnnotation(trackPointAnnotation)
