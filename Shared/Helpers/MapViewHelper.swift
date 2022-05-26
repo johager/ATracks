@@ -133,32 +133,7 @@ class MapViewHelper: NSObject {
         
         self.track = track
         
-        let trackPoints = track.trackPoints
-        
-        guard trackPoints.count > 0 else { return }
-        
-        // track
-        let coordinates = trackPoints.map { $0.clLocationCoordinate2D }
-        let routeOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
-        mapView.addOverlay(routeOverlay, level: .aboveRoads)
-        
-        // start point annotation
-        startPointAnnotation = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: true, imageOffsetY: -18)
-        mapView.addAnnotation(startPointAnnotation)
-        
-        // end point annotation
-        if track.isTracking {
-            trackPointAnnotation = AAPointAnnotation(coordinate: coordinates.last!, imageNameBase: "mapPointMarker")
-                mapView.addAnnotation(trackPointAnnotation)
-            return
-        }
-        
-        if trackPointAnnotation != nil {
-            mapView.removeAnnotation(trackPointAnnotation)
-            mapView.addAnnotation(trackPointAnnotation)
-        }
-        
-        addEndPointAnnotation()
+        drawTrack()
     }
 
     func centerMap() {
@@ -300,6 +275,41 @@ class MapViewHelper: NSObject {
         lastTrackPoint = track.trackPoints.last
     }
     
+    private func drawTrack() {
+        
+        guard startPointAnnotation == nil else { return }
+        
+        let trackPoints = track.trackPoints
+        
+        guard trackPoints.count > 0 else { return }
+        
+        let coordinates = trackPoints.map { $0.clLocationCoordinate2D }
+        
+        // track
+        if trackPoints.count > 1 {
+            let routeOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
+            mapView.addOverlay(routeOverlay, level: .aboveRoads)
+        }
+        
+        // start point annotation
+        startPointAnnotation = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: true, imageOffsetY: -18)
+        mapView.addAnnotation(startPointAnnotation)
+        
+        // end point annotation
+        if track.isTracking {
+            trackPointAnnotation = AAPointAnnotation(coordinate: coordinates.last!, imageNameBase: "mapPointMarker")
+                mapView.addAnnotation(trackPointAnnotation)
+            return
+        }
+        
+        if trackPointAnnotation != nil {
+            mapView.removeAnnotation(trackPointAnnotation)
+            mapView.addAnnotation(trackPointAnnotation)
+        }
+        
+        addEndPointAnnotation()
+    }
+    
     private func addEndPointAnnotation() {
         
         guard endPointAnnotation == nil else { return }
@@ -390,13 +400,15 @@ extension MapViewHelper: TrackManagerDelegate {
         
         mapView.setCenter(trackPoint.clLocationCoordinate2D, animated: true)
         
-        placeTrackMarker(at: trackPoint.clLocationCoordinate2D)
+        drawTrack()
         
         defer {
             lastTrackPoint = trackPoint
         }
         
         guard let lastTrackPoint = lastTrackPoint else { return }
+        
+        placeTrackMarker(at: trackPoint.clLocationCoordinate2D)
         
         let coordinates = [lastTrackPoint.clLocationCoordinate2D, trackPoint.clLocationCoordinate2D]
         let routeOverlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
