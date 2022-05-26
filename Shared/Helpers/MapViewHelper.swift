@@ -112,9 +112,11 @@ class MapViewHelper: NSObject {
         setUpView()
         setUpTracking()
         
-        NotificationCenter.default.addObserver(self,
-            selector: #selector(handleDidStopTrackingNotification(_:)),
-            name: .didStopTracking, object: nil)
+        if trackIsTrackingOnThisDevice {
+            NotificationCenter.default.addObserver(self,
+                selector: #selector(handleDidStopTrackingNotification(_:)),
+                name: .didStopTracking, object: nil)
+        }
         
         NotificationCenter.default.addObserver(self,
             selector: #selector(handleScenePhaseChangedToActive(_:)),
@@ -146,10 +148,8 @@ class MapViewHelper: NSObject {
         
         // end point annotation
         if track.isTracking {
-            if !trackIsTrackingOnThisDevice {
-                trackPointAnnotation = AAPointAnnotation(coordinate: coordinates.last!, imageNameBase: "mapPointMarker")
+            trackPointAnnotation = AAPointAnnotation(coordinate: coordinates.last!, imageNameBase: "mapPointMarker")
                 mapView.addAnnotation(trackPointAnnotation)
-            }
             return
         }
         
@@ -160,19 +160,18 @@ class MapViewHelper: NSObject {
         
         addEndPointAnnotation()
     }
-    
-    func addEndPointAnnotation() {
+
+    func centerMap() {
+        print("=== \(file).\(#function) ===")
         
-        guard endPointAnnotation == nil else { return }
+        #if os(iOS)
+        if trackIsTrackingOnThisDevice {
+            setMapToTrack()
+            return
+        }
+        #endif
         
-        let trackPoints = track.trackPoints
-        
-        guard trackPoints.count > 0,
-              trackPoints.last!.clLocation.distance(from: trackPoints.first!.clLocation) > 10
-        else { return }
-        
-        endPointAnnotation = AAPointAnnotation(coordinate: trackPoints.last!.clLocationCoordinate2D, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: false, imageOffsetY: -18)
-        mapView.addAnnotation(endPointAnnotation)
+        mapView.setRegion(region, animated: true)
     }
     
     // MARK: - Private Methods
@@ -205,7 +204,7 @@ class MapViewHelper: NSObject {
         addTrackPointCalloutLabel()
     }
     
-    func addTrackPointCalloutLabel() {
+    private func addTrackPointCalloutLabel() {
         #if os(iOS)
         trackPointCalloutLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
         let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: isPhone ? .footnote : .body)
@@ -301,20 +300,21 @@ class MapViewHelper: NSObject {
         lastTrackPoint = track.trackPoints.last
     }
     
-    func centerMap() {
-        print("=== \(file).\(#function) ===")
+    private func addEndPointAnnotation() {
         
-        #if os(iOS)
-        if trackIsTrackingOnThisDevice {
-            setMapToTrack()
-            return
-        }
-        #endif
+        guard endPointAnnotation == nil else { return }
         
-        mapView.setRegion(region, animated: true)
+        let trackPoints = track.trackPoints
+        
+        guard trackPoints.count > 0,
+              trackPoints.last!.clLocation.distance(from: trackPoints.first!.clLocation) > 10
+        else { return }
+        
+        endPointAnnotation = AAPointAnnotation(coordinate: trackPoints.last!.clLocationCoordinate2D, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: false, imageOffsetY: -18)
+        mapView.addAnnotation(endPointAnnotation)
     }
     
-    func moveTrackMarker(to clLocationCoordinate2D: CLLocationCoordinate2D) {
+    private func placeTrackMarker(at clLocationCoordinate2D: CLLocationCoordinate2D) {
         
         if trackPointAnnotation == nil {
             trackPointAnnotation = AAPointAnnotation(coordinate: clLocationCoordinate2D, imageNameBase: "mapPointMarker")
@@ -326,7 +326,7 @@ class MapViewHelper: NSObject {
         mapView.addAnnotation(trackPointAnnotation)
     }
     
-    func updateTrackPointCalloutLabel(for clLocationCoordinate2D: CLLocationCoordinate2D, elevation: Any?) {
+    private func updateTrackPointCalloutLabel(for clLocationCoordinate2D: CLLocationCoordinate2D, elevation: Any?) {
         
         var string = clLocationCoordinate2D.stringWithThreeDecimals
         
@@ -376,7 +376,7 @@ class MapViewHelper: NSObject {
         
         //print("=== \(file).\(#function) ===")
         
-        moveTrackMarker(to: clLocationCoordinate2D)
+        placeTrackMarker(at: clLocationCoordinate2D)
         
         updateTrackPointCalloutLabel(for: clLocationCoordinate2D, elevation: userInfo[Key.elevation])
     }
@@ -390,7 +390,7 @@ extension MapViewHelper: TrackManagerDelegate {
         
         mapView.setCenter(trackPoint.clLocationCoordinate2D, animated: true)
         
-        moveTrackMarker(to: trackPoint.clLocationCoordinate2D)
+        placeTrackMarker(at: trackPoint.clLocationCoordinate2D)
         
         defer {
             lastTrackPoint = trackPoint

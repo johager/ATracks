@@ -114,23 +114,97 @@ struct ATracksApp: App {
     }
     
 //    func doSpecialStartUp() {
-//        let coreDataStack = CoreDataStack.shared
-//
 //        let fetchRequest = Track.fetchRequest
+//        
+//        let dateCheck = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+//        fetchRequest.predicate = NSPredicate(format: "%K > %@", Track.dateKey, dateCheck as CVarArg)
 //
 //        do {
 //            let tracks = try coreDataStack.context.fetch(fetchRequest)
 //            print("=== \(file).\(#function) - tracks.count: \(tracks.count) ===")
 //
 //            for track in tracks {
-//                track.duration /= 3600
+//                let trackName = track.debugName
+//                print("--- \(file).\(#function) - trackName: \(trackName)")
+//                applyAutoStop(to: track)
 //            }
 //
-//            coreDataStack.saveContext()
+//            //coreDataStack.saveContext()
 //
 //        } catch {
 //            print("=== \(file).\(#function) - error fetching")
 //        }
+//    }
+    
+//    func applyAutoStop(to track: Track) {
+//        print("=== \(file).\(#function) ===")
+//
+//        let trackPoints = track.trackPoints
+//
+//        guard trackPoints.count > 2 else { return }
+//
+//        let autoStopMinDistToStart: Double = 20
+//        let autoStopMinDistToStop: Double = 8 //4 //2
+//        let autoStopMinTimeIntToStart: TimeInterval = 30
+//
+//        var shouldCheckAutoStop = false
+//
+//        let firstPointIndex = 9
+//        let firstLocation = trackPoints[firstPointIndex].clLocation
+//
+//        print("--- \(file).\(#function) - first: \(trackPoints[firstPointIndex].timestamp.stringForDebug), lat/lon \(firstLocation.coordinate.latitude), \(firstLocation.coordinate.longitude)")
+//
+//        for i in firstPointIndex+1..<trackPoints.count {
+//            let trackPoint = trackPoints[i]
+//            let dTime = trackPoint.timestamp.timeIntervalSince(trackPoints[firstPointIndex].timestamp)
+//            let dLoc = trackPoint.clLocation.distance(from: firstLocation)
+//            print("--- \(file).\(#function) - i: \(i), dTime: \(dTime), dLoc: \(dLoc), shouldCheckAutoStop: \(shouldCheckAutoStop)")
+//            guard shouldCheckAutoStop
+//            else {
+//                shouldCheckAutoStop = dTime > autoStopMinTimeIntToStart && dLoc > autoStopMinDistToStart
+//                continue
+//            }
+//            if dLoc < autoStopMinDistToStop {
+//                print("--- \(file).\(#function) - i: \(i) - delete")
+//                //trimTrack(track, begin: firstPointIndex, end: i + 1)
+//                return
+//            }
+//        }
+//    }
+    
+//    func trimTrack(_ track: Track, begin: Int, end: Int) {
+//        print("=== \(file).\(#function) - begin: \(begin), end: \(end) ===")
+//        let context = coreDataStack.context
+//        var trackPoints = track.trackPoints
+//        print("--- \(file).\(#function) - trackPoints.count: \(trackPoints.count)")
+//
+//        var didDelete = false
+//
+//        if end < trackPoints.count {
+//            didDelete = true
+//            for i in end..<trackPoints.count {
+//                context.delete(trackPoints[i])
+//                print("--- \(file).\(#function) - i: \(i) - delete")
+//            }
+//        }
+//
+//        if begin > 0 {
+//            didDelete = true
+//            for i in 0..<begin {
+//                context.delete(trackPoints[i])
+//                print("--- \(file).\(#function) - i: \(i) - delete")
+//            }
+//        }
+//
+//        guard didDelete else { return }
+//
+//        coreDataStack.saveContext()
+//
+//        trackPoints = track.trackPoints
+//        print("--- \(file).\(#function) - trackPoints.count: \(trackPoints.count)")
+//
+//        track.date = trackPoints[0].timestamp
+//        track.setTrackSummaryData()
 //    }
     
     // MARK: - HealthKit Methods

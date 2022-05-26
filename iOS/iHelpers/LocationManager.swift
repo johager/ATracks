@@ -65,16 +65,19 @@ class LocationManager: NSObject {
         return true
     }
     
-    func startLocationUpdates() {
+    func startLocationManagerUpdates() {
         print("=== \(file).\(#function) ===")
         locationManager.startUpdatingLocation()
         locationManager.startMonitoringSignificantLocationChanges()
+        locationManager.startUpdatingHeading()
     }
     
-    func stopLocationUpdates() {
+    func stopLocationManagerUpdates() {
         print("=== \(file).\(#function) ===")
+        locationManager.stopUpdatingHeading()
         locationManager.stopMonitoringSignificantLocationChanges()
         locationManager.stopUpdatingLocation()
+        
     }
     
     func startTracking(name: String) {
@@ -106,16 +109,6 @@ class LocationManager: NSObject {
         if !appIsActive {
             sceneDidBecomeInactive()
         }
-    }
-    
-    func startHeadingUpdates() {
-        print("=== \(file).\(#function) ===")
-        locationManager.startUpdatingHeading()
-    }
-    
-    func stopHeadingUpdates() {
-        print("=== \(file).\(#function) ===")
-        locationManager.stopUpdatingHeading()
     }
     
     func checkAutoStop() {
@@ -163,22 +156,20 @@ class LocationManager: NSObject {
         if isTracking {
             return
         }
-        startHeadingUpdates()
-        startLocationUpdates()
+        startLocationManagerUpdates()
     }
     
     func sceneDidBecomeInactive() {
         print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
  
-        guard shouldTrack, appIsActive else { return }
+        guard shouldTrack else { return }
         
         appIsActive = false
         
         if isTracking {
             return
         }
-        stopHeadingUpdates()
-        stopLocationUpdates()
+        stopLocationManagerUpdates()
     }
 }
 
