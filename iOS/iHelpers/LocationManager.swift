@@ -77,7 +77,6 @@ class LocationManager: NSObject {
         locationManager.stopUpdatingHeading()
         locationManager.stopMonitoringSignificantLocationChanges()
         locationManager.stopUpdatingLocation()
-        
     }
     
     func startTracking(name: String) {
