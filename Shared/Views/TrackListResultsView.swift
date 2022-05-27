@@ -18,9 +18,12 @@ struct TrackListResultsView: View {
     
     var delegate: TrackListResultsViewDelegate
     
+    @State private var selectedTrack: Track?
     @State private var isShowingDeleteAlert = false
     
     @FetchRequest private var tracks: FetchedResults<Track>
+    
+    private var isNotPhone: Bool { DeviceType.current() != .phone }
     
     let file = "TrackListResultsView"
     
@@ -46,7 +49,7 @@ struct TrackListResultsView: View {
             List() {
                 ForEach(tracks) { track in
                     ZStack(alignment: .leading) {
-                        NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)) {
+                        NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets), tag: track, selection: $selectedTrack) {
                             EmptyView()
                         }
                         .opacity(0)
@@ -76,6 +79,11 @@ struct TrackListResultsView: View {
                 }
             }
             .listStyle(.plain)
+            .onAppear {
+                if isNotPhone && selectedTrack == nil && tracks.count > 0 {
+                    selectedTrack = tracks[0]
+                }
+            }
             .padding(.bottom, 0)
         }
         
