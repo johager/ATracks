@@ -87,6 +87,7 @@
 		F8821AAB2813879F00A21781 /* LegalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AAA2813879F00A21781 /* LegalView.swift */; };
 		F8821AAD281397D600A21781 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AAC281397D600A21781 /* MailView.swift */; };
 		F8821AB22813A69500A21781 /* NavigationLink+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AB12813A69500A21781 /* NavigationLink+.swift */; };
+		F891BA472841607B00AE7118 /* SwipeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA462841607B00AE7118 /* SwipeDirection.swift */; };
 		F8A6D1792831A50B0035BFD1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6D1782831A50B0035BFD1 /* UIImage+.swift */; };
 		F8A6D17B2831A51C0035BFD1 /* NSImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6D17A2831A51C0035BFD1 /* NSImage+.swift */; };
 		F8AA6B1328296755007EBCAA /* TouchLocatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */; };
@@ -193,6 +194,7 @@
 		F8821AAA2813879F00A21781 /* LegalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalView.swift; sourceTree = "<group>"; };
 		F8821AAC281397D600A21781 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		F8821AB12813A69500A21781 /* NavigationLink+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+.swift"; sourceTree = "<group>"; };
+		F891BA462841607B00AE7118 /* SwipeDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeDirection.swift; sourceTree = "<group>"; };
 		F8A6D1782831A50B0035BFD1 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		F8A6D17A2831A51C0035BFD1 /* NSImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+.swift"; sourceTree = "<group>"; };
 		F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchLocatingView.swift; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				F868D6C5280F479200EC3D30 /* HealthKitManager.swift */,
 				F868D683280DB63400EC3D30 /* LocationManager.swift */,
 				F8F686FE2814E99B00991442 /* LocationManagerSettings.swift */,
+				F891BA462841607B00AE7118 /* SwipeDirection.swift */,
 			);
 			path = iHelpers;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 				F8E0068E281EC7F700FD679C /* AddEditTrackName.swift in Sources */,
 				F868D6E628109CA200EC3D30 /* Key.swift in Sources */,
 				F868D65A280DAD4600EC3D30 /* ATracksApp.swift in Sources */,
+				F891BA472841607B00AE7118 /* SwipeDirection.swift in Sources */,
 				F82BD5D928271163003E674D /* VerticalDividerView.swift in Sources */,
 				F8233CA82811AA2100536A0F /* Int32+.swift in Sources */,
 				F868D66D280DAE3200EC3D30 /* ATracks.xcdatamodeld in Sources */,
@@ -859,7 +863,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38a;
+				CURRENT_PROJECT_VERSION = 38b;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -897,7 +901,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38a;
+				CURRENT_PROJECT_VERSION = 38b;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -937,7 +941,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27h;
+				CURRENT_PROJECT_VERSION = 27i;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -966,7 +970,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27h;
+				CURRENT_PROJECT_VERSION = 27i;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

@@ -29,7 +29,8 @@ extension Color {
     }
     
     static var listRowSelectedBackground: Color {
-        return color(light: light2Green, dark: Color(white: 0.11))
+//        return color(light: light2Green, dark: Color(white: 0.11))
+        return color(light: light1HGreen, dark: dark3HGreen)  // headerBackground
     }
     
     static var listRowSeparator: Color {

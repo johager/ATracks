@@ -7,11 +7,21 @@
 
 import SwiftUI
 
+protocol TrackStatsViewDelegate {
+    #if os(iOS)
+    func handleSwipe(_ swipeDir: SwipeDirection)
+    #endif
+}
+
+// MARK: -
+
 struct TrackStatsView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
-    var displayOnSide: Bool
+    private var displayOnSide: Bool
+    
+    private var delegate: TrackStatsViewDelegate?
     
     private var deviceType: DeviceType { DeviceType.current() }
     private var isPhone: Bool { deviceType == .phone }
@@ -41,12 +51,15 @@ struct TrackStatsView: View {
         }
     }
     
+    let file = "TrackStatsView"
+    
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false, delegate: TrackStatsViewDelegate? = nil) {
         self.track = track
         self._hasSafeAreaInsets = hasSafeAreaInsets
         self.displayOnSide = displayOnSide
+        self.delegate = delegate
     }
     
     // MARK: - View
@@ -117,6 +130,14 @@ struct TrackStatsView: View {
                 .padding(.trailing, trailingSpace)
             }
         }
+        #if os(iOS)
+        .gesture(DragGesture()
+            .onEnded { value in
+                print("=== \(file).DragGesture().onEnded - value.translation: \(value.translation) ===")
+                delegate?.handleSwipe(SwipeDirection.from(value))
+            }
+        )
+        #endif
         .font(isPhone ? .footnote : .body)
         .foregroundColor(.text)
 //        #if os(iOS)

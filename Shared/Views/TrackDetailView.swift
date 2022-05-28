@@ -13,6 +13,7 @@ struct TrackDetailView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
+    var delegate: TrackStatsViewDelegate?
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -27,6 +28,16 @@ struct TrackDetailView: View {
     }
     #endif
     
+    let file = "TrackDetailView"
+    
+    // MARK: - Init
+    
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>, delegate: TrackStatsViewDelegate) {
+        self.track = track
+        self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.delegate = delegate
+    }
+    
     // MARK: - View
     
     var body: some View {
@@ -34,7 +45,7 @@ struct TrackDetailView: View {
             if geometry.isLandscape {
                 HStack(spacing: 0) {
                     if DisplaySettings.shared.placeMapOnRightInLandscape {
-                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
                         VerticalDividerView()
                     }
                     
@@ -59,13 +70,13 @@ struct TrackDetailView: View {
                     
                     if !DisplaySettings.shared.placeMapOnRightInLandscape {
                         VerticalDividerView()
-                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
                     }
                 }
                 
             } else {  // geometry is portrait
                 VStack(spacing: 0) {
-                    TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                    TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
                     Rectangle()
                         .edgesIgnoringSafeArea([.trailing, .leading])
                         .foregroundColor(.border)
@@ -102,27 +113,30 @@ struct TrackDetailView: View {
         #endif
     }
     
-    // MARKL - Methods
+    // MARK: - Methods
     
     #if os(iOS)
     func stopTracking() {
-        print("=== TrackDetailView.\(#function) ===")
+        print("=== \(file).\(#function) ===")
         LocationManager.shared.stopTracking()
     }
     #endif
 }
 
+// MARK: -
+
 struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
+    var delegate: TrackStatsViewDelegate?
     
     // MARK: - View
     
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
-            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
+            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true, delegate: delegate)
             Spacer()
             Rectangle()
                 .edgesIgnoringSafeArea([.trailing, .leading])
