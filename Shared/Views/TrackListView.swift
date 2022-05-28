@@ -15,6 +15,8 @@ struct TrackListView: View {
     #endif
 
     @Binding var hasSafeAreaInsets: Bool
+    var isLandscape: Bool
+    
     @State private var isTracking = false
     
     @State private var searchText = ""
@@ -63,7 +65,7 @@ struct TrackListView: View {
                     }
                     #endif
                     
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, searchText: searchText, delegate: self)
+                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, searchText: searchText, delegate: self)
                     
                     #if os(iOS)
                     if displaySettings.placeButtonsOnRightInLandscape {
@@ -79,7 +81,7 @@ struct TrackListView: View {
                 }
             } else {  // not side by side
                 VStack(spacing: 0) {
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, searchText: searchText, delegate: self)
+                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, searchText: searchText, delegate: self)
                     
                     #if os(iOS)
                     VStack(spacing: 0) {
@@ -126,6 +128,7 @@ struct TrackListView: View {
         .searchable(text: $searchText, prompt: Text("Track name..."))
         #if os(iOS)
         NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) { EmptyView() }
+            .isDetailLink(false)
         #endif
     }
     

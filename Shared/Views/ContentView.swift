@@ -19,10 +19,12 @@ struct ContentView: View {
     // MARK: - View
     
     var body: some View {
-        NavigationView {
-            TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets)
-            //SettingsView()
-            BlankView()
+        GeometryReader {  geometry in
+            NavigationView {
+                TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: geometry.isLandscape)
+                //SettingsView()
+                BlankView()
+            }
         }
     }
 }

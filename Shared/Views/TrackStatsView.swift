@@ -131,9 +131,9 @@ struct TrackStatsView: View {
             }
         }
         #if os(iOS)
-        .gesture(DragGesture()
+        .contentShape(Rectangle())  // so the .gesture will operate on the whole Group and not just the inner content
+        .gesture(DragGesture(minimumDistance: 5)
             .onEnded { value in
-                print("=== \(file).DragGesture().onEnded - value.translation: \(value.translation) ===")
                 delegate?.handleSwipe(SwipeDirection.from(value))
             }
         )

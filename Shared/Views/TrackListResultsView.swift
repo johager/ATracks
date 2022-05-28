@@ -17,6 +17,7 @@ protocol TrackListResultsViewDelegate {
 struct TrackListResultsView: View {
     
     @Binding var hasSafeAreaInsets: Bool
+    var isLandscape: Bool
     
     var delegate: TrackListResultsViewDelegate
     
@@ -26,15 +27,14 @@ struct TrackListResultsView: View {
     
     @FetchRequest private var tracks: FetchedResults<Track>
     
-    private var isNotPhone: Bool { DeviceType.current() != .phone }
-    
     let file = "TrackListResultsView"
     
     // MARK: - Init
     
-    init(hasSafeAreaInsets: Binding<Bool>, searchText: String, delegate: TrackListResultsViewDelegate) {
-        //print("=== TrackListResultsView.\(#function) - searchText: '\(searchText)' ===")
+    init(hasSafeAreaInsets: Binding<Bool>, isLandscape: Bool, searchText: String, delegate: TrackListResultsViewDelegate) {
+        print("=== TrackListResultsView.\(#function) - isLandscape: \(isLandscape), searchText: '\(searchText)' ===")
         self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.isLandscape = isLandscape
         self.delegate = delegate
         
         let fetchRequest = Track.fetchRequest
@@ -97,11 +97,7 @@ struct TrackListResultsView: View {
                 }
                 #endif
             }
-            .onAppear {
-                if isNotPhone && selectedTrack == nil && tracks.count > 0 {
-                    selectedTrack = tracks[0]
-                }
-            }
+            .onAppear { setSelectedTrack() }
             .padding(.bottom, 0)
         }
         
@@ -123,7 +119,7 @@ struct TrackListResultsView: View {
     }
     
     func handleSwipeLeft() {
-        print("=== \(file).\(#function) ===")
+//        print("=== \(file).\(#function) ===")
         
         doSwipe() { index in
             let newIndex = index + 1
@@ -136,7 +132,7 @@ struct TrackListResultsView: View {
     }
     
     func handleSwipeRight() {
-        print("=== \(file).\(#function) ===")
+//        print("=== \(file).\(#function) ===")
         
         doSwipe() { index in
             let newIndex = index - 1
@@ -149,18 +145,41 @@ struct TrackListResultsView: View {
     }
     
     func doSwipe(newIndexFrom: (Int) -> Int?) {
-        print("=== \(file).\(#function) ===")
+//        print("=== \(file).\(#function) ===")
         
         guard let selectedTrack = selectedTrack,
               let index = tracks.firstIndex(of: selectedTrack)
         else { return }
         
-        print("--- \(file).\(#function) - current index: \(index) of count \(tracks.count)")
+        print("=== \(file).\(#function) - current index: \(index) of count \(tracks.count) ===")
         guard let newIndex = newIndexFrom(index) else { return }
         print("--- \(file).\(#function) - newIndex: \(newIndex)")
         
         selectedTrackDidChangeProgramatically = true
         self.selectedTrack = tracks[newIndex]
+    }
+    
+    func setSelectedTrack() {
+        
+        //let deviceType = DeviceType.current()
+        
+//        if isNotPhone && selectedTrack == nil && tracks.count > 0 {
+//            selectedTrack = tracks[0]
+//        }
+        if selectedTrack == nil && tracks.count > 0 && shouldSetSelectedTrack() {
+            selectedTrack = tracks[0]
+        }
+    }
+    
+    func shouldSetSelectedTrack() -> Bool {
+        #if os(iOS)
+        if DeviceType.current() == .phone {
+            return false
+        }
+        return isLandscape
+        #else
+        return true
+        #endif
     }
 }
 
