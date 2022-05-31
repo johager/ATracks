@@ -12,7 +12,24 @@ struct BlankView: View {
         GeometryReader { geometry in
             HStack {
                 Spacer()
-                Text("Select a track...")
+                VStack {
+                    Text("There are no tracks.")
+                        .font(.headline)
+                    #if os(iOS)
+                    if geometry.isLandscape {
+                        Text("Create a track by clicking on the Start button,\nor create a track on your iPhone or iPod Touch.")
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 8)
+                    } else {
+                        Text("Select Tracks and then Start tracking,\nor create a track on your iPhone or iPod Touch.")
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 8)
+                    }
+                    #else
+                    Text("Tracks can only be created on an iPhone, iPad, or iPod Touch.")
+                        .padding(.top, 8)
+                    #endif
+                }
                 Spacer()
             }
             #if os(iOS)

@@ -5,6 +5,7 @@
 //  Created by James Hager on 4/18/22.
 //
 
+import SwiftUI
 import CoreData
 import CoreLocation
 
@@ -14,16 +15,23 @@ protocol TrackManagerDelegate {
 
 // MARK: -
 
-class TrackManager {
+class TrackManager: NSObject, ObservableObject {
     
     static let shared = TrackManager()
     
+    @Published var tracks = [Track]()
+    @Published var selectedTrack: Track?
+    var selectedTrackDidChangeProgramatically = false
+    
     var delegate: TrackManagerDelegate?
     
-    private var tracks = [Track]()
+    private var fetchRequest: NSFetchRequest<Track>!
+    private var fetchedResultsController: NSFetchedResultsController<Track>!
     
     private var coreDataStack: CoreDataStack { CoreDataStack.shared }
     private var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
+    
+    private var isPhone: Bool!
     
     lazy var deviceName = Func.deviceName
     lazy var deviceUUID = Func.deviceUUID
@@ -32,9 +40,26 @@ class TrackManager {
     
     // MARK: - Init
     
-    private init() {
+    private override init() {
+        super.init()
 //        print("=== TrackManager.\(#function) ===")
         
+        isPhone = DeviceType.current() == .phone
+        
+        fetchRequest = Track.fetchRequest
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]
+        
+        fetchedResultsController = NSFetchedResultsController<Track>(
+            fetchRequest: fetchRequest,
+            managedObjectContext: coreDataStack.context,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+        
+        fetchTracks()
+        
+        setSelectedTrack()
     }
     
     // MARK: - CRUD for Tracks
@@ -43,6 +68,46 @@ class TrackManager {
         let track = Track(name: name, deviceName: deviceName, deviceUUID: deviceUUID)
         coreDataStack.saveContext()
         return track
+    }
+    
+    func getTracks(with searchText: String) {
+        print("=== \(file).\(#function) - searchText: '\(searchText)' ===")
+        
+        if searchText.isEmpty {
+            fetchRequest.predicate = nil
+        } else {
+            fetchRequest.predicate = SearchHelper().predicate(from: searchText)
+        }
+        
+        fetchTracks()
+    }
+    
+    func fetchTracks() {
+        try? fetchedResultsController.performFetch()
+        tracks = fetchedResultsController.fetchedObjects ?? []
+        
+        if isPhone {
+            return
+        }
+        
+        guard let selectedTrack = selectedTrack,
+              !tracks.contains(selectedTrack)
+        else { return }
+        
+        setSelectedTrack()
+    }
+    
+    func setSelectedTrack() {
+        
+        if isPhone {
+            return
+        }
+        
+        if tracks.count > 0 {
+            selectedTrack = tracks[0]
+        } else {
+            selectedTrack = nil
+        }
     }
     
     func update(_ track: Track, with name: String) {
@@ -146,11 +211,71 @@ class TrackManager {
             #endif
         }
         
+        if track === selectedTrack {
+            selectedTrack = nil
+        }
+        
         viewContext.delete(track)
         coreDataStack.saveContext()
         
         return true
     }
+    
+    // MARK: - Handle Track Swipe
+    
+    #if os(iOS)
+    func handleSwipe(_ swipeDir: SwipeDirection) {
+        //print("=== \(file).\(#function) - swipeDir: \(swipeDir) ===")
+        
+        switch swipeDir {
+        case .left:
+            handleSwipeLeft()
+        case .right:
+            handleSwipeRight()
+        default:
+            break
+        }
+    }
+    
+    func handleSwipeLeft() {
+
+        doSwipe() { index in
+            let newIndex = index + 1
+            if newIndex == tracks.count {
+//                newIndex = 0
+                return nil
+            }
+            return newIndex
+        }
+    }
+    
+    func handleSwipeRight() {
+        
+        doSwipe() { index in
+            let newIndex = index - 1
+            if newIndex < 0 {
+//                newIndex = tracks.count - 1
+                return nil
+            }
+            return newIndex
+        }
+    }
+    
+    func doSwipe(newIndexFrom: (Int) -> Int?) {
+//        print("=== \(file).\(#function) ===")
+        
+        guard let selectedTrack = selectedTrack,
+              let index = tracks.firstIndex(of: selectedTrack)
+        else { return }
+        
+//        print("=== \(file).\(#function) - current index: \(index) of count \(tracks.count) ===")
+        guard let newIndex = newIndexFrom(index) else { return }
+//        print("--- \(file).\(#function) - newIndex: \(newIndex)")
+        
+        selectedTrackDidChangeProgramatically = true
+        self.selectedTrack = tracks[newIndex]
+    }
+    #endif
     
     // MARK: - CRUD for TrackPoints
     
@@ -170,5 +295,19 @@ class TrackManager {
             }
         }
         #endif
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension TrackManager: NSFetchedResultsControllerDelegate {
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+
+        let newTracks = fetchedResultsController.fetchedObjects ?? []
+        
+        if newTracks.count != tracks.count {
+            tracks = newTracks
+        }
     }
 }

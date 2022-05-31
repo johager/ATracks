@@ -16,33 +16,28 @@ protocol TrackListResultsViewDelegate {
 
 struct TrackListResultsView: View {
     
+    @Environment(\.presentationMode) var presentationMode
+    
+    @EnvironmentObject var trackManager: TrackManager
+    
     @Binding var hasSafeAreaInsets: Bool
-    var isLandscape: Bool
+    private var isLandscape: Bool
+    private var showNavigationLink: Bool
     
     var delegate: TrackListResultsViewDelegate
     
-    @State private var selectedTrack: Track?
-    @State private var selectedTrackDidChangeProgramatically = false
     @State private var isShowingDeleteAlert = false
-    
-    @FetchRequest private var tracks: FetchedResults<Track>
     
     let file = "TrackListResultsView"
     
     // MARK: - Init
     
-    init(hasSafeAreaInsets: Binding<Bool>, isLandscape: Bool, searchText: String, delegate: TrackListResultsViewDelegate) {
-        print("=== TrackListResultsView.\(#function) - isLandscape: \(isLandscape), searchText: '\(searchText)' ===")
+    init(hasSafeAreaInsets: Binding<Bool>, isLandscape: Bool, delegate: TrackListResultsViewDelegate) {
+        print("=== TrackListResultsView.\(#function) - isLandscape: \(isLandscape) ===")
         self._hasSafeAreaInsets = hasSafeAreaInsets
         self.isLandscape = isLandscape
+        self.showNavigationLink = DeviceType.current() != .pad
         self.delegate = delegate
-        
-        let fetchRequest = Track.fetchRequest
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]
-        if !searchText.isEmpty {
-            fetchRequest.predicate = SearchHelper().predicate(from: searchText)
-        }
-        _tracks = FetchRequest(fetchRequest:fetchRequest, animation: .default)
     }
     
     // MARK: - View
@@ -51,19 +46,25 @@ struct TrackListResultsView: View {
         VStack(spacing: 0) {
             ScrollViewReader { proxy in
                 List() {
-                    ForEach(tracks) { track in
+                    ForEach(trackManager.tracks) { track in
                         ZStack(alignment: .leading) {
-                            NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self), tag: track, selection: $selectedTrack) {
-                                EmptyView()
+                            #if os(iOS)
+                            if showNavigationLink {
+                                NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                                .opacity(0)
+                            } else {
+                                Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
                             }
+                            #else
+                            NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
                             .opacity(0)
+                            #endif
                             TrackRow(track: track)
-                                
                         }
                         .id(track)
-//                        #if os(iOS)
-//                        .listRowBackground(track === selectedTrack ? Color.listRowSelectedBackground : Color.clear)
-//                        #endif
+                        #if os(iOS)
+                        .listRowBackground(listRowBackgroundColor(for: track))
+                        #endif
                         
                         #if os(iOS)
                         .listRowSeparatorTint(.listRowSeparator)
@@ -89,15 +90,18 @@ struct TrackListResultsView: View {
                 }
                 .listStyle(.plain)
                 #if os(iOS)
-                .onChange(of: selectedTrack) { _ in
-                    print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(selectedTrackDidChangeProgramatically) ===")
-                    guard selectedTrackDidChangeProgramatically else { return }
-                    proxy.scrollTo(selectedTrack, anchor: .center)
-                    self.selectedTrackDidChangeProgramatically = false
+                .onChange(of: trackManager.selectedTrack) { _ in
+                    //print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(trackManager.selectedTrackDidChangeProgramatically) ===")
+                    guard trackManager.selectedTrackDidChangeProgramatically else { return }
+                    withAnimation(.easeInOut(duration: 1)) {
+                        proxy.scrollTo(trackManager.selectedTrack, anchor: .center)
+                    }
+                    Func.afterDelay(0.5) {
+                        trackManager.selectedTrackDidChangeProgramatically = false
+                    }
                 }
                 #endif
             }
-            .onAppear { setSelectedTrack() }
             .padding(.bottom, 0)
         }
         
@@ -118,87 +122,12 @@ struct TrackListResultsView: View {
         }
     }
     
-    func handleSwipeLeft() {
-//        print("=== \(file).\(#function) ===")
-        
-        doSwipe() { index in
-            let newIndex = index + 1
-            if newIndex == tracks.count {
-//                newIndex = 0
-                return nil
-            }
-            return newIndex
-        }
-    }
-    
-    func handleSwipeRight() {
-//        print("=== \(file).\(#function) ===")
-        
-        doSwipe() { index in
-            let newIndex = index - 1
-            if newIndex < 0 {
-//                newIndex = tracks.count - 1
-                return nil
-            }
-            return newIndex
-        }
-    }
-    
-    func doSwipe(newIndexFrom: (Int) -> Int?) {
-//        print("=== \(file).\(#function) ===")
-        
-        guard let selectedTrack = selectedTrack,
-              let index = tracks.firstIndex(of: selectedTrack)
-        else { return }
-        
-        print("=== \(file).\(#function) - current index: \(index) of count \(tracks.count) ===")
-        guard let newIndex = newIndexFrom(index) else { return }
-        print("--- \(file).\(#function) - newIndex: \(newIndex)")
-        
-        selectedTrackDidChangeProgramatically = true
-        self.selectedTrack = tracks[newIndex]
-    }
-    
-    func setSelectedTrack() {
-        
-        //let deviceType = DeviceType.current()
-        
-//        if isNotPhone && selectedTrack == nil && tracks.count > 0 {
-//            selectedTrack = tracks[0]
-//        }
-        if selectedTrack == nil && tracks.count > 0 && shouldSetSelectedTrack() {
-            selectedTrack = tracks[0]
-        }
-    }
-    
-    func shouldSetSelectedTrack() -> Bool {
-        #if os(iOS)
-        if DeviceType.current() == .phone {
-            return false
-        }
-        return isLandscape
-        #else
-        return true
-        #endif
-    }
-}
-
-// MARK: - TrackStatsViewDelegate
-
-extension TrackListResultsView: TrackStatsViewDelegate {
     #if os(iOS)
-    func handleSwipe(_ swipeDir: SwipeDirection) {
-        print("=== \(file).\(#function) - swipeDir: \(swipeDir) ===")
-        switch swipeDir {
-        case .left:
-            handleSwipeLeft()
-        case .right:
-            handleSwipeRight()
-        default:
-            break
-        }
+    func listRowBackgroundColor(for track: Track) -> Color {
+        guard let selectedTrack = trackManager.selectedTrack else { return .clear }
+        return track === selectedTrack ? .listRowSelectedBackground : .clear
     }
-    #endif
+    #endif    
 }
 
 // MARK: - Previews

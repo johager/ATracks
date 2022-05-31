@@ -10,10 +10,10 @@ import SwiftUI
 struct TrackDetailView: View {
     
     @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject var displaySettings: DisplaySettings
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
-    var delegate: TrackStatsViewDelegate?
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -32,10 +32,9 @@ struct TrackDetailView: View {
     
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, delegate: TrackStatsViewDelegate) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>) {
         self.track = track
         self._hasSafeAreaInsets = hasSafeAreaInsets
-        self.delegate = delegate
     }
     
     // MARK: - View
@@ -44,8 +43,8 @@ struct TrackDetailView: View {
         GeometryReader {  geometry in
             if geometry.isLandscape {
                 HStack(spacing: 0) {
-                    if DisplaySettings.shared.placeMapOnRightInLandscape {
-                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
+                    if displaySettings.placeMapOnRightInLandscape {
+                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                         VerticalDividerView()
                     }
                     
@@ -53,6 +52,8 @@ struct TrackDetailView: View {
                         MapView(track: track)
                             .edgesIgnoringSafeArea(.all)
                             .id(colorScheme)
+                            .id(displaySettings.mapViewSatellite)
+                            .id(track.id)
                         #if os(iOS)
                         if trackIsTrackingOnThisDevice {
                             VStack {
@@ -68,15 +69,15 @@ struct TrackDetailView: View {
                     }
                     .frame(width: geometry.size.width * 0.6)
                     
-                    if !DisplaySettings.shared.placeMapOnRightInLandscape {
+                    if !displaySettings.placeMapOnRightInLandscape {
                         VerticalDividerView()
-                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
+                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                     }
                 }
                 
             } else {  // geometry is portrait
                 VStack(spacing: 0) {
-                    TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
+                    TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                     Rectangle()
                         .edgesIgnoringSafeArea([.trailing, .leading])
                         .foregroundColor(.border)
@@ -85,6 +86,8 @@ struct TrackDetailView: View {
                         MapView(track: track)
                             .edgesIgnoringSafeArea([.top, .trailing, .leading])
                             .id(colorScheme)
+                            .id(displaySettings.mapViewSatellite)
+                            .id(track.id)
                         #if os(iOS)
                         if trackIsTrackingOnThisDevice {
                             VStack {
@@ -129,14 +132,13 @@ struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
-    var delegate: TrackStatsViewDelegate?
     
     // MARK: - View
     
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
-            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true, delegate: delegate)
+            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
             Spacer()
             Rectangle()
                 .edgesIgnoringSafeArea([.trailing, .leading])

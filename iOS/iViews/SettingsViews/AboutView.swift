@@ -10,17 +10,21 @@ import SwiftUI
 struct AboutView: View {
     
     @Binding private var isOnboarding: Bool
-    
-    init(isOnboarding: Binding<Bool> = .constant(false)) {
-        self._isOnboarding = isOnboarding
-        OnboardingHelper.setHasOnboarded()
-    }
+    @Binding private var isShowingAbout: Bool
     
     let introText: [String] = [
         "ATracks records location, elevation, and step data for your outdoor activities. Data is stored locally so that you'll always have it, and data is synched to other devices with the same Apple ID so you can view your excursions on larger screens.",
         "Your data is stored in your own private iCloud account, and no one without access to your Apple ID can access that data.",
         "Step data is obtained from the Apple Health app, and is only imported into ATracks while ATracks is actively running on an iPhone or iPod Touch."
     ]
+    
+    // MARK: - Init
+    
+    init(isOnboarding: Binding<Bool> = .constant(false), isShowingAbout: Binding<Bool> = .constant(false)) {
+        _isOnboarding = isOnboarding
+        _isShowingAbout = isShowingAbout
+        OnboardingHelper.setHasOnboarded()
+    }
     
     // MARK: - View
     
@@ -107,6 +111,7 @@ struct AboutView: View {
                 .listRowSeparator(.hidden)
                 
                 Section {
+                    Text("Swipe between tracks by swiping left, for next, or right, for previous, in the stats area (Duration, Avg Speed, Timestamp, Distance, Steps).")
                     Text("A green pin marker is used to indicate the beginning of a track. If the track is one-way, the end of the track has a red pin marker.")
                     Text("The average elevation is a time-weighted average.")
                     Text("Touch or swipe on the elevation plot to display that point on the map and also its latitude, longitude, and elevation.")
@@ -117,6 +122,7 @@ struct AboutView: View {
                 .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
+            .padding(.top, isShowingAbout ? 40 : 0)
             
             if isOnboarding {
                 VStack() {
@@ -128,6 +134,27 @@ struct AboutView: View {
                             Image(systemName: "xmark.circle")
                                 .font(.title)
                                 .tint(.textSelectable)
+                        }
+                    }
+                    Spacer()
+                }
+                .padding([.top, .trailing], 6)
+            }
+            
+            if isShowingAbout {
+                VStack {
+                    ZStack {
+                        Text("About")
+                            .settingsSubHeader
+                        HStack() {
+                            Spacer()
+                            Button {
+                                self.isShowingAbout = false
+                            } label: {
+                                Image(systemName: "xmark.circle")
+                                    .font(.title)
+                                    .tint(.textSelectable)
+                            }
                         }
                     }
                     Spacer()

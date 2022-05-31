@@ -7,24 +7,13 @@
 
 import SwiftUI
 
-protocol TrackStatsViewDelegate {
-    #if os(iOS)
-    func handleSwipe(_ swipeDir: SwipeDirection)
-    #endif
-}
-
-// MARK: -
-
 struct TrackStatsView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
     private var displayOnSide: Bool
     
-    private var delegate: TrackStatsViewDelegate?
-    
-    private var deviceType: DeviceType { DeviceType.current() }
-    private var isPhone: Bool { deviceType == .phone }
+    private var isPhone: Bool { DeviceType.current() == .phone }
     private var onRight: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
     
     private var leadingSpace: CGFloat {
@@ -55,11 +44,10 @@ struct TrackStatsView: View {
     
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false, delegate: TrackStatsViewDelegate? = nil) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false) {
         self.track = track
         self._hasSafeAreaInsets = hasSafeAreaInsets
         self.displayOnSide = displayOnSide
-        self.delegate = delegate
     }
     
     // MARK: - View
@@ -133,8 +121,8 @@ struct TrackStatsView: View {
         #if os(iOS)
         .contentShape(Rectangle())  // so the .gesture will operate on the whole Group and not just the inner content
         .gesture(DragGesture(minimumDistance: 5)
-            .onEnded { value in
-                delegate?.handleSwipe(SwipeDirection.from(value))
+            .onEnded { value in                
+                TrackManager.shared.handleSwipe(SwipeDirection.from(value))
             }
         )
         #endif

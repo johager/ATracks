@@ -14,6 +14,9 @@ import HealthKit
 struct ATracksApp: App {
     @Environment(\.scenePhase) var scenePhase
     
+    @ObservedObject var displaySettings = DisplaySettings.shared
+    @ObservedObject var trackManager = TrackManager.shared
+    
     @State private var wasInactive = true
     
     @State private var hasOnboarded = false
@@ -41,6 +44,8 @@ struct ATracksApp: App {
         WindowGroup {
             ContentView(hasSafeAreaInsets: $hasSafeAreaInsets)
                 .environment(\.managedObjectContext, coreDataStack.context)
+                .environmentObject(displaySettings)
+                .environmentObject(trackManager)
                 .onAppear {
                     if OnboardingHelper.shouldOnboard {
                         //print("=== \(file).\(#function) - onAppear - shouldOnboard ===")

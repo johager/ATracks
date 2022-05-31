@@ -13,6 +13,8 @@ struct SettingsView: View {
     @ObservedObject var displaySettings = DisplaySettings.shared
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     
+    @State var isShowingAbout = false
+    
     @State var isShowingCannotRecommendAlert = false
     @State var isShowingCannotSendMail = false
     
@@ -23,7 +25,11 @@ struct SettingsView: View {
     @State var mailResponseTitle = ""
     @State var mailResponseMessage = ""
     
+    @State var isShowingLegal = false
+    
     @State var isShowingResetSettings = false
+    
+    private var isPhone: Bool { DeviceType.current() == .phone }
     
     let file = "SettingsView"
     
@@ -35,10 +41,21 @@ struct SettingsView: View {
             
             // Top Section
             
-            NavigationLink(destination: AboutView()) {
-                Text("About")
+            if isPhone {
+                NavigationLink(destination: AboutView()) {
+                    Text("About")
+                }
+                .listRowSeparatorTint(.listRowSeparator)
+            } else {
+                Button(action: { isShowingAbout = true }) {
+                    HStack {
+                        Text("About")
+                        Spacer()
+                        NavigationLink.empty
+                    }
+                }
+                .listRowSeparatorTint(.listRowSeparator)
             }
-            .listRowSeparatorTint(.listRowSeparator)
             
             Button(action: { showRecommend() }) {
                 HStack {
@@ -63,10 +80,21 @@ struct SettingsView: View {
             }
             .listRowSeparatorTint(.listRowSeparator)
             
-            NavigationLink(destination: LegalView()) {
-                Text("Legal")
+            if isPhone {
+                NavigationLink(destination: LegalView()) {
+                    Text("Legal")
+                }
+                .listRowSeparatorTint(.listRowSeparator)
+            } else {
+                Button(action: { isShowingLegal = true }) {
+                    HStack {
+                        Text("Legal")
+                        Spacer()
+                        NavigationLink.empty
+                    }
+                }
+                .listRowSeparatorTint(.listRowSeparator)
             }
-            .listRowSeparatorTint(.listRowSeparator)
             
             Button(action: { isShowingResetSettings = true }) {
                 HStack {
@@ -105,6 +133,10 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
         #endif
         
+        .sheet(isPresented: $isShowingAbout) {
+            AboutView(isShowingAbout: $isShowingAbout)
+        }
+        
         .alert("Cannot Connect", isPresented: $isShowingCannotRecommendAlert) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -124,6 +156,10 @@ struct SettingsView: View {
             Button("OK", role: .none) {}
         } message: {
             Text(mailResponseMessage)
+        }
+        
+        .sheet(isPresented: $isShowingLegal) {
+            LegalView(isShowingLegal: $isShowingLegal)
         }
         
         .alert("Reset All Settings", isPresented: $isShowingResetSettings) {

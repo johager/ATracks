@@ -9,16 +9,48 @@ import SwiftUI
 
 struct LegalView: View {
     
+    @Binding private var isShowingLegal: Bool
+    
+    // MARK: - Init
+    
+    init(isShowingLegal: Binding<Bool> = .constant(false)) {
+        _isShowingLegal = isShowingLegal
+    }
+    
     // MARK: - View
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("ATracks")
-                .settingsSubHeader
-            Text("The tracking information provided by ATracks is for recreational purposes, and is offered without any warranties express or implied. Avanti Applications, LLC does not guarantee the accuracy or availability of the data, and shall not be held liable for any errors in the data.")
-                .font(.body)
-                .padding(.top, 1)
-            Spacer()
+        ZStack {
+            VStack(alignment: .leading) {
+                Text("ATracks")
+                    .settingsSubHeader
+                Text("The tracking information provided by ATracks is for recreational purposes, and is offered without any warranties express or implied. Avanti Applications, LLC does not guarantee the accuracy or availability of the data, and shall not be held liable for any errors in the data.")
+                    .font(.body)
+                    .padding(.top, 1)
+                Spacer()
+            }
+            .padding(.top, isShowingLegal ? 40 : 0)
+            
+            if isShowingLegal {
+                VStack {
+                    ZStack {
+                        Text("Legal")
+                            .settingsSubHeader
+                        HStack() {
+                            Spacer()
+                            Button {
+                                self.isShowingLegal = false
+                            } label: {
+                                Image(systemName: "xmark.circle")
+                                    .font(.title)
+                                    .tint(.textSelectable)
+                            }
+                        }
+                    }
+                    Spacer()
+                }
+                .padding([.top, .trailing], 6)
+            }
         }
         .padding()
         .navigationTitle("Legal")

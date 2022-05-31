@@ -9,13 +9,15 @@ import SwiftUI
 
 struct TrackListView: View {
     
+    @EnvironmentObject var trackManager: TrackManager
+        
     #if os(iOS)
     @ObservedObject var displaySettings = DisplaySettings.shared
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     #endif
 
     @Binding var hasSafeAreaInsets: Bool
-    var isLandscape: Bool
+    private var isLandscape: Bool
     
     @State private var isTracking = false
     
@@ -47,6 +49,13 @@ struct TrackListView: View {
     
     let file = "TrackListView"
     
+    // MARK: - Init
+    
+    init(hasSafeAreaInsets: Binding<Bool>, isLandscape: Bool) {
+        self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.isLandscape = isLandscape
+    }
+    
     // MARK: - View
     
     var body: some View {
@@ -65,7 +74,7 @@ struct TrackListView: View {
                     }
                     #endif
                     
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, searchText: searchText, delegate: self)
+                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, delegate: self)
                     
                     #if os(iOS)
                     if displaySettings.placeButtonsOnRightInLandscape {
@@ -81,7 +90,7 @@ struct TrackListView: View {
                 }
             } else {  // not side by side
                 VStack(spacing: 0) {
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, searchText: searchText, delegate: self)
+                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, delegate: self)
                     
                     #if os(iOS)
                     VStack(spacing: 0) {
@@ -126,8 +135,11 @@ struct TrackListView: View {
         .frame(minWidth: 250)
 //            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Track name..."))
         .searchable(text: $searchText, prompt: Text("Track name..."))
+        .onChange(of: searchText) { _ in
+            trackManager.getTracks(with: searchText)
+        }
         #if os(iOS)
-        NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) { EmptyView() }
+        NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) {  }
             .isDetailLink(false)
         #endif
     }

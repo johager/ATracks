@@ -105,7 +105,7 @@ class MapViewHelper: NSObject {
     // MARK: - Public Methods
     
     func setUpView(forTrack track: Track) {
-        print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) - \(track.debugName) ===")
         
         self.track = track
         
@@ -128,6 +128,7 @@ class MapViewHelper: NSObject {
     }
     
     func updateView(forTrack track: Track) {
+        //print("=== \(file).\(#function) - \(track.debugName) - hasBeenSetUp: \(startPointAnnotation != nil) ===")
         
         guard startPointAnnotation == nil else { return }
         

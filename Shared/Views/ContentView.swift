@@ -9,7 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @EnvironmentObject var trackManager: TrackManager
+    
     @Binding var hasSafeAreaInsets: Bool
+    
+    // MARK: - Init
     
     init(hasSafeAreaInsets: Binding<Bool>) {
         self._hasSafeAreaInsets = hasSafeAreaInsets
@@ -23,7 +27,15 @@ struct ContentView: View {
             NavigationView {
                 TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: geometry.isLandscape)
                 //SettingsView()
-                BlankView()
+                if DeviceType.current() == .pad {
+                    if let selectedTrack = trackManager.selectedTrack {
+                        TrackDetailView(track: selectedTrack, hasSafeAreaInsets: $hasSafeAreaInsets)
+                    } else {
+                        BlankView()
+                    }
+                } else {
+                    BlankView()
+                }
             }
         }
     }
