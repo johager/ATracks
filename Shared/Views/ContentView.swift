@@ -27,12 +27,8 @@ struct ContentView: View {
             NavigationView {
                 TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: geometry.isLandscape)
                 //SettingsView()
-                if DeviceType.current() == .pad {
-                    if let selectedTrack = trackManager.selectedTrack {
-                        TrackDetailView(track: selectedTrack, hasSafeAreaInsets: $hasSafeAreaInsets)
-                    } else {
-                        BlankView()
-                    }
+                if let selectedTrack = trackManager.selectedTrack {
+                    TrackDetailView(track: selectedTrack, hasSafeAreaInsets: $hasSafeAreaInsets)
                 } else {
                     BlankView()
                 }

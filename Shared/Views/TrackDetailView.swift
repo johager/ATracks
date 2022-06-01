@@ -41,78 +41,88 @@ struct TrackDetailView: View {
     
     var body: some View {
         GeometryReader {  geometry in
-            if geometry.isLandscape {
-                HStack(spacing: 0) {
-                    if displaySettings.placeMapOnRightInLandscape {
-                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
-                        VerticalDividerView()
-                    }
-                    
-                    ZStack {
-                        MapView(track: track)
-                            .edgesIgnoringSafeArea(.all)
-                            .id(colorScheme)
-                            .id(displaySettings.mapViewSatellite)
-                            .id(track.id)
-                        #if os(iOS)
-                        if trackIsTrackingOnThisDevice {
-                            VStack {
-                                Spacer()
-                                Button(action: stopTracking) {
-                                    Text(stopTrackingText)
-                                }
-                                .buttonStyle(AAButtonStyle(isEnabled: true))
-                                .padding(.bottom, 8)
-                            }
-                        }
-                        #endif
-                    }
-                    .frame(width: geometry.size.width * 0.6)
-                    
-                    if !displaySettings.placeMapOnRightInLandscape {
-                        VerticalDividerView()
-                        DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
-                    }
-                }
-                
-            } else {  // geometry is portrait
+            HStack(spacing: 0) {
+                #if os(macOS)
+                VerticalDividerView()
+                #endif
                 VStack(spacing: 0) {
-                    TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
-                    Rectangle()
-                        .edgesIgnoringSafeArea([.trailing, .leading])
-                        .foregroundColor(.border)
-                        .frame(height: 0.5)
-                    ZStack {
-                        MapView(track: track)
-                            .edgesIgnoringSafeArea([.top, .trailing, .leading])
-                            .id(colorScheme)
-                            .id(displaySettings.mapViewSatellite)
-                            .id(track.id)
-                        #if os(iOS)
-                        if trackIsTrackingOnThisDevice {
-                            VStack {
-                                Spacer()
-                                Button(action: stopTracking) {
-                                    Text(stopTrackingText)
+                    #if os(macOS)
+                    HorizontalDividerView()
+                    #endif
+                    if geometry.isLandscape {
+                        HStack(spacing: 0) {
+                            if displaySettings.placeMapOnRightInLandscape {
+                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                                VerticalDividerView()
+                            }
+                            
+                            ZStack {
+                                MapView(track: track)
+                                    .edgesIgnoringSafeArea(.all)
+                                    .id(colorScheme)
+                                    .id(displaySettings.mapViewSatellite)
+                                    .id(track.id)
+                                #if os(iOS)
+                                if trackIsTrackingOnThisDevice {
+                                    VStack {
+                                        Spacer()
+                                        Button(action: stopTracking) {
+                                            Text(stopTrackingText)
+                                        }
+                                        .buttonStyle(AAButtonStyle(isEnabled: true))
+                                        .padding(.bottom, 8)
+                                    }
                                 }
-                                .buttonStyle(AAButtonStyle(isEnabled: true))
-                                .padding(.bottom, 8)
+                                #endif
+                            }
+                            .frame(width: geometry.size.width * 0.6)
+                            
+                            if !displaySettings.placeMapOnRightInLandscape {
+                                VerticalDividerView()
+                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
                             }
                         }
-                        #endif
-                    }
-                    Rectangle()
-                        .edgesIgnoringSafeArea([.trailing, .leading])
-                        .foregroundColor(.border)
-                        .frame(height: 0.5)
-                    TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
-                }
-            }
+                        
+                    } else {  // geometry is portrait
+                        VStack(spacing: 0) {
+                            #if os(macOS)
+                            HorizontalDividerView()
+                            #endif
+                            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                            HorizontalDividerView()
+                            ZStack {
+                                MapView(track: track)
+                                    .edgesIgnoringSafeArea([.top, .trailing, .leading])
+                                    .id(colorScheme)
+                                    .id(displaySettings.mapViewSatellite)
+                                    .id(track.id)
+                                #if os(iOS)
+                                if trackIsTrackingOnThisDevice {
+                                    VStack {
+                                        Spacer()
+                                        Button(action: stopTracking) {
+                                            Text(stopTrackingText)
+                                        }
+                                        .buttonStyle(AAButtonStyle(isEnabled: true))
+                                        .padding(.bottom, 8)
+                                    }
+                                }
+                                #endif
+                            }
+                            HorizontalDividerView()
+                            TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                                .id(track.id)
+                        }
+                    }  // end geometry is portrait
+                }  // end VStack
+            }  // end HStack
         }
         .navigationTitle(track.name)
         #if os(iOS)
         .ignoresSafeArea(.keyboard)
         .navigationBarTitleDisplayMode(.inline)
+        #else
+        .background(.background)
         #endif
     }
     
@@ -137,15 +147,16 @@ struct DetailsOnSideView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            #if os(macOS)
+            HorizontalDividerView()
+            #endif
             Spacer()
             TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
             Spacer()
-            Rectangle()
-                .edgesIgnoringSafeArea([.trailing, .leading])
-                .foregroundColor(.border)
-                .frame(height: 0.5)
+            HorizontalDividerView()
             Spacer()
             TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
+                .id(track.id)
         }
     }
 }

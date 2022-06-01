@@ -79,37 +79,38 @@ struct TrackStatsView: View {
                 }
                 .padding(.top, 8)
                 
-            } else {
-                VStack(spacing: 4) {
-                    if isPhone {
-                        Text(track.dateString)
+            } else {  // !displayOnSide
+                ZStack {
+                    if !isPhone {
+                        VStack(spacing: 4) {
+                            Text(track.dateString)
+                            Text("")
+                        }
                     }
-                    HStack(spacing: 0) {
-                        VStack(alignment: .trailing, spacing: 4) {
-                            Text("Duration: ")
-                            Text("Avg Speed: ")
+                    VStack(spacing: 4) {
+                        if isPhone {
+                            Text(track.dateString)
                         }
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(track.duration.stringWithUnits)
-                            Text("\(track.aveSpeed.stringForSpeed) mph")
-                        }
-                        Spacer()
-                        if !isPhone {
-                            VStack(spacing: 4) {
-                                Text(track.dateString)
-                                Text("")
+                        HStack(spacing: 0) {
+                            VStack(alignment: .trailing, spacing: 4) {
+                                Text("Duration: ")
+                                Text("Avg Speed: ")
+                            }
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(track.duration.stringWithUnits)
+                                Text("\(track.aveSpeed.stringForSpeed) mph")
                             }
                             Spacer()
-                        }
-                        VStack(alignment: .trailing, spacing: 4) {
-                            Text("Distance: ")
-                            Text("Steps: ")
-                                .foregroundColor(track.hasFinalSteps ? .text : .textNoData)
-                        }
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("\(String(format: "%.2f", track.distance)) mi")
-                            Text(track.steps.stringWithNA)
-                                .foregroundColor(track.hasFinalSteps ? .text : .textNoData)
+                            VStack(alignment: .trailing, spacing: 4) {
+                                Text("Distance: ")
+                                Text("Steps: ")
+                                    .foregroundColor(track.hasFinalSteps ? .text : .textNoData)
+                            }
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("\(String(format: "%.2f", track.distance)) mi")
+                                Text(track.steps.stringWithNA)
+                                    .foregroundColor(track.hasFinalSteps ? .text : .textNoData)
+                            }
                         }
                     }
                 }

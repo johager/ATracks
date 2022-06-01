@@ -28,12 +28,12 @@ struct TrackListResultsView: View {
     
     @State private var isShowingDeleteAlert = false
     
-    let file = "TrackListResultsView"
+//    let file = "TrackListResultsView"
     
     // MARK: - Init
     
     init(hasSafeAreaInsets: Binding<Bool>, isLandscape: Bool, delegate: TrackListResultsViewDelegate) {
-        print("=== TrackListResultsView.\(#function) - isLandscape: \(isLandscape) ===")
+        //print("=== file.\(#function) - isLandscape: \(isLandscape) ===")
         self._hasSafeAreaInsets = hasSafeAreaInsets
         self.isLandscape = isLandscape
         self.showNavigationLink = DeviceType.current() != .pad
@@ -62,9 +62,9 @@ struct TrackListResultsView: View {
                             TrackRow(track: track)
                         }
                         .id(track)
-                        #if os(iOS)
+//                        #if os(iOS)
                         .listRowBackground(listRowBackgroundColor(for: track))
-                        #endif
+//                        #endif
                         
                         #if os(iOS)
                         .listRowSeparatorTint(.listRowSeparator)
@@ -122,12 +122,12 @@ struct TrackListResultsView: View {
         }
     }
     
-    #if os(iOS)
+//    #if os(iOS)
     func listRowBackgroundColor(for track: Track) -> Color {
         guard let selectedTrack = trackManager.selectedTrack else { return .clear }
         return track === selectedTrack ? .listRowSelectedBackground : .clear
     }
-    #endif    
+//    #endif
 }
 
 // MARK: - Previews

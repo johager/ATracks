@@ -91,7 +91,6 @@ struct TrackListView: View {
             } else {  // not side by side
                 VStack(spacing: 0) {
                     TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, delegate: self)
-                    
                     #if os(iOS)
                     VStack(spacing: 0) {
                         Rectangle()

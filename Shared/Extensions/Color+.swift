@@ -28,6 +28,12 @@ extension Color {
         return color(light: dark2Green, dark: lightGreen)
     }
     
+    #if os(macOS)
+    static var listBackground: Color {
+        return color(light: Color(white: 0.96), dark: Color(white: 0.22))
+    }
+    #endif
+    
     static var listRowSelectedBackground: Color {
 //        return color(light: light2Green, dark: Color(white: 0.11))
         return color(light: light1HGreen, dark: dark3HGreen)  // headerBackground

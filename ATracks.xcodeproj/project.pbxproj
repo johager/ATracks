@@ -88,6 +88,9 @@
 		F8821AAD281397D600A21781 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AAC281397D600A21781 /* MailView.swift */; };
 		F8821AB22813A69500A21781 /* NavigationLink+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8821AB12813A69500A21781 /* NavigationLink+.swift */; };
 		F891BA472841607B00AE7118 /* SwipeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA462841607B00AE7118 /* SwipeDirection.swift */; };
+		F891BA552846F6B600AE7118 /* NSTableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA542846F6B600AE7118 /* NSTableView+.swift */; };
+		F891BA5728470D7300AE7118 /* HorizontalDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA5628470D7300AE7118 /* HorizontalDividerView.swift */; };
+		F891BA5828470D7300AE7118 /* HorizontalDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA5628470D7300AE7118 /* HorizontalDividerView.swift */; };
 		F8A6D1792831A50B0035BFD1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6D1782831A50B0035BFD1 /* UIImage+.swift */; };
 		F8A6D17B2831A51C0035BFD1 /* NSImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6D17A2831A51C0035BFD1 /* NSImage+.swift */; };
 		F8AA6B1328296755007EBCAA /* TouchLocatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */; };
@@ -195,6 +198,8 @@
 		F8821AAC281397D600A21781 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		F8821AB12813A69500A21781 /* NavigationLink+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+.swift"; sourceTree = "<group>"; };
 		F891BA462841607B00AE7118 /* SwipeDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeDirection.swift; sourceTree = "<group>"; };
+		F891BA542846F6B600AE7118 /* NSTableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+.swift"; sourceTree = "<group>"; };
+		F891BA5628470D7300AE7118 /* HorizontalDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalDividerView.swift; sourceTree = "<group>"; };
 		F8A6D1782831A50B0035BFD1 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		F8A6D17A2831A51C0035BFD1 /* NSImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+.swift"; sourceTree = "<group>"; };
 		F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchLocatingView.swift; sourceTree = "<group>"; };
@@ -318,6 +323,7 @@
 			children = (
 				F868D68D280DC26D00EC3D30 /* ContentView.swift */,
 				F8E0067F281B375A00FD679C /* BlankView.swift */,
+				F891BA5628470D7300AE7118 /* HorizontalDividerView.swift */,
 				F868D6CB281040B000EC3D30 /* LineShape.swift */,
 				F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */,
 				F8E0069528200FD400FD679C /* TrackListView.swift */,
@@ -460,6 +466,7 @@
 			children = (
 				F868D6BA280F13E200EC3D30 /* Color+macOS.swift */,
 				F8A6D17A2831A51C0035BFD1 /* NSImage+.swift */,
+				F891BA542846F6B600AE7118 /* NSTableView+.swift */,
 				F8F687122816FC4200991442 /* NSView+.swift */,
 			);
 			path = macExtensions;
@@ -608,6 +615,7 @@
 			files = (
 				F82BD5D528270DCF003E674D /* TrackListButtonsView.swift in Sources */,
 				F8F686FC2814E7B000991442 /* DataStateHelper.swift in Sources */,
+				F891BA5728470D7300AE7118 /* HorizontalDividerView.swift in Sources */,
 				F8D3FFCD2819A5FB00887790 /* LocationServicesView.swift in Sources */,
 				F868D671280DB35B00EC3D30 /* CoreDataStack.swift in Sources */,
 				F868D65C280DAD4600EC3D30 /* TrackListResultsView.swift in Sources */,
@@ -691,6 +699,7 @@
 				F868D6D62810534600EC3D30 /* TrackHelper.swift in Sources */,
 				F868D67C280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
 				F868D6AA280E2AD000EC3D30 /* MapView.swift in Sources */,
+				F891BA5828470D7300AE7118 /* HorizontalDividerView.swift in Sources */,
 				F868D679280DB44B00EC3D30 /* DataType.swift in Sources */,
 				F8AA6B1A282A9FA7007EBCAA /* NSManagedObjectContext+.swift in Sources */,
 				F8E00681281B375A00FD679C /* BlankView.swift in Sources */,
@@ -707,6 +716,7 @@
 				F868D67F280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
 				F868D6E428109BA300EC3D30 /* Notification.Name+.swift in Sources */,
 				F8AA6B1328296755007EBCAA /* TouchLocatingView.swift in Sources */,
+				F891BA552846F6B600AE7118 /* NSTableView+.swift in Sources */,
 				F868D68F280DC26D00EC3D30 /* ContentView.swift in Sources */,
 				F868D6E728109CA200EC3D30 /* Key.swift in Sources */,
 				F8F687142816FC7100991442 /* NSView+.swift in Sources */,
@@ -863,7 +873,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38d;
+				CURRENT_PROJECT_VERSION = 38e;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -901,7 +911,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38d;
+				CURRENT_PROJECT_VERSION = 38e;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -941,7 +951,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27k;
+				CURRENT_PROJECT_VERSION = 27l;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -970,7 +980,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27k;
+				CURRENT_PROJECT_VERSION = 27l;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

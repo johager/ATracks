@@ -33,6 +33,13 @@ class TrackManager: NSObject, ObservableObject {
     
     private var isPhone: Bool!
     
+    private var indexOfSelectedTrack: Int? {
+        guard let selectedTrack = selectedTrack,
+              let index = tracks.firstIndex(of: selectedTrack)
+        else { return nil }
+        return index
+    }
+    
     lazy var deviceName = Func.deviceName
     lazy var deviceUUID = Func.deviceUUID
     
@@ -211,14 +218,29 @@ class TrackManager: NSObject, ObservableObject {
             #endif
         }
         
-        if track === selectedTrack {
-            selectedTrack = nil
+        if !isPhone && track === selectedTrack {
+            setSelectedTrackForDelete()
         }
         
         viewContext.delete(track)
         coreDataStack.saveContext()
         
         return true
+    }
+    
+    func setSelectedTrackForDelete() {
+        guard let index = indexOfSelectedTrack,
+              tracks.count > 1
+        else {
+            selectedTrack = nil
+            return
+        }
+        
+        if index == 0 {
+            selectedTrack = tracks[1]
+        } else {
+            selectedTrack = tracks[index - 1]
+        }
     }
     
     // MARK: - Handle Track Swipe
@@ -250,7 +272,7 @@ class TrackManager: NSObject, ObservableObject {
     }
     
     func handleSwipeRight() {
-        
+
         doSwipe() { index in
             let newIndex = index - 1
             if newIndex < 0 {
@@ -264,9 +286,7 @@ class TrackManager: NSObject, ObservableObject {
     func doSwipe(newIndexFrom: (Int) -> Int?) {
 //        print("=== \(file).\(#function) ===")
         
-        guard let selectedTrack = selectedTrack,
-              let index = tracks.firstIndex(of: selectedTrack)
-        else { return }
+        guard let index = indexOfSelectedTrack else { return }
         
 //        print("=== \(file).\(#function) - current index: \(index) of count \(tracks.count) ===")
         guard let newIndex = newIndexFrom(index) else { return }

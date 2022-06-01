@@ -14,7 +14,6 @@ struct TrackRow: View {
     // MARK: - View
     
     var body: some View {
-//        VStack(alignment: .leading) {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(track.name)
@@ -29,9 +28,6 @@ struct TrackRow: View {
                 Text(track.duration.stringWithUnits)
             }
         }
-//            Text("isTracking: " + String(track.isTracking))
-//                .offset(x: 16)
-//        }
         .font(.footnote.monospacedDigit())
         .foregroundColor(.textSecondary)
     }
