@@ -1,5 +1,5 @@
 //
-//  TrackDetailsView.swift
+//  TrackStatsView.swift
 //  ATracks
 //
 //  Created by James Hager on 4/18/22.
@@ -7,13 +7,23 @@
 
 import SwiftUI
 
+protocol TrackStatsViewDelegate {
+    #if os(iOS)
+    func handleSwipe(_ swipeDir: SwipeDirection)
+    #endif
+}
+
+// MARK: -
+
 struct TrackStatsView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
     private var displayOnSide: Bool
+    private var delegate: TrackStatsViewDelegate?
     
-    private var isPhone: Bool { DeviceType.current() == .phone }
+    private var isPhone: Bool
+    
     private var onRight: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
     
     private var leadingSpace: CGFloat {
@@ -44,10 +54,13 @@ struct TrackStatsView: View {
     
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false, delegate: TrackStatsViewDelegate?) {
         self.track = track
         self._hasSafeAreaInsets = hasSafeAreaInsets
         self.displayOnSide = displayOnSide
+        self.delegate = delegate
+        
+        self.isPhone = DeviceType.isPhone
     }
     
     // MARK: - View
@@ -123,7 +136,11 @@ struct TrackStatsView: View {
         .contentShape(Rectangle())  // so the .gesture will operate on the whole Group and not just the inner content
         .gesture(DragGesture(minimumDistance: 5)
             .onEnded { value in                
-                TrackManager.shared.handleSwipe(SwipeDirection.from(value))
+                if isPhone {
+                    delegate?.handleSwipe(SwipeDirection.from(value))
+                } else {
+                    TrackManager.shared.handleSwipe(SwipeDirection.from(value))
+                }
             }
         )
         #endif

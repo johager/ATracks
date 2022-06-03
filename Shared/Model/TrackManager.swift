@@ -33,13 +33,6 @@ class TrackManager: NSObject, ObservableObject {
     
     private var isPhone: Bool!
     
-    private var indexOfSelectedTrack: Int? {
-        guard let selectedTrack = selectedTrack,
-              let index = tracks.firstIndex(of: selectedTrack)
-        else { return nil }
-        return index
-    }
-    
     lazy var deviceName = Func.deviceName
     lazy var deviceUUID = Func.deviceUUID
     
@@ -51,7 +44,11 @@ class TrackManager: NSObject, ObservableObject {
         super.init()
 //        print("=== TrackManager.\(#function) ===")
         
-        isPhone = DeviceType.current() == .phone
+        isPhone = DeviceType.isPhone
+        
+        if isPhone {
+            return
+        }
         
         fetchRequest = Track.fetchRequest
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]
@@ -229,17 +226,18 @@ class TrackManager: NSObject, ObservableObject {
     }
     
     func setSelectedTrackForDelete() {
-        guard let index = indexOfSelectedTrack,
-              tracks.count > 1
+        guard let selectedTrack = selectedTrack,
+              tracks.count > 1,
+              let index = tracks.firstIndex(of: selectedTrack)
         else {
-            selectedTrack = nil
+            self.selectedTrack = nil
             return
         }
         
         if index == 0 {
-            selectedTrack = tracks[1]
+            self.selectedTrack = tracks[1]
         } else {
-            selectedTrack = tracks[index - 1]
+            self.selectedTrack = tracks[index - 1]
         }
     }
     
@@ -249,51 +247,10 @@ class TrackManager: NSObject, ObservableObject {
     func handleSwipe(_ swipeDir: SwipeDirection) {
         //print("=== \(file).\(#function) - swipeDir: \(swipeDir) ===")
         
-        switch swipeDir {
-        case .left:
-            handleSwipeLeft()
-        case .right:
-            handleSwipeRight()
-        default:
-            break
-        }
-    }
-    
-    func handleSwipeLeft() {
-
-        doSwipe() { index in
-            let newIndex = index + 1
-            if newIndex == tracks.count {
-//                newIndex = 0
-                return nil
-            }
-            return newIndex
-        }
-    }
-    
-    func handleSwipeRight() {
-
-        doSwipe() { index in
-            let newIndex = index - 1
-            if newIndex < 0 {
-//                newIndex = tracks.count - 1
-                return nil
-            }
-            return newIndex
-        }
-    }
-    
-    func doSwipe(newIndexFrom: (Int) -> Int?) {
-//        print("=== \(file).\(#function) ===")
-        
-        guard let index = indexOfSelectedTrack else { return }
-        
-//        print("=== \(file).\(#function) - current index: \(index) of count \(tracks.count) ===")
-        guard let newIndex = newIndexFrom(index) else { return }
-//        print("--- \(file).\(#function) - newIndex: \(newIndex)")
+        guard let newTrack = SwipeHelper.newTrack(from: tracks, and: selectedTrack, for: swipeDir) else { return }
         
         selectedTrackDidChangeProgramatically = true
-        self.selectedTrack = tracks[newIndex]
+        selectedTrack = newTrack
     }
     #endif
     

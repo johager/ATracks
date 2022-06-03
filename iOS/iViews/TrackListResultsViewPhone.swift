@@ -1,65 +1,59 @@
 //
-//  TrackListResultsView.swift
-//  Shared
+//  TrackListResultsViewPhone.swift
+//  ATracks (iOS)
 //
-//  Created by James Hager on 4/18/22.
+//  Created by James Hager on 6/3/22.
 //
 
 import SwiftUI
 
-protocol TrackListResultsViewDelegate {
-    func edit(_ track: Track)
-    func startTracking(useNameOf track: Track)
-}
-
-// MARK: -
-
-struct TrackListResultsView: View {
-    
-    @Environment(\.presentationMode) var presentationMode
-    
-    @EnvironmentObject var trackManager: TrackManager
+struct TrackListResultsViewPhone: View {
     
     @Binding var hasSafeAreaInsets: Bool
-    private var showNavigationLink: Bool
     
     var delegate: TrackListResultsViewDelegate
     
+    @State private var selectedTrack: Track?
+    @State private var selectedTrackDidChangeProgramatically = false
     @State private var isShowingDeleteAlert = false
     
-//    let file = "TrackListResultsView"
+    @FetchRequest private var tracks: FetchedResults<Track>
+    
+    let file = "TrackListResultsViewPhone"
     
     // MARK: - Init
     
-    init(hasSafeAreaInsets: Binding<Bool>, delegate: TrackListResultsViewDelegate) {
-        //print("=== file.\(#function) - isLandscape: \(isLandscape) ===")
+    init(hasSafeAreaInsets: Binding<Bool>, searchText: String, delegate: TrackListResultsViewDelegate) {
+        print("=== \(file).\(#function) - searchText: '\(searchText)' ===")
         self._hasSafeAreaInsets = hasSafeAreaInsets
-        self.showNavigationLink = DeviceType.current() != .pad
         self.delegate = delegate
+        
+        let fetchRequest = Track.fetchRequest
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]
+        if !searchText.isEmpty {
+            fetchRequest.predicate = SearchHelper().predicate(from: searchText)
+        }
+        _tracks = FetchRequest(fetchRequest:fetchRequest, animation: .default)
     }
     
     // MARK: - View
     
     var body: some View {
         VStack(spacing: 0) {
-            #if os(macOS)
-            HorizontalDividerView()
-            #endif
             ScrollViewReader { proxy in
                 List() {
-                    ForEach(trackManager.tracks) { track in
+                    ForEach(tracks) { track in
                         ZStack(alignment: .leading) {
-                            #if os(iOS)
-                            Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
-                            #else
-                            NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                            NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self), tag: track, selection: $selectedTrack) {
+                                EmptyView()
+                            }
                             .opacity(0)
-                            #endif
                             TrackRow(track: track)
+                                
                         }
                         .id(track)
 //                        #if os(iOS)
-                        .listRowBackground(listRowBackgroundColor(for: track))
+//                        .listRowBackground(track === selectedTrack ? Color.listRowSelectedBackground : Color.clear)
 //                        #endif
                         
                         #if os(iOS)
@@ -85,17 +79,12 @@ struct TrackListResultsView: View {
                     }
                 }
                 .listStyle(.plain)
-                .animation(.linear, value: trackManager.tracks)
                 #if os(iOS)
-                .onChange(of: trackManager.selectedTrack) { _ in
-                    //print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(trackManager.selectedTrackDidChangeProgramatically) ===")
-                    guard trackManager.selectedTrackDidChangeProgramatically else { return }
-                    withAnimation(.easeInOut(duration: 1)) {
-                        proxy.scrollTo(trackManager.selectedTrack, anchor: .center)
-                    }
-                    Func.afterDelay(0.5) {
-                        trackManager.selectedTrackDidChangeProgramatically = false
-                    }
+                .onChange(of: selectedTrack) { _ in
+                    print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(selectedTrackDidChangeProgramatically) ===")
+                    guard selectedTrackDidChangeProgramatically else { return }
+                    proxy.scrollTo(selectedTrack, anchor: .center)
+                    self.selectedTrackDidChangeProgramatically = false
                 }
                 #endif
             }
@@ -119,18 +108,29 @@ struct TrackListResultsView: View {
         }
     }
     
-//    #if os(iOS)
     func listRowBackgroundColor(for track: Track) -> Color {
-        guard let selectedTrack = trackManager.selectedTrack else { return .clear }
+        guard let selectedTrack = selectedTrack else { return .clear }
         return track === selectedTrack ? .listRowSelectedBackground : .clear
     }
-//    #endif
 }
 
-// MARK: - Previews
+// MARK: - TrackStatsViewDelegate
 
-//struct TrackListView_Previews: PreviewProvider {
+extension TrackListResultsViewPhone: TrackStatsViewDelegate {
+    #if os(iOS)
+    func handleSwipe(_ swipeDir: SwipeDirection) {
+        //print("=== \(file).\(#function) - swipeDir: \(swipeDir) ===")
+        
+        guard let newTrack = SwipeHelper.newTrack(from: Array(tracks), and: selectedTrack, for: swipeDir) else { return }
+        
+        selectedTrackDidChangeProgramatically = true
+        selectedTrack = newTrack
+    }
+    #endif
+}
+
+//struct TrackListResultsViewPhone_Previews: PreviewProvider {
 //    static var previews: some View {
-//        TrackListView()
+//        TrackListResultsViewPhone()
 //    }
 //}

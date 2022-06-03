@@ -29,9 +29,15 @@ struct SettingsView: View {
     
     @State var isShowingResetSettings = false
     
-    private var isPhone: Bool { DeviceType.current() == .phone }
+    private var isPhone: Bool
     
-    let file = "SettingsView"
+    //let file = "SettingsView"
+    
+    // MARK: - Init
+    
+    init() {
+        self.isPhone = DeviceType.isPhone
+    }
     
     // MARK: - View
     

@@ -19,6 +19,8 @@ struct TrackListView: View {
     @Binding var hasSafeAreaInsets: Bool
     private var isLandscape: Bool
     
+    private var isPhone: Bool
+    
     @State private var isTracking = false
     
     @State private var searchText = ""
@@ -54,6 +56,12 @@ struct TrackListView: View {
     init(hasSafeAreaInsets: Binding<Bool>, isLandscape: Bool) {
         self._hasSafeAreaInsets = hasSafeAreaInsets
         self.isLandscape = isLandscape
+        
+        #if os(iOS)
+        self.isPhone = DeviceType.isPhone
+        #else
+        self.isPhone = false
+        #endif
     }
     
     // MARK: - View
@@ -74,7 +82,15 @@ struct TrackListView: View {
                     }
                     #endif
                     
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, delegate: self)
+                    #if os(iOS)
+                    if isPhone {
+                        TrackListResultsViewPhone(hasSafeAreaInsets: $hasSafeAreaInsets, searchText: searchText, delegate: self)
+                    } else {
+                        TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                    }
+                    #else
+                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                    #endif
                     
                     #if os(iOS)
                     if displaySettings.placeButtonsOnRightInLandscape {
@@ -90,7 +106,15 @@ struct TrackListView: View {
                 }
             } else {  // not side by side
                 VStack(spacing: 0) {
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: isLandscape, delegate: self)
+                    #if os(iOS)
+                    if isPhone {
+                        TrackListResultsViewPhone(hasSafeAreaInsets: $hasSafeAreaInsets, searchText: searchText, delegate: self)
+                    } else {
+                        TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                    }
+                    #else
+                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                    #endif
                     #if os(iOS)
                     VStack(spacing: 0) {
                         Rectangle()
@@ -135,6 +159,11 @@ struct TrackListView: View {
 //            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Track name..."))
         .searchable(text: $searchText, prompt: Text("Track name..."))
         .onChange(of: searchText) { _ in
+            #if os(iOS)
+            if isPhone {
+                return
+            }
+            #endif
             trackManager.getTracks(with: searchText)
         }
         #if os(iOS)

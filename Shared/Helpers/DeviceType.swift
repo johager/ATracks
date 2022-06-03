@@ -13,6 +13,10 @@ enum DeviceType {
     case pad
     case mac
     
+    static var isPhone: Bool { current() == .phone }
+    static var isPad: Bool { current() == .pad }
+    static var isMac: Bool { current() == .mac }
+    
     static func current() -> DeviceType {
         #if os(iOS)
         if UIDevice.current.userInterfaceIdiom == .phone {

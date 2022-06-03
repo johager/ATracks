@@ -14,6 +14,7 @@ struct TrackDetailView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
+    private var delegate: TrackStatsViewDelegate?
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -32,9 +33,10 @@ struct TrackDetailView: View {
     
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>) {
+    init(track: Track, hasSafeAreaInsets: Binding<Bool>, delegate: TrackStatsViewDelegate? = nil) {
         self.track = track
         self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.delegate = delegate
     }
     
     // MARK: - View
@@ -52,7 +54,7 @@ struct TrackDetailView: View {
                     if geometry.isLandscape {
                         HStack(spacing: 0) {
                             if displaySettings.placeMapOnRightInLandscape {
-                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
                                 VerticalDividerView()
                             }
                             
@@ -79,7 +81,7 @@ struct TrackDetailView: View {
                             
                             if !displaySettings.placeMapOnRightInLandscape {
                                 VerticalDividerView()
-                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
                             }
                         }
                         
@@ -88,7 +90,7 @@ struct TrackDetailView: View {
                             #if os(macOS)
                             HorizontalDividerView()
                             #endif
-                            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
                             HorizontalDividerView()
                             ZStack {
                                 MapView(track: track)
@@ -142,6 +144,7 @@ struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
+    var delegate: TrackStatsViewDelegate?
     
     // MARK: - View
     
@@ -151,7 +154,7 @@ struct DetailsOnSideView: View {
             HorizontalDividerView()
             #endif
             Spacer()
-            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
+            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true, delegate: delegate)
             Spacer()
             HorizontalDividerView()
             Spacer()

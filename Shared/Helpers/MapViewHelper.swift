@@ -23,6 +23,8 @@ class MapViewHelper: NSObject {
     
     var track: Track!
     
+    private var isPhone: Bool = true
+    
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
     private var lastTrackPoint: TrackPoint?
@@ -30,8 +32,6 @@ class MapViewHelper: NSObject {
     private var endPointAnnotation: MKPointAnnotation!
     private var startPointAnnotation: MKPointAnnotation!
     private var trackPointAnnotation: MKPointAnnotation!
-    
-    private var isPhone: Bool { DeviceType.current() == .phone }
     
     private var region: MKCoordinateRegion {
         guard let trackPointsSet = track.trackPointsSet,
@@ -108,6 +108,7 @@ class MapViewHelper: NSObject {
         //print("=== \(file).\(#function) - \(track.debugName) ===")
         
         self.track = track
+        self.isPhone = DeviceType.isPhone
         
         setUpView()
         setUpTracking()

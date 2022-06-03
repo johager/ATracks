@@ -11,7 +11,8 @@ struct TrackPlotView: View {
     
     @ObservedObject var track: Track
     @Binding var hasSafeAreaInsets: Bool
-    var displayOnSide: Bool
+    private var displayOnSide: Bool
+    private var deviceType: DeviceType
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -21,7 +22,6 @@ struct TrackPlotView: View {
     
     private var trackHelper: TrackHelper
     
-    private var deviceType: DeviceType { DeviceType.current() }
     private var isPad: Bool { deviceType == .pad }
     private var isPhone: Bool { deviceType == .phone }
     private var placeMapOnRightInLandscape: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
@@ -56,6 +56,7 @@ struct TrackPlotView: View {
         self.track = track
         self._hasSafeAreaInsets = hasSafeAreaInsets
         self.displayOnSide = displayOnSide
+        self.deviceType = DeviceType.current()
         self.trackHelper = TrackHelper(track: track, forPlotting: true)
         
         if displayOnSide && placeMapOnRightInLandscape {
