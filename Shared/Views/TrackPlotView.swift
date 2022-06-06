@@ -9,8 +9,8 @@ import SwiftUI
 
 struct TrackPlotView: View {
     
-    @ObservedObject var track: Track
-    @Binding var hasSafeAreaInsets: Bool
+    @ObservedObject private var track: Track
+    @ObservedObject private var device: Device
     private var displayOnSide: Bool
     private var deviceType: DeviceType
     
@@ -28,7 +28,7 @@ struct TrackPlotView: View {
     
     private var leadingSpace: CGFloat {
         if displayOnSide {
-            if hasSafeAreaInsets {
+            if device.hasSafeAreaInsets {
                 return placeMapOnRightInLandscape ? 8 : 16
             } else {
                 return 16
@@ -40,7 +40,7 @@ struct TrackPlotView: View {
 
     private var trailingSpace: CGFloat {
         if displayOnSide {
-            if hasSafeAreaInsets {
+            if device.hasSafeAreaInsets {
                 return placeMapOnRightInLandscape ? 16 : 8
             } else {
                 return 16
@@ -52,9 +52,9 @@ struct TrackPlotView: View {
     
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false) {
+    init(track: Track, device: Device, displayOnSide: Bool = false) {
         self.track = track
-        self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.device = device
         self.displayOnSide = displayOnSide
         self.deviceType = DeviceType.current()
         self.trackHelper = TrackHelper(track: track, forPlotting: true)
@@ -162,7 +162,7 @@ struct TrackPlotView: View {
                 .onAppear { plotSize = geometry.size }
             }
             .frame(height: 90)
-            .padding(.bottom, hasSafeAreaInsets ? (displayOnSide ? 8 : (isPad ? 8 : 0)) : 16)
+            .padding(.bottom, device.hasSafeAreaInsets ? (displayOnSide ? 8 : (isPad ? 8 : 0)) : 16)
         }
         .font(isPhone ? .footnote.monospacedDigit() : .body.monospacedDigit())
         .foregroundColor(.text)

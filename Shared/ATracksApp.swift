@@ -22,7 +22,7 @@ struct ATracksApp: App {
     @State private var hasOnboarded = false
     @State private var isOnboarding = false
     
-    @State var hasSafeAreaInsets = false
+    let device = Device()
     
     let coreDataStack = CoreDataStack.shared
     
@@ -42,7 +42,7 @@ struct ATracksApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(hasSafeAreaInsets: $hasSafeAreaInsets)
+            ContentView(device: device)
                 .environment(\.managedObjectContext, coreDataStack.context)
                 .environmentObject(displaySettings)
                 .environmentObject(trackManager)
@@ -82,7 +82,7 @@ struct ATracksApp: App {
         case .active:
             print("=== \(file).\(#function) - active, hasOnboarded: \(hasOnboarded), wasInactive: \(wasInactive) ===")
             #if os(iOS)
-            hasSafeAreaInsets = Func.hasSafeAreaInsets
+            device.hasSafeAreaInsets = Func.hasSafeAreaInsets
             handleActive()
             #endif
             //doSpecialStartUp()

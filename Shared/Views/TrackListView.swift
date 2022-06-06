@@ -16,7 +16,8 @@ struct TrackListView: View {
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     #endif
 
-    @Binding var hasSafeAreaInsets: Bool
+    @ObservedObject private var device: Device
+    private var horizontalSizeClassIsCompact: Bool
     private var isLandscape: Bool
     
     private var isPhone: Bool
@@ -53,8 +54,9 @@ struct TrackListView: View {
     
     // MARK: - Init
     
-    init(hasSafeAreaInsets: Binding<Bool>, isLandscape: Bool) {
-        self._hasSafeAreaInsets = hasSafeAreaInsets
+    init(device: Device, horizontalSizeClassIsCompact: Bool, isLandscape: Bool) {
+        self.device = device
+        self.horizontalSizeClassIsCompact = horizontalSizeClassIsCompact
         self.isLandscape = isLandscape
         
         #if os(iOS)
@@ -73,8 +75,8 @@ struct TrackListView: View {
                     #if os(iOS)
                     if !displaySettings.placeButtonsOnRightInLandscape {
                         Group {
-                            TrackListButtonsView(hOrVStack: .vstack, hasSafeAreaInsets: $hasSafeAreaInsets, isTracking: $isTracking, delegate: self)
-                                .padding(.leading, hasSafeAreaInsets ? (isLandscapeLeft ? -30 : 0) : 16)
+                            TrackListButtonsView(in: .vstack, isTracking: $isTracking, delegate: self)
+                                .padding(.leading, device.hasSafeAreaInsets ? (isLandscapeLeft ? -30 : 0) : 16)
                                 .padding(.trailing, 16)
                             VerticalDividerView()
                         }
@@ -84,21 +86,21 @@ struct TrackListView: View {
                     
                     #if os(iOS)
                     if isPhone {
-                        TrackListResultsViewPhone(hasSafeAreaInsets: $hasSafeAreaInsets, searchText: searchText, delegate: self)
+                        TrackListResultsViewPhone(device: device, searchText: searchText, delegate: self)
                     } else {
-                        TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                        TrackListResultsView(device: device, delegate: self)
                     }
                     #else
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                    TrackListResultsView(device: device, delegate: self)
                     #endif
                     
                     #if os(iOS)
                     if displaySettings.placeButtonsOnRightInLandscape {
                         Group {
                             VerticalDividerView()
-                            TrackListButtonsView(hOrVStack: .vstack, hasSafeAreaInsets: $hasSafeAreaInsets, isTracking: $isTracking, delegate: self)
+                            TrackListButtonsView(in: .vstack, isTracking: $isTracking, delegate: self)
                                 .padding(.leading, 16)
-                                .padding(.trailing, hasSafeAreaInsets ? (isLandscapeRight ? -30 : 0) : 16)
+                                .padding(.trailing, device.hasSafeAreaInsets ? (isLandscapeRight ? -30 : 0) : 16)
                         }
                         .background(Color.tabBarBackground)
                     }
@@ -108,12 +110,12 @@ struct TrackListView: View {
                 VStack(spacing: 0) {
                     #if os(iOS)
                     if isPhone {
-                        TrackListResultsViewPhone(hasSafeAreaInsets: $hasSafeAreaInsets, searchText: searchText, delegate: self)
+                        TrackListResultsViewPhone(device: device, searchText: searchText, delegate: self)
                     } else {
-                        TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                        TrackListResultsView(device: device, delegate: self)
                     }
                     #else
-                    TrackListResultsView(hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self)
+                    TrackListResultsView(device: device, delegate: self)
                     #endif
                     #if os(iOS)
                     VStack(spacing: 0) {
@@ -122,9 +124,9 @@ struct TrackListView: View {
                             .frame(height: 0.7)
                             .edgesIgnoringSafeArea(.all)
                         
-                        TrackListButtonsView(hOrVStack: .hstack, hasSafeAreaInsets: $hasSafeAreaInsets, isTracking: $isTracking, delegate: self)
+                        TrackListButtonsView(in: .hstack, isTracking: $isTracking, delegate: self)
                             .padding(.top, 16)
-                            .padding(.bottom, hasSafeAreaInsets ? 0 : 16)
+                            .padding(.bottom, device.hasSafeAreaInsets ? 0 : 16)
                     }
                     .background(Color.tabBarBackground)
                     #endif
@@ -165,6 +167,9 @@ struct TrackListView: View {
             }
             #endif
             trackManager.getTracks(with: searchText)
+        }
+        .onAppear {
+            device.sceneHorizontalSizeClassIsCompact = horizontalSizeClassIsCompact
         }
         #if os(iOS)
         NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) {  }

@@ -30,7 +30,7 @@ struct AboutView: View {
     
     var body: some View {
         ZStack {
-            List() {
+            List {
                 if isOnboarding {
                     Text("Welcome to ATracks!")
                         .settingsSubHeader
@@ -122,14 +122,14 @@ struct AboutView: View {
                 .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
-            .padding(.top, isShowingAbout ? 40 : 0)
+            .padding(.top, isShowingAbout ? 40 : 6)
             
             if isOnboarding {
-                VStack() {
-                    HStack() {
+                VStack {
+                    HStack {
                         Spacer()
                         Button {
-                            self.isOnboarding = false
+                            isOnboarding = false
                         } label: {
                             Image(systemName: "xmark.circle")
                                 .font(.title)
@@ -146,10 +146,10 @@ struct AboutView: View {
                     ZStack {
                         Text("About")
                             .settingsSubHeader
-                        HStack() {
+                        HStack {
                             Spacer()
                             Button {
-                                self.isShowingAbout = false
+                                isShowingAbout = false
                             } label: {
                                 Image(systemName: "xmark.circle")
                                     .font(.title)

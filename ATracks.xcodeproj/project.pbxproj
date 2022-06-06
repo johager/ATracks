@@ -93,6 +93,8 @@
 		F891BA5828470D7300AE7118 /* HorizontalDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA5628470D7300AE7118 /* HorizontalDividerView.swift */; };
 		F891BA5C284A5A3200AE7118 /* TrackListResultsViewPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA5B284A5A3200AE7118 /* TrackListResultsViewPhone.swift */; };
 		F891BA61284AA3E000AE7118 /* SwipeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F891BA60284AA3E000AE7118 /* SwipeHelper.swift */; };
+		F8942A30284CE5F70072C37A /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8942A2F284CE5F60072C37A /* Device.swift */; };
+		F8942A31284CE5F70072C37A /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8942A2F284CE5F60072C37A /* Device.swift */; };
 		F8A6D1792831A50B0035BFD1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6D1782831A50B0035BFD1 /* UIImage+.swift */; };
 		F8A6D17B2831A51C0035BFD1 /* NSImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6D17A2831A51C0035BFD1 /* NSImage+.swift */; };
 		F8AA6B1328296755007EBCAA /* TouchLocatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */; };
@@ -204,6 +206,7 @@
 		F891BA5628470D7300AE7118 /* HorizontalDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalDividerView.swift; sourceTree = "<group>"; };
 		F891BA5B284A5A3200AE7118 /* TrackListResultsViewPhone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListResultsViewPhone.swift; sourceTree = "<group>"; };
 		F891BA60284AA3E000AE7118 /* SwipeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeHelper.swift; sourceTree = "<group>"; };
+		F8942A2F284CE5F60072C37A /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		F8A6D1782831A50B0035BFD1 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		F8A6D17A2831A51C0035BFD1 /* NSImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+.swift"; sourceTree = "<group>"; };
 		F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchLocatingView.swift; sourceTree = "<group>"; };
@@ -347,6 +350,7 @@
 				F868D66E280DB2E200EC3D30 /* AppInfo.swift */,
 				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
 				F8F686FB2814E7B000991442 /* DataStateHelper.swift */,
+				F8942A2F284CE5F60072C37A /* Device.swift */,
 				F8E00684281CA1FF00FD679C /* DeviceType.swift */,
 				F8E00690281F616800FD679C /* DisplaySettings.swift */,
 				F8F687032814F90100991442 /* Func.swift */,
@@ -667,6 +671,7 @@
 				F868D66D280DAE3200EC3D30 /* ATracks.xcdatamodeld in Sources */,
 				F868D6C6280F479200EC3D30 /* HealthKitManager.swift in Sources */,
 				F868D68B280DBD7400EC3D30 /* TrackRow.swift in Sources */,
+				F8942A30284CE5F70072C37A /* Device.swift in Sources */,
 				F868D681280DB5F800EC3D30 /* Date+.swift in Sources */,
 				F8AA6B19282A9FA7007EBCAA /* NSManagedObjectContext+.swift in Sources */,
 				F868D6DE28107B8400EC3D30 /* TouchLocatingView.swift in Sources */,
@@ -721,6 +726,7 @@
 				F8E00692281F616800FD679C /* DisplaySettings.swift in Sources */,
 				F82BD5DD2827FAB0003E674D /* GeometryProxy+.swift in Sources */,
 				F868D6B1280EF13800EC3D30 /* Color+.swift in Sources */,
+				F8942A31284CE5F70072C37A /* Device.swift in Sources */,
 				F868D67F280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
 				F868D6E428109BA300EC3D30 /* Notification.Name+.swift in Sources */,
 				F8AA6B1328296755007EBCAA /* TouchLocatingView.swift in Sources */,
@@ -881,7 +887,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38j;
+				CURRENT_PROJECT_VERSION = 38l;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -919,7 +925,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38j;
+				CURRENT_PROJECT_VERSION = 38l;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -959,7 +965,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27q;
+				CURRENT_PROJECT_VERSION = 27s;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -988,7 +994,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27q;
+				CURRENT_PROJECT_VERSION = 27s;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

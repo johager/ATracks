@@ -10,10 +10,14 @@ import SwiftUI
 struct TrackDetailView: View {
     
     @Environment(\.colorScheme) private var colorScheme
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) var hSizeClass
+    @Environment(\.presentationMode) var presentationMode
+    #endif
     @EnvironmentObject var displaySettings: DisplaySettings
     
-    @ObservedObject var track: Track
-    @Binding var hasSafeAreaInsets: Bool
+    @ObservedObject private var track: Track
+    @ObservedObject private var device: Device
     private var delegate: TrackStatsViewDelegate?
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
@@ -33,9 +37,9 @@ struct TrackDetailView: View {
     
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, delegate: TrackStatsViewDelegate? = nil) {
+    init(track: Track, device: Device, delegate: TrackStatsViewDelegate? = nil) {
         self.track = track
-        self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.device = device
         self.delegate = delegate
     }
     
@@ -54,7 +58,7 @@ struct TrackDetailView: View {
                     if geometry.isLandscape {
                         HStack(spacing: 0) {
                             if displaySettings.placeMapOnRightInLandscape {
-                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
+                                DetailsOnSideView(track: track, device: device, delegate: delegate)
                                 VerticalDividerView()
                             }
                             
@@ -81,7 +85,7 @@ struct TrackDetailView: View {
                             
                             if !displaySettings.placeMapOnRightInLandscape {
                                 VerticalDividerView()
-                                DetailsOnSideView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
+                                DetailsOnSideView(track: track, device: device, delegate: delegate)
                             }
                         }
                         
@@ -90,7 +94,7 @@ struct TrackDetailView: View {
                             #if os(macOS)
                             HorizontalDividerView()
                             #endif
-                            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: delegate)
+                            TrackStatsView(track: track, device: device, delegate: delegate)
                             HorizontalDividerView()
                             ZStack {
                                 MapView(track: track)
@@ -112,16 +116,30 @@ struct TrackDetailView: View {
                                 #endif
                             }
                             HorizontalDividerView()
-                            TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets)
+                            TrackPlotView(track: track, device: device)
                                 .id(track.id)
                         }
+                        #if os(iOS)
+                        .id(hSizeClass)
+                        .id(device.detailHorizontalSizeClassIsCompact)
+                        #endif
                     }  // end geometry is portrait
                 }  // end VStack
             }  // end HStack
+            .onChange(of: geometry.size.width) { _ in
+                #if os(iOS)
+                device.detailHorizontalSizeClassIsCompact = hSizeClass == .compact
+                #else
+                device.detailHorizontalSizeClassIsCompact = geometry.horizontalSizeClassIsCompact
+                #endif
+            }
         }
         .navigationTitle(track.name)
         #if os(iOS)
         .ignoresSafeArea(.keyboard)
+        .onAppear {
+            device.detailHorizontalSizeClassIsCompact = hSizeClass == .compact
+        }
         .navigationBarTitleDisplayMode(.inline)
         #else
         .background(.background)
@@ -143,7 +161,7 @@ struct TrackDetailView: View {
 struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
-    @Binding var hasSafeAreaInsets: Bool
+    var device: Device
     var delegate: TrackStatsViewDelegate?
     
     // MARK: - View
@@ -154,11 +172,11 @@ struct DetailsOnSideView: View {
             HorizontalDividerView()
             #endif
             Spacer()
-            TrackStatsView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true, delegate: delegate)
+            TrackStatsView(track: track, device: device, displayOnSide: true, delegate: delegate)
             Spacer()
             HorizontalDividerView()
             Spacer()
-            TrackPlotView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, displayOnSide: true)
+            TrackPlotView(track: track, device: device, displayOnSide: true)
                 .id(track.id)
         }
     }

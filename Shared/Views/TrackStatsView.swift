@@ -17,18 +17,20 @@ protocol TrackStatsViewDelegate {
 
 struct TrackStatsView: View {
     
-    @ObservedObject var track: Track
-    @Binding var hasSafeAreaInsets: Bool
+    @ObservedObject private var track: Track
+    @ObservedObject private var device: Device
     private var displayOnSide: Bool
     private var delegate: TrackStatsViewDelegate?
     
     private var isPhone: Bool
     
+    private var isCompact: Bool { device.detailHorizontalSizeClassIsCompact }
+//    private var isCompact: Bool { device.sceneHorizontalSizeClassIsCompact }
     private var onRight: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
     
     private var leadingSpace: CGFloat {
         if displayOnSide {
-            if hasSafeAreaInsets {
+            if device.hasSafeAreaInsets {
                 return onRight ? 8 : 16
             } else {
                 return 16
@@ -40,7 +42,7 @@ struct TrackStatsView: View {
 
     private var trailingSpace: CGFloat {
         if displayOnSide {
-            if hasSafeAreaInsets {
+            if device.hasSafeAreaInsets {
                 return onRight ? 16 : 8
             } else {
                 return 16
@@ -54,9 +56,9 @@ struct TrackStatsView: View {
     
     // MARK: - Init
     
-    init(track: Track, hasSafeAreaInsets: Binding<Bool>, displayOnSide: Bool = false, delegate: TrackStatsViewDelegate?) {
+    init(track: Track, device: Device, displayOnSide: Bool = false, delegate: TrackStatsViewDelegate?) {
         self.track = track
-        self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.device = device
         self.displayOnSide = displayOnSide
         self.delegate = delegate
         
@@ -94,14 +96,14 @@ struct TrackStatsView: View {
                 
             } else {  // !displayOnSide
                 ZStack {
-                    if !isPhone {
+                    if !isCompact {
                         VStack(spacing: 4) {
                             Text(track.dateString)
-                            Text("")
+                            Text(" ")
                         }
                     }
                     VStack(spacing: 4) {
-                        if isPhone {
+                        if isCompact {
                             Text(track.dateString)
                         }
                         HStack(spacing: 0) {

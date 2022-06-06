@@ -16,25 +16,20 @@ protocol TrackListResultsViewDelegate {
 
 struct TrackListResultsView: View {
     
-    @Environment(\.presentationMode) var presentationMode
-    
     @EnvironmentObject var trackManager: TrackManager
     
-    @Binding var hasSafeAreaInsets: Bool
-    private var showNavigationLink: Bool
-    
-    var delegate: TrackListResultsViewDelegate
+    @ObservedObject private var device: Device
+    private var delegate: TrackListResultsViewDelegate
     
     @State private var isShowingDeleteAlert = false
     
-//    let file = "TrackListResultsView"
+    let file = "TrackListResultsView"
     
     // MARK: - Init
     
-    init(hasSafeAreaInsets: Binding<Bool>, delegate: TrackListResultsViewDelegate) {
-        //print("=== file.\(#function) - isLandscape: \(isLandscape) ===")
-        self._hasSafeAreaInsets = hasSafeAreaInsets
-        self.showNavigationLink = DeviceType.current() != .pad
+    init(device: Device, delegate: TrackListResultsViewDelegate) {
+        //print("=== file.\(#function) ===")
+        self.device = device
         self.delegate = delegate
     }
     
@@ -50,9 +45,13 @@ struct TrackListResultsView: View {
                     ForEach(trackManager.tracks) { track in
                         ZStack(alignment: .leading) {
                             #if os(iOS)
-                            Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
+                            if device.padShowNavigationLink {
+                                NavigationLink(destination: TrackDetailView(track: track, device: device), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                            } else {
+                                Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
+                            }
                             #else
-                            NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                            NavigationLink(destination: TrackDetailView(track: track, device: device), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
                             .opacity(0)
                             #endif
                             TrackRow(track: track)

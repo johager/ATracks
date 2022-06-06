@@ -22,7 +22,7 @@ struct HOrVStackView<Content: View>: View {
     let spacing: CGFloat?
     let content: () -> Content
     
-    init(hOrVStack: HOrVStack, horizontalAlignment: HorizontalAlignment = .center, verticalAlignment: VerticalAlignment = .center, spacing: CGFloat? = nil, @ViewBuilder content: @escaping () -> Content) {
+    init(_ hOrVStack: HOrVStack, horizontalAlignment: HorizontalAlignment = .center, verticalAlignment: VerticalAlignment = .center, spacing: CGFloat? = nil, @ViewBuilder content: @escaping () -> Content) {
         self.hOrVStack = hOrVStack
         self.horizontalAlignment = horizontalAlignment
         self.verticalAlignment = verticalAlignment

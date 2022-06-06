@@ -19,7 +19,6 @@ struct TrackListButtonsView: View {
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     
     let hOrVStack: HOrVStack
-    @Binding var hasSafeAreaInsets: Bool
     @Binding var isTracking: Bool
     
     var delegate: TrackListButtonsViewDelegate
@@ -42,10 +41,18 @@ struct TrackListButtonsView: View {
     
     let file = "TrackListButtonsView"
     
+    // MARK: - Init
+    
+    init(in hOrVStack: HOrVStack, isTracking: Binding<Bool>, delegate: TrackListButtonsViewDelegate) {
+        self.hOrVStack = hOrVStack
+        self._isTracking = isTracking
+        self.delegate = delegate
+    }
+    
     // MARK: - View
     
     var body: some View {
-        HOrVStackView(hOrVStack: hOrVStack) {
+        HOrVStackView(hOrVStack) {
             Spacer()
             
             Button(action: delegate.startButtonTapped) {

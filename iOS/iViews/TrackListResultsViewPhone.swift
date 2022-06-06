@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TrackListResultsViewPhone: View {
     
-    @Binding var hasSafeAreaInsets: Bool
+    private var device: Device
     
     var delegate: TrackListResultsViewDelegate
     
@@ -23,9 +23,9 @@ struct TrackListResultsViewPhone: View {
     
     // MARK: - Init
     
-    init(hasSafeAreaInsets: Binding<Bool>, searchText: String, delegate: TrackListResultsViewDelegate) {
+    init(device: Device, searchText: String, delegate: TrackListResultsViewDelegate) {
         print("=== \(file).\(#function) - searchText: '\(searchText)' ===")
-        self._hasSafeAreaInsets = hasSafeAreaInsets
+        self.device = device
         self.delegate = delegate
         
         let fetchRequest = Track.fetchRequest
@@ -44,9 +44,7 @@ struct TrackListResultsViewPhone: View {
                 List() {
                     ForEach(tracks) { track in
                         ZStack(alignment: .leading) {
-                            NavigationLink(destination: TrackDetailView(track: track, hasSafeAreaInsets: $hasSafeAreaInsets, delegate: self), tag: track, selection: $selectedTrack) {
-                                EmptyView()
-                            }
+                            NavigationLink(destination: TrackDetailView(track: track, device: device, delegate: self), tag: track, selection: $selectedTrack) { EmptyView() }
                             .opacity(0)
                             TrackRow(track: track)
                                 

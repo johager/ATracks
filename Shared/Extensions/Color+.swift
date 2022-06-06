@@ -213,12 +213,6 @@ extension Color {
         return color(light: Color(white: 0.77), dark: Color(white: 0.23))
     }
     
-//    static var plotSpeed: Color {
-//        let lightColor = Color(red: 0.9, green: 0, blue: 0)
-//        let darkColor = Color(red: 0.85, green: 0, blue: 0)
-//        return color(light: lightColor, dark: darkColor)
-//    }
-    
     static var plotVertical: Color {
         let lightColor = Color(white: 0.0, opacity: 0.3)
         let darkColor = Color(white: 1.0, opacity: 0.3)

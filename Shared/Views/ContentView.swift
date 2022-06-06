@@ -9,14 +9,29 @@ import SwiftUI
 
 struct ContentView: View {
     
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) var hSizeClass
+    #endif
+    
     @EnvironmentObject var trackManager: TrackManager
     
-    @Binding var hasSafeAreaInsets: Bool
+    private var device: Device
+    
+    private var horizontalSizeClassIsCompact: Bool {
+        #if os(iOS)
+        guard let hSizeClass = hSizeClass else { return true }
+        return hSizeClass == .compact ? true : false
+        #else
+        return false
+        #endif
+    }
+    
+//    let file = "ContentView"
     
     // MARK: - Init
     
-    init(hasSafeAreaInsets: Binding<Bool>) {
-        self._hasSafeAreaInsets = hasSafeAreaInsets
+    init(device: Device) {
+        self.device = device
         Appearance.customizeAppearance()
     }
     
@@ -25,10 +40,11 @@ struct ContentView: View {
     var body: some View {
         GeometryReader {  geometry in
             NavigationView {
-                TrackListView(hasSafeAreaInsets: $hasSafeAreaInsets, isLandscape: geometry.isLandscape)
+                TrackListView(device: device, horizontalSizeClassIsCompact: horizontalSizeClassIsCompact, isLandscape: geometry.isLandscape)
+                    .id(horizontalSizeClassIsCompact)
                 //SettingsView()
                 if let selectedTrack = trackManager.selectedTrack {
-                    TrackDetailView(track: selectedTrack, hasSafeAreaInsets: $hasSafeAreaInsets)
+                    TrackDetailView(track: selectedTrack, device: device)
                 } else {
                     BlankView()
                 }
