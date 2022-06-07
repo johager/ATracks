@@ -12,7 +12,6 @@ struct TrackPlotView: View {
     @ObservedObject private var track: Track
     @ObservedObject private var device: Device
     private var displayOnSide: Bool
-    private var deviceType: DeviceType
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -22,8 +21,6 @@ struct TrackPlotView: View {
     
     private var trackHelper: TrackHelper
     
-    private var isPad: Bool { deviceType == .pad }
-    private var isPhone: Bool { deviceType == .phone }
     private var placeMapOnRightInLandscape: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
     
     private var leadingSpace: CGFloat {
@@ -56,7 +53,6 @@ struct TrackPlotView: View {
         self.track = track
         self.device = device
         self.displayOnSide = displayOnSide
-        self.deviceType = DeviceType.current()
         self.trackHelper = TrackHelper(track: track, forPlotting: true)
         
         if displayOnSide && placeMapOnRightInLandscape {
@@ -121,7 +117,7 @@ struct TrackPlotView: View {
                             HStack {
                                 ZStack {
                                     ForEach((0...trackHelper.yAxisNumGridLines), id: \.self) {
-                                        let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height, deviceType: deviceType)
+                                        let (text, offset) = trackHelper.gridLabelInfo(forIndex: $0, andPlotHeight: plotSize.height, deviceType: device.deviceType)
                                         Text(text)
                                             .offset(x: offset.x, y: offset.y)
                                     }
@@ -162,9 +158,9 @@ struct TrackPlotView: View {
                 .onAppear { plotSize = geometry.size }
             }
             .frame(height: 90)
-            .padding(.bottom, device.hasSafeAreaInsets ? (displayOnSide ? 8 : (isPad ? 8 : 0)) : 16)
+            .padding(.bottom, device.hasSafeAreaInsets ? (displayOnSide ? 8 : (device.isPad ? 8 : 0)) : 16)
         }
-        .font(isPhone ? .footnote.monospacedDigit() : .body.monospacedDigit())
+        .font(device.isPhone ? .footnote.monospacedDigit() : .body.monospacedDigit())
         .foregroundColor(.text)
         .padding(.leading, leadingSpace)
         .padding(.trailing, trailingSpace)

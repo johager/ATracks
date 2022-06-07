@@ -13,6 +13,8 @@ struct SettingsView: View {
     @ObservedObject var displaySettings = DisplaySettings.shared
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     
+    private var device: Device
+    
     @State var isShowingAbout = false
     
     @State var isShowingCannotRecommendAlert = false
@@ -29,14 +31,12 @@ struct SettingsView: View {
     
     @State var isShowingResetSettings = false
     
-    private var isPhone: Bool
-    
     //let file = "SettingsView"
     
     // MARK: - Init
     
-    init() {
-        self.isPhone = DeviceType.isPhone
+    init(device: Device) {
+        self.device = device
     }
     
     // MARK: - View
@@ -47,7 +47,7 @@ struct SettingsView: View {
             
             // Top Section
             
-            if isPhone {
+            if device.isPhone {
                 NavigationLink(destination: AboutView()) {
                     Text("About")
                 }
@@ -86,7 +86,7 @@ struct SettingsView: View {
             }
             .listRowSeparatorTint(.listRowSeparator)
             
-            if isPhone {
+            if device.isPhone {
                 NavigationLink(destination: LegalView()) {
                     Text("Legal")
                 }
@@ -241,8 +241,8 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
-}
+//struct SettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingsView()
+//    }
+//}

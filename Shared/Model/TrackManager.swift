@@ -44,7 +44,7 @@ class TrackManager: NSObject, ObservableObject {
         super.init()
 //        print("=== TrackManager.\(#function) ===")
         
-        isPhone = DeviceType.isPhone
+        isPhone = DeviceType.current().isPhone
         
         if isPhone {
             return

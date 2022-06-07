@@ -20,8 +20,6 @@ struct TrackListView: View {
     private var horizontalSizeClassIsCompact: Bool
     private var isLandscape: Bool
     
-    private var isPhone: Bool
-    
     @State private var isTracking = false
     
     @State private var searchText = ""
@@ -58,12 +56,6 @@ struct TrackListView: View {
         self.device = device
         self.horizontalSizeClassIsCompact = horizontalSizeClassIsCompact
         self.isLandscape = isLandscape
-        
-        #if os(iOS)
-        self.isPhone = DeviceType.isPhone
-        #else
-        self.isPhone = false
-        #endif
     }
     
     // MARK: - View
@@ -85,7 +77,7 @@ struct TrackListView: View {
                     #endif
                     
                     #if os(iOS)
-                    if isPhone {
+                    if device.isPhone {
                         TrackListResultsViewPhone(device: device, searchText: searchText, delegate: self)
                     } else {
                         TrackListResultsView(device: device, delegate: self)
@@ -109,7 +101,7 @@ struct TrackListView: View {
             } else {  // not side by side
                 VStack(spacing: 0) {
                     #if os(iOS)
-                    if isPhone {
+                    if device.isPhone {
                         TrackListResultsViewPhone(device: device, searchText: searchText, delegate: self)
                     } else {
                         TrackListResultsView(device: device, delegate: self)
@@ -162,7 +154,7 @@ struct TrackListView: View {
         .searchable(text: $searchText, prompt: Text("Track name..."))
         .onChange(of: searchText) { _ in
             #if os(iOS)
-            if isPhone {
+            if device.isPhone {
                 return
             }
             #endif
@@ -172,7 +164,7 @@ struct TrackListView: View {
             device.sceneHorizontalSizeClassIsCompact = horizontalSizeClassIsCompact
         }
         #if os(iOS)
-        NavigationLink(destination: SettingsView(), isActive: $isShowingSettingsView) {  }
+        NavigationLink(destination: SettingsView(device: device), isActive: $isShowingSettingsView) {  }
             .isDetailLink(false)
         #endif
     }

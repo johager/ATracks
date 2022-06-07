@@ -22,8 +22,7 @@ class MapViewHelper: NSObject {
     let mapView = MKMapView()
     
     var track: Track!
-    
-    private var isPhone: Bool = true
+    var device: Device!
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -104,11 +103,11 @@ class MapViewHelper: NSObject {
     
     // MARK: - Public Methods
     
-    func setUpView(forTrack track: Track) {
+    func setUpView(for track: Track, and device: Device) {
         //print("=== \(file).\(#function) - \(track.debugName) ===")
         
         self.track = track
-        self.isPhone = DeviceType.isPhone
+        self.device = device
         
         setUpView()
         setUpTracking()
@@ -128,7 +127,7 @@ class MapViewHelper: NSObject {
             name: .showInfoForLocation, object: nil)
     }
     
-    func updateView(forTrack track: Track) {
+    func updateView(for track: Track) {
         //print("=== \(file).\(#function) - \(track.debugName) - hasBeenSetUp: \(startPointAnnotation != nil) ===")
         
         guard startPointAnnotation == nil else { return }
@@ -184,7 +183,7 @@ class MapViewHelper: NSObject {
     private func addTrackPointCalloutLabel() {
         #if os(iOS)
         trackPointCalloutLabel = AALabelWithPadding(horPadding: 8, vertPadding: 4 )
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: isPhone ? .footnote : .body)
+        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: device.isPhone ? .footnote : .body)
         let monospacedNumbersDescriptor = descriptor.addingAttributes([
             UIFontDescriptor.AttributeName.featureSettings: [
                 [UIFontDescriptor.FeatureKey.type: kNumberSpacingType,
@@ -201,7 +200,7 @@ class MapViewHelper: NSObject {
         trackPointCalloutLabel.layer.backgroundColor = UIColor(.trackPointCalloutBackground).cgColor
         trackPointCalloutLabel.layer.borderColor = UIColor(.trackPointCalloutBorder).cgColor
         trackPointCalloutLabel.layer.borderWidth = 0.5
-        trackPointCalloutLabel.layer.cornerRadius = isPhone ? 6 : 8
+        trackPointCalloutLabel.layer.cornerRadius = device.isPhone ? 6 : 8
         
         let bottomMargin: CGFloat = 8
         

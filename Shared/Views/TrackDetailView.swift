@@ -63,7 +63,7 @@ struct TrackDetailView: View {
                             }
                             
                             ZStack {
-                                MapView(track: track)
+                                MapView(track: track, device: device)
                                     .edgesIgnoringSafeArea(.all)
                                     .id(colorScheme)
                                     .id(displaySettings.mapViewSatellite)
@@ -97,7 +97,7 @@ struct TrackDetailView: View {
                             TrackStatsView(track: track, device: device, delegate: delegate)
                             HorizontalDividerView()
                             ZStack {
-                                MapView(track: track)
+                                MapView(track: track, device: device)
                                     .edgesIgnoringSafeArea([.top, .trailing, .leading])
                                     .id(colorScheme)
                                     .id(displaySettings.mapViewSatellite)

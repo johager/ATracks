@@ -112,6 +112,7 @@ struct AboutView: View {
                 
                 Section {
                     Text("Swipe between tracks by swiping left, for next, or right, for previous, in the stats area (Duration, Avg Speed, Timestamp, Distance, Steps).")
+                    Text("Tap on the map to recenter the track.")
                     Text("A green pin marker is used to indicate the beginning of a track. If the track is one-way, the end of the track has a red pin marker.")
                     Text("The average elevation is a time-weighted average.")
                     Text("Touch or swipe on the elevation plot to display that point on the map and also its latitude, longitude, and elevation.")

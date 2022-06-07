@@ -13,9 +13,9 @@ enum DeviceType {
     case pad
     case mac
     
-    static var isPhone: Bool { current() == .phone }
-    static var isPad: Bool { current() == .pad }
-    static var isMac: Bool { current() == .mac }
+    var isPhone: Bool { self == .phone }
+    var isPad: Bool { self == .pad }
+    var isMac: Bool { self == .mac }
     
     static func current() -> DeviceType {
         #if os(iOS)

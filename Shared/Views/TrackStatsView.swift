@@ -22,8 +22,6 @@ struct TrackStatsView: View {
     private var displayOnSide: Bool
     private var delegate: TrackStatsViewDelegate?
     
-    private var isPhone: Bool
-    
     private var isCompact: Bool { device.detailHorizontalSizeClassIsCompact }
 //    private var isCompact: Bool { device.sceneHorizontalSizeClassIsCompact }
     private var onRight: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
@@ -61,8 +59,6 @@ struct TrackStatsView: View {
         self.device = device
         self.displayOnSide = displayOnSide
         self.delegate = delegate
-        
-        self.isPhone = DeviceType.isPhone
     }
     
     // MARK: - View
@@ -138,7 +134,7 @@ struct TrackStatsView: View {
         .contentShape(Rectangle())  // so the .gesture will operate on the whole Group and not just the inner content
         .gesture(DragGesture(minimumDistance: 5)
             .onEnded { value in                
-                if isPhone {
+                if device.isPhone {
                     delegate?.handleSwipe(SwipeDirection.from(value))
                 } else {
                     TrackManager.shared.handleSwipe(SwipeDirection.from(value))
@@ -146,7 +142,7 @@ struct TrackStatsView: View {
             }
         )
         #endif
-        .font(isPhone ? .footnote : .body)
+        .font(device.isPhone ? .footnote : .body)
         .foregroundColor(.text)
 //        #if os(iOS)
 //        .task {

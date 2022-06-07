@@ -120,7 +120,7 @@ struct ATracksApp: App {
     
 //    func doSpecialStartUp() {
 //        let fetchRequest = Track.fetchRequest
-//        
+//
 //        let dateCheck = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
 //        fetchRequest.predicate = NSPredicate(format: "%K > %@", Track.dateKey, dateCheck as CVarArg)
 //
@@ -140,9 +140,9 @@ struct ATracksApp: App {
 //            print("=== \(file).\(#function) - error fetching")
 //        }
 //    }
-    
+//
 //    func applyAutoStop(to track: Track) {
-//        print("=== \(file).\(#function) ===")
+//        print("=== \(file).\(#function) - \(track.debugName) ===")
 //
 //        let trackPoints = track.trackPoints
 //
@@ -154,7 +154,7 @@ struct ATracksApp: App {
 //
 //        var shouldCheckAutoStop = false
 //
-//        let firstPointIndex = 9
+//        let firstPointIndex = 4
 //        let firstLocation = trackPoints[firstPointIndex].clLocation
 //
 //        print("--- \(file).\(#function) - first: \(trackPoints[firstPointIndex].timestamp.stringForDebug), lat/lon \(firstLocation.coordinate.latitude), \(firstLocation.coordinate.longitude)")
@@ -176,7 +176,7 @@ struct ATracksApp: App {
 //            }
 //        }
 //    }
-    
+//
 //    func trimTrack(_ track: Track, begin: Int, end: Int) {
 //        print("=== \(file).\(#function) - begin: \(begin), end: \(end) ===")
 //        let context = coreDataStack.context

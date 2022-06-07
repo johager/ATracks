@@ -17,16 +17,20 @@ class Device: NSObject, ObservableObject {
         didSet {
             guard isPad else { return }
             if sceneHorizontalSizeClassIsCompact {
-                padWentCompact = true
+                padShowNavigationLink = true
             }
         }
     }
     
-    var isPad = false
+    @Published var padShowNavigationLink = false
     
-    var padWentCompact = false
+    var deviceType: DeviceType!
     
-    var padShowNavigationLink: Bool { sceneHorizontalSizeClassIsCompact || padWentCompact }
+    // MARK: - Calculated
+    
+    var isPhone: Bool { deviceType.isPhone }
+    var isPad: Bool { deviceType.isPad }
+    var isMac: Bool { deviceType.isMac }
     
     //lazy var file = Func.sourceFileNameFromFullPath(#file)
     
@@ -34,6 +38,6 @@ class Device: NSObject, ObservableObject {
     
     override init() {
         super.init()
-        isPad = DeviceType.isPad
-    }
+        deviceType = DeviceType.current()
+    }    
 }
