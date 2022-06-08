@@ -5,7 +5,7 @@
 //  Created by James Hager on 6/5/22.
 //
 
-import Foundation
+import SwiftUI
 
 class Device: NSObject, ObservableObject {
     
@@ -32,6 +32,8 @@ class Device: NSObject, ObservableObject {
     var isPad: Bool { deviceType.isPad }
     var isMac: Bool { deviceType.isMac }
     
+    var useSafeAreaInsets: Bool { isPhone && hasSafeAreaInsets }
+    
     //lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
@@ -39,5 +41,28 @@ class Device: NSObject, ObservableObject {
     override init() {
         super.init()
         deviceType = DeviceType.current()
-    }    
+    }
+    
+    // MARK: - Methods
+    
+    func trackPlotStatsLeadingSpace(displayOnSide: Bool) -> CGFloat {
+        return trackPlotStatsSpace(displayOnSide: displayOnSide, safeOnRight: 8, safeNotOnRight: 16)
+    }
+    
+    func trackPlotStatsTrailingSpace(displayOnSide: Bool) -> CGFloat {
+        return trackPlotStatsSpace(displayOnSide: displayOnSide, safeOnRight: 16, safeNotOnRight: 8)
+    }
+    
+    func trackPlotStatsSpace(displayOnSide: Bool, safeOnRight: CGFloat, safeNotOnRight: CGFloat) -> CGFloat {
+        if displayOnSide {
+            if useSafeAreaInsets {
+                let placeMapOnRightInLandscape = DisplaySettings.shared.placeMapOnRightInLandscape
+                return placeMapOnRightInLandscape ? safeOnRight : safeNotOnRight
+            } else {
+                return 16
+            }
+        } else {
+            return 32
+        }
+    }
 }

@@ -23,34 +23,8 @@ struct TrackStatsView: View {
     private var delegate: TrackStatsViewDelegate?
     
     private var isCompact: Bool { device.detailHorizontalSizeClassIsCompact }
-//    private var isCompact: Bool { device.sceneHorizontalSizeClassIsCompact }
-    private var onRight: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
     
-    private var leadingSpace: CGFloat {
-        if displayOnSide {
-            if device.hasSafeAreaInsets {
-                return onRight ? 8 : 16
-            } else {
-                return 16
-            }
-        } else {
-            return 32
-        }
-    }
-
-    private var trailingSpace: CGFloat {
-        if displayOnSide {
-            if device.hasSafeAreaInsets {
-                return onRight ? 16 : 8
-            } else {
-                return 16
-            }
-        } else {
-            return 32
-        }
-    }
-    
-    let file = "TrackStatsView"
+    //let file = "TrackStatsView"
     
     // MARK: - Init
     
@@ -126,8 +100,8 @@ struct TrackStatsView: View {
                     }
                 }
                 .padding([.top, .bottom], 8)
-                .padding(.leading, leadingSpace)
-                .padding(.trailing, trailingSpace)
+                .padding(.leading, device.trackPlotStatsLeadingSpace(displayOnSide: displayOnSide))
+                .padding(.trailing, device.trackPlotStatsTrailingSpace(displayOnSide: displayOnSide))
             }
         }
         #if os(iOS)

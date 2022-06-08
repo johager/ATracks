@@ -21,32 +21,6 @@ struct TrackPlotView: View {
     
     private var trackHelper: TrackHelper
     
-    private var placeMapOnRightInLandscape: Bool { DisplaySettings.shared.placeMapOnRightInLandscape }
-    
-    private var leadingSpace: CGFloat {
-        if displayOnSide {
-            if device.hasSafeAreaInsets {
-                return placeMapOnRightInLandscape ? 8 : 16
-            } else {
-                return 16
-            }
-        } else {
-            return 32
-        }
-    }
-
-    private var trailingSpace: CGFloat {
-        if displayOnSide {
-            if device.hasSafeAreaInsets {
-                return placeMapOnRightInLandscape ? 16 : 8
-            } else {
-                return 16
-            }
-        } else {
-            return 32
-        }
-    }
-    
     // MARK: - Init
     
     init(track: Track, device: Device, displayOnSide: Bool = false) {
@@ -55,7 +29,7 @@ struct TrackPlotView: View {
         self.displayOnSide = displayOnSide
         self.trackHelper = TrackHelper(track: track, forPlotting: true)
         
-        if displayOnSide && placeMapOnRightInLandscape {
+        if displayOnSide && DisplaySettings.shared.placeMapOnRightInLandscape {
             xVertVals = [-1, -1]
         }
     }
@@ -162,8 +136,8 @@ struct TrackPlotView: View {
         }
         .font(device.isPhone ? .footnote.monospacedDigit() : .body.monospacedDigit())
         .foregroundColor(.text)
-        .padding(.leading, leadingSpace)
-        .padding(.trailing, trailingSpace)
+        .padding(.leading, device.trackPlotStatsLeadingSpace(displayOnSide: displayOnSide))
+        .padding(.trailing, device.trackPlotStatsTrailingSpace(displayOnSide: displayOnSide))
     }
     
     // MARK: - Methods
