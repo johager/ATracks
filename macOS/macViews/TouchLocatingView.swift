@@ -34,9 +34,8 @@ struct TouchLocatingView: NSViewRepresentable {
         override init(frame: CGRect) {
             super.init(frame: frame)
             
-            NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDragged]) {
-                //print("mouse locationInWindow: \($0.locationInWindow)")
-                self.handleTouch(at: $0.locationInWindow)
+            NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .leftMouseDragged]) {
+                self.handleEvent($0)
                 return $0
             }
         }
@@ -47,9 +46,17 @@ struct TouchLocatingView: NSViewRepresentable {
         
         // MARK: - Handle Touches
         
-        func handleTouch(at locationInWindow: CGPoint) {
-            let locationInView = convert(locationInWindow, from: nil)
-            onUpdate?(CGPoint(x: round(locationInView.x), y: round(locationInView.y)))
+        func handleEvent(_ event: NSEvent) {
+            
+            guard let eventWindow = event.window,
+                  let viewWindow = self.window,
+                  eventWindow === viewWindow
+            else { return }
+                  
+            let locationInView = convert(event.locationInWindow, from: nil)
+            if bounds.contains(locationInView) {
+                onUpdate?(CGPoint(x: round(locationInView.x), y: round(locationInView.y)))
+            }
         }
     }
 }

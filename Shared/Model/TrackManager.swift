@@ -42,7 +42,7 @@ class TrackManager: NSObject, ObservableObject {
     
     private override init() {
         super.init()
-//        print("=== TrackManager.\(#function) ===")
+//        print("=== \(file).\(#function) ===")
         
         isPhone = DeviceType.current().isPhone
         

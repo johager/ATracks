@@ -11,5 +11,8 @@ extension Notification.Name {
     public static let didStartTracking = Notification.Name(rawValue: "didStartTracking")
     public static let didStopTracking = Notification.Name(rawValue: "didStopTracking")
     public static let scenePhaseChangedToActive = Notification.Name(rawValue: "scenePhaseChangedToActive")
-    public static let showInfoForLocation = Notification.Name(rawValue: "showInfoForLocation")
+    
+    static func showInfoForLocation(for track: Track) -> Notification.Name {
+        return Notification.Name(rawValue: "showInfoForLocation_\(track.id)")
+    }
 }

@@ -49,8 +49,25 @@ struct ContentView: View {
                     BlankView()
                 }
             }
+            #if os(macOS)
+            .toolbar {
+                ToolbarItem(placement: .navigation) {
+                    Button(action: toggleSidebar, label: {
+                        Image(systemName: "sidebar.leading")
+                    })
+                }
+            }
+            #endif
         }
     }
+    
+    // MARK: - Methods
+    
+    #if os(macOS)
+    func toggleSidebar() {
+        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+    }
+    #endif
 }
 
 // MARK: - Previews

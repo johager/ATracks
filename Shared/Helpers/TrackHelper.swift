@@ -42,6 +42,8 @@ class TrackHelper {
     
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
+    lazy var showInfoForLocation = Notification.Name.showInfoForLocation(for: track)
+    
     // MARK: - Init
     
     init(track: Track, forPlotting: Bool = false) {
@@ -330,7 +332,7 @@ class TrackHelper {
             userInfo[Key.elevation] = altitudes[index]
         }
         
-        NotificationCenter.default.post(name: .showInfoForLocation, object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: showInfoForLocation, object: nil, userInfo: userInfo)
         
         return true
     }

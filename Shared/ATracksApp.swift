@@ -74,6 +74,11 @@ struct ATracksApp: App {
                 }
                 #endif
         }
+        #if os(macOS)
+        .commands {
+            SidebarCommands()
+        }
+        #endif
     }
     // MARK: - ScenePhase Methods
     

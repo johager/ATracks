@@ -149,10 +149,6 @@ struct TrackPlotView: View {
               !trackIsTrackingOnThisDevice
         else { return }
         
-        #if os(macOS)
-        guard location.x > 0, location.y > 0, location.y < plotSize.height else { return }
-        #endif
-        
         let xFraction = location.x / plotSize.width
         //print("=== TrackPlotView.\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")
         

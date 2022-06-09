@@ -124,7 +124,7 @@ class MapViewHelper: NSObject {
         
         NotificationCenter.default.addObserver(self,
             selector: #selector(handleShowInfoForLocationNotification(_:)),
-            name: .showInfoForLocation, object: nil)
+            name: .showInfoForLocation(for: track), object: nil)
     }
     
     func updateView(for track: Track) {
