@@ -119,6 +119,17 @@ struct ATracksApp: App {
     }
     
 //    func doSpecialStartUp() {
+//        makeTrack(daysAgo: 90)
+//        makeTrack(daysAgo: 3)
+//        makeTrack(daysAgo: -1)
+//    }
+//
+//    func makeTrack(daysAgo: Int) {
+//        let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: Date())!
+//        Track(name: "<[ \(daysAgo) Days Ago ]>", deviceName: "dummy", deviceUUID: "123", date: date, isTracking: false)
+//    }
+    
+//    func doSpecialStartUp() {
 //        let fetchRequest = Track.fetchRequest
 //
 //        let dateCheck = Calendar.current.date(byAdding: .day, value: -1, to: Date())!

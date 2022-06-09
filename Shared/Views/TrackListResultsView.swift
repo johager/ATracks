@@ -23,6 +23,10 @@ struct TrackListResultsView: View {
     
     @State private var isShowingDeleteAlert = false
     
+    #if os(macOS)
+    @State private var trackBeingEdited: Track? = nil
+    #endif
+    
     let file = "TrackListResultsView"
     
     // MARK: - Init
@@ -54,7 +58,11 @@ struct TrackListResultsView: View {
                             NavigationLink(destination: TrackDetailView(track: track, device: device), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
                             .opacity(0)
                             #endif
-                            TrackRow(track: track)
+                            let isEditing = isEditing(track)
+                            TrackRow(track: track, isEditing: isEditing, delegate: self)
+                                #if os(macOS)
+                                .id(isEditing)
+                                #endif
                         }
                         .id(track)
 //                        #if os(iOS)
@@ -80,14 +88,19 @@ struct TrackListResultsView: View {
                             }
                             .tint(.listRowSwipeStart)
                         }
+                        #else
+                        .contextMenu {
+                            Button(action: { trackBeingEdited = track }) { Text("Edit") }
+                            Button(action: { delete(track) }) { Text("Delete") }
+                        }
                         #endif
                     }
                 }
                 .listStyle(.plain)
                 .animation(.linear, value: trackManager.tracks)
-                #if os(iOS)
                 .onChange(of: trackManager.selectedTrack) { _ in
                     //print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(trackManager.selectedTrackDidChangeProgramatically) ===")
+                    #if os(iOS)
                     guard trackManager.selectedTrackDidChangeProgramatically else { return }
                     withAnimation(.easeInOut(duration: 1)) {
                         proxy.scrollTo(trackManager.selectedTrack, anchor: .center)
@@ -95,8 +108,10 @@ struct TrackListResultsView: View {
                     Func.afterDelay(0.5) {
                         trackManager.selectedTrackDidChangeProgramatically = false
                     }
+                    #else
+                    trackBeingEdited = nil
+                    #endif
                 }
-                #endif
             }
             .padding(.bottom, 0)
         }
@@ -112,10 +127,19 @@ struct TrackListResultsView: View {
     // MARK: - Methods
     
     func delete(_ track: Track) {
-        //print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) - \(track.debugName) ===")
         if !TrackManager.shared.didDelete(track) {
             isShowingDeleteAlert = true
         }
+    }
+    
+    func isEditing(_ track: Track) -> Bool {
+        #if os(iOS)
+        return false
+        #else
+        guard let trackBeingEdited = trackBeingEdited else { return false }
+        return track === trackBeingEdited
+        #endif
     }
     
 //    #if os(iOS)
@@ -124,6 +148,18 @@ struct TrackListResultsView: View {
         return track === selectedTrack ? .listRowSelectedBackground : .clear
     }
 //    #endif
+}
+
+// MARK: - TrackRowDelegate
+
+extension TrackListResultsView: TrackRowDelegate {
+    
+    func didFinishEditing() {
+        //print("=== file.\(#function) ===")
+        #if os(macOS)
+        trackBeingEdited = nil
+        #endif
+    }
 }
 
 // MARK: - Previews

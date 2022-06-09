@@ -251,7 +251,7 @@ extension TrackListView: TrackListButtonsViewDelegate {
 extension TrackListView: TrackListResultsViewDelegate {
     
     func edit(_ track: Track) {
-        //print("=== \(file).\(#function) - name: \(track.name) ===")
+        //print("=== \(file).\(#function) - \(track.debugName) ===")
         #if os(iOS)
         trackBeingEdited = track
         trackName = track.name

@@ -234,11 +234,18 @@ class TrackManager: NSObject, ObservableObject {
             return
         }
         
-        if index == 0 {
-            self.selectedTrack = tracks[1]
-        } else {
+        if index == tracks.count - 1 {
             self.selectedTrack = tracks[index - 1]
+        } else {
+            self.selectedTrack = tracks[index + 1]
         }
+        
+        #if os(macOS)
+        let newSelectedTrack = self.selectedTrack
+        Func.afterDelay(0.5) {
+            self.selectedTrack = newSelectedTrack
+        }
+        #endif
     }
     
     // MARK: - Handle Track Swipe
