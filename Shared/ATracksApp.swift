@@ -75,7 +75,19 @@ struct ATracksApp: App {
                 #endif
         }
         #if os(macOS)
+        Settings {
+            SettingsView()
+        }
         .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button("About ATracks") {
+                    NSApplication.shared.orderFrontStandardAboutPanel(
+                        options: [
+                            NSApplication.AboutPanelOptionKey(rawValue: "Copyright"): "© \(AppInfo.copyrightYear) Avanti Applications, LLC"
+                        ]
+                    )
+                }
+            }
             SidebarCommands()
         }
         #endif

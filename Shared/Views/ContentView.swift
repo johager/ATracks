@@ -43,11 +43,15 @@ struct ContentView: View {
                 TrackListView(device: device, horizontalSizeClassIsCompact: horizontalSizeClassIsCompact, isLandscape: geometry.isLandscape)
                     .id(horizontalSizeClassIsCompact)
                 //SettingsView()
+                #if os(iOS)
                 if let selectedTrack = trackManager.selectedTrack {
                     TrackDetailView(track: selectedTrack, device: device)
                 } else {
                     BlankView()
                 }
+                #else
+                BlankView()
+                #endif
             }
             #if os(macOS)
             .toolbar {

@@ -131,6 +131,7 @@
 		F8F687142816FC7100991442 /* NSView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F687122816FC4200991442 /* NSView+.swift */; };
 		F8F6877628189FFB00991442 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F6877528189FFB00991442 /* CloudKit.framework */; };
 		F8F687782818A05000991442 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F687772818A05000991442 /* CloudKit.framework */; };
+		F8FD3A5D2853D3C3006FF4C5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FD3A5C2853D3C3006FF4C5 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,6 +236,7 @@
 		F8F6877528189FFB00991442 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F8F687772818A05000991442 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.4.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		F8F687A8281979AC00991442 /* ATracks 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ATracks 3.xcdatamodel"; sourceTree = "<group>"; };
+		F8FD3A5C2853D3C3006FF4C5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				F868D6A9280E2AD000EC3D30 /* MapView.swift */,
+				F8FD3A5C2853D3C3006FF4C5 /* SettingsView.swift */,
 				F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */,
 			);
 			path = macViews;
@@ -713,6 +716,7 @@
 				F868D67C280DB4D300EC3D30 /* TrackPoint.swift in Sources */,
 				F868D6AA280E2AD000EC3D30 /* MapView.swift in Sources */,
 				F891BA5828470D7300AE7118 /* HorizontalDividerView.swift in Sources */,
+				F8FD3A5D2853D3C3006FF4C5 /* SettingsView.swift in Sources */,
 				F868D679280DB44B00EC3D30 /* DataType.swift in Sources */,
 				F8AA6B1A282A9FA7007EBCAA /* NSManagedObjectContext+.swift in Sources */,
 				F8E00681281B375A00FD679C /* BlankView.swift in Sources */,
@@ -887,7 +891,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39b;
+				CURRENT_PROJECT_VERSION = 39c;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -925,7 +929,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39b;
+				CURRENT_PROJECT_VERSION = 39c;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -965,7 +969,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27y;
+				CURRENT_PROJECT_VERSION = 27z;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -994,7 +998,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 27y;
+				CURRENT_PROJECT_VERSION = 27z;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
