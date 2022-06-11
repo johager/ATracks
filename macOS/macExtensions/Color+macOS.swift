@@ -19,8 +19,4 @@ extension Color {
             return lightColor
         }
     }
-    
-    static func colorStatic(light lightColor: Color, dark darkColor: Color) -> Color {
-        return color(light: lightColor, dark: darkColor)
-    }
 }

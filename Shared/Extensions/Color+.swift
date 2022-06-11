@@ -44,7 +44,7 @@ extension Color {
     }
     #else
     static var listRowSelectedBackground: Color {
-        return color(light: mediumGreen, dark: darkGreen)
+        return color(light: mediumGreen, dark: avantiGreen)
     }
     #endif
     
@@ -168,7 +168,7 @@ extension Color {
     
     static var track: Color {
         let lightColor = Color(red: 0.9, green: 0, blue: 0)
-        return colorStatic(light: lightColor, dark: avantiOrange)
+        return color(light: lightColor, dark: avantiOrange)
     }
     
     static var trackSat: Color {
@@ -176,7 +176,7 @@ extension Color {
     }
     
     static var markerEndFill: Color {
-        return colorStatic(light: lightGreen, dark: Color(white: 0.65))
+        return color(light: lightGreen, dark: Color(white: 0.65))
     }
     
     static var markerEndFillSat: Color {
@@ -185,7 +185,7 @@ extension Color {
         #else
         let lightColor = medium2Green
         #endif
-        return colorStatic(light: lightColor, dark: medium3Green)
+        return color(light: lightColor, dark: medium3Green)
     }
     
     static var markerEndShape: Color {
@@ -195,7 +195,7 @@ extension Color {
         #else
         let darkColor = Color(red: 0.8, green: 0, blue: 0)
         #endif
-        return colorStatic(light: lightColor, dark: darkColor)
+        return color(light: lightColor, dark: darkColor)
     }
     
     static var markerEndShapeSat: Color {
@@ -203,7 +203,7 @@ extension Color {
     }
     
     static var markerStartFill: Color {
-        return colorStatic(light: lightGreen, dark: avantiGreen)
+        return color(light: lightGreen, dark: avantiGreen)
     }
     
     static var markerStartFillSat: Color {
@@ -211,11 +211,11 @@ extension Color {
     }
     
     static var markerStartShape: Color {
-        return colorStatic(light: avantiGreen, dark: medium2Green)
+        return color(light: avantiGreen, dark: medium2Green)
     }
     
     static var markerStartShapeSat: Color {
-        return colorStatic(light: medium3Green, dark: medium3Green)
+        return color(light: medium3Green, dark: medium3Green)
     }
     
     // MARK: - Track Point Callout Colors

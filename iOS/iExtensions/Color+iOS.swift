@@ -22,12 +22,4 @@ extension Color {
         }
         return Color(uiColor)
     }
-    
-    static func colorStatic(light lightColor: Color, dark darkColor: Color) -> Color {
-        if Appearance.isDark {
-            return darkColor
-        } else {
-            return lightColor
-        }
-    }
 }

@@ -51,6 +51,7 @@ struct TrackListResultsView: View {
                             #if os(iOS)
                             if device.padShowNavigationLink {
                                 NavigationLink(destination: TrackDetailView(track: track, device: device), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                                    .opacity(0)
                             } else {
                                 Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
                             }
