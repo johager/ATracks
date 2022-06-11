@@ -28,16 +28,49 @@ extension Color {
         return color(light: dark2Green, dark: lightGreen)
     }
     
-    #if os(macOS)
+    #if os(iOS)
+    static var listBackground: Color {
+        return background
+    }
+    #else
     static var listBackground: Color {
         return color(light: Color(white: 0.96), dark: Color(white: 0.22))
     }
     #endif
     
+    #if os(iOS)
     static var listRowSelectedBackground: Color {
-//        return color(light: light2Green, dark: Color(white: 0.11))
-        return color(light: light1HGreen, dark: dark3HGreen)  // headerBackground
+        return color(light: light1HGreen, dark: dark3HGreen)
     }
+    #else
+    static var listRowSelectedBackground: Color {
+        return color(light: mediumGreen, dark: darkGreen)
+    }
+    #endif
+    
+    #if os(iOS)
+    static var listRowSelectedText: Color {
+        return text
+    }
+    #else
+    static var listRowSelectedText: Color {
+//        return color(light: .white, dark: Color(white: 0.22))
+//        return color(light: .white, dark: .black)
+        return .white
+    }
+    #endif
+    
+    #if os(iOS)
+    static var listRowSelectedTextSecondary: Color {
+        return textSecondary
+    }
+    #else
+    static var listRowSelectedTextSecondary: Color {
+//        return color(light: light1HGreen, dark: Color(white: 0.22))
+//        return color(light: light1HGreen, dark: Color(white: 0.2))
+        return light1HGreen
+    }
+    #endif
     
     static var listRowSeparator: Color {
         return color(light: medium3Green, dark: darkGreen)

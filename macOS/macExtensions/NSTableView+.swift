@@ -14,6 +14,7 @@ extension NSTableView {
         
         backgroundColor = .clear
         enclosingScrollView?.drawsBackground = false
+        intercellSpacing = NSMakeSize(0, -8)
         selectionHighlightStyle = .none
     }
 }

@@ -16,17 +16,31 @@ protocol TrackRowDelegate {
 struct TrackRow: View {
     
     @ObservedObject var track: Track
+    private var device: Device
+    private var isSelected: Bool
     private var isEditing: Bool
     private var delegate: TrackRowDelegate? = nil
     
     @FocusState private var isFocused: Bool // = true
     
+    var listRowTextColor: Color { isSelected ? .listRowSelectedText : .text }
+    var listRowTextSecondaryColor: Color { isSelected ? .listRowSelectedTextSecondary : .textSecondary }
+    var backgroundColor: Color {
+        if device.isPhone {
+            return .clear
+        } else {
+            return isSelected ? Color.listRowSelectedBackground : .listBackground
+        }
+    }
+    
     //let file = "TrackRow"
     
     // MARK: - Init
     
-    init(track: Track, isEditing: Bool = false, delegate: TrackRowDelegate? = nil) {
+    init(track: Track, device: Device, isSelected: Bool = false, isEditing: Bool = false, delegate: TrackRowDelegate? = nil) {
         self.track = track
+        self.device = device
+        self.isSelected = isSelected
         self.isEditing = isEditing
         self.delegate = delegate
     }
@@ -34,7 +48,7 @@ struct TrackRow: View {
     // MARK: - View
     
     var body: some View {
-        HStack(alignment: .center) {
+        HStack {
             VStack(alignment: .leading, spacing: 4) {
                 if isEditing {
                     TextField("Name", text: $track.name)
@@ -48,13 +62,10 @@ struct TrackRow: View {
                             isFocused = false
                             delegate?.didFinishEditing()
                         }
-                        #if os(macOS)
-                        .textFieldStyle(.squareBorder)
-                        #endif
                 } else {
                     Text(track.name)
                         .font(.body.monospacedDigit())
-                        .foregroundColor(.text)
+                        .foregroundColor(listRowTextColor)
                 }
                 Text(track.dateString)
                     .offset(x: 16)
@@ -65,8 +76,16 @@ struct TrackRow: View {
                 Text(track.duration.stringWithUnits)
             }
         }
+        #if os(iOS)
+        .padding([.top, .bottom], device.isPad ? 8 : 0)
+        .padding([.leading, .trailing], device.isPad ? 16 : 0)
+        #else
+        .padding([.top, .bottom], 4)
+        .padding([.leading, .trailing], 24)
+        #endif
+        .background(backgroundColor)
         .font(.footnote.monospacedDigit())
-        .foregroundColor(.textSecondary)
+        .foregroundColor(listRowTextSecondaryColor)
         #if os(macOS)
         .onAppear {
             if isEditing {

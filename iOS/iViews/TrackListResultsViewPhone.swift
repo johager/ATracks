@@ -46,8 +46,7 @@ struct TrackListResultsViewPhone: View {
                         ZStack(alignment: .leading) {
                             NavigationLink(destination: TrackDetailView(track: track, device: device, delegate: self), tag: track, selection: $selectedTrack) { EmptyView() }
                             .opacity(0)
-                            TrackRow(track: track)
-                                
+                            TrackRow(track: track, device: device)
                         }
                         .id(track)
 //                        #if os(iOS)
@@ -104,11 +103,6 @@ struct TrackListResultsViewPhone: View {
         if !TrackManager.shared.didDelete(track) {
             isShowingDeleteAlert = true
         }
-    }
-    
-    func listRowBackgroundColor(for track: Track) -> Color {
-        guard let selectedTrack = selectedTrack else { return .clear }
-        return track === selectedTrack ? .listRowSelectedBackground : .clear
     }
 }
 

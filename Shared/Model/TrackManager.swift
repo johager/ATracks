@@ -33,6 +33,13 @@ class TrackManager: NSObject, ObservableObject {
     
     private var isPhone: Bool!
     
+    var shouldSetSelectedTrack: Bool {
+        guard let selectedTrack = selectedTrack,
+              !tracks.contains(selectedTrack)
+        else { return false }
+        return true
+    }
+    
     lazy var deviceName = Func.deviceName
     lazy var deviceUUID = Func.deviceUUID
     
@@ -94,11 +101,9 @@ class TrackManager: NSObject, ObservableObject {
             return
         }
         
-        guard let selectedTrack = selectedTrack,
-              !tracks.contains(selectedTrack)
-        else { return }
-        
-        setSelectedTrack()
+        if shouldSetSelectedTrack {
+            setSelectedTrack()
+        }
     }
     
     func setSelectedTrack() {
@@ -108,11 +113,24 @@ class TrackManager: NSObject, ObservableObject {
         }
         
         if tracks.count > 0 {
-            selectedTrack = tracks[0]
+            self.selectedTrack = tracks[0]
         } else {
-            selectedTrack = nil
+            self.selectedTrack = nil
+        }
+        
+        #if os(macOS)
+        resetSelectedTrack()
+        #endif
+    }
+    
+    #if os(macOS)
+    func resetSelectedTrack() {
+        let newSelectedTrack = self.selectedTrack
+        Func.afterDelay(0.3) {
+            self.selectedTrack = newSelectedTrack
         }
     }
+    #endif
     
     func update(_ track: Track, with name: String) {
         if name == track.name {
@@ -241,10 +259,7 @@ class TrackManager: NSObject, ObservableObject {
         }
         
         #if os(macOS)
-        let newSelectedTrack = self.selectedTrack
-        Func.afterDelay(0.5) {
-            self.selectedTrack = newSelectedTrack
-        }
+        resetSelectedTrack()
         #endif
     }
     
@@ -290,8 +305,12 @@ extension TrackManager: NSFetchedResultsControllerDelegate {
 
         let newTracks = fetchedResultsController.fetchedObjects ?? []
         
-        if newTracks.count != tracks.count {
-            tracks = newTracks
+        guard newTracks.count != tracks.count else { return }
+        
+        tracks = newTracks
+        
+        if shouldSetSelectedTrack {
+            setSelectedTrack()
         }
     }
 }

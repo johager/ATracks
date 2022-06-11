@@ -59,15 +59,16 @@ struct TrackListResultsView: View {
                             .opacity(0)
                             #endif
                             let isEditing = isEditing(track)
-                            TrackRow(track: track, isEditing: isEditing, delegate: self)
+                            TrackRow(track: track, device: device, isSelected: isSelected(track), isEditing: isEditing, delegate: self)
                                 #if os(macOS)
                                 .id(isEditing)
                                 #endif
                         }
                         .id(track)
-//                        #if os(iOS)
-                        .listRowBackground(listRowBackgroundColor(for: track))
-//                        #endif
+                        #if os(iOS)
+                        .padding([.top, .bottom], -6)
+                        #endif
+                        .padding([.leading, .trailing], -16)
                         
                         #if os(iOS)
                         .listRowSeparatorTint(.listRowSeparator)
@@ -98,6 +99,7 @@ struct TrackListResultsView: View {
                 }
                 .listStyle(.plain)
                 .animation(.linear, value: trackManager.tracks)
+                .background(Color.listBackground)
                 .onChange(of: trackManager.selectedTrack) { _ in
                     //print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(trackManager.selectedTrackDidChangeProgramatically) ===")
                     #if os(iOS)
@@ -115,7 +117,6 @@ struct TrackListResultsView: View {
             }
             .padding(.bottom, 0)
         }
-        
         #if os(iOS)
         .ignoresSafeArea(.keyboard)
         #endif
@@ -142,12 +143,10 @@ struct TrackListResultsView: View {
         #endif
     }
     
-//    #if os(iOS)
-    func listRowBackgroundColor(for track: Track) -> Color {
-        guard let selectedTrack = trackManager.selectedTrack else { return .clear }
-        return track === selectedTrack ? .listRowSelectedBackground : .clear
+    func isSelected(_ track: Track) -> Bool {
+        guard let selectedTrack = trackManager.selectedTrack else { return false }
+        return track === selectedTrack
     }
-//    #endif
 }
 
 // MARK: - TrackRowDelegate
