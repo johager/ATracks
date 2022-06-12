@@ -9,15 +9,15 @@ import SwiftUI
 
 struct TrackDetailView: View {
     
-    @Environment(\.colorScheme) private var colorScheme
     #if os(iOS)
     @Environment(\.horizontalSizeClass) var hSizeClass
     @Environment(\.presentationMode) var presentationMode
     #endif
     @EnvironmentObject var displaySettings: DisplaySettings
     
+    @ObservedObject private var device = Device.shared
+    
     @ObservedObject private var track: Track
-    @ObservedObject private var device: Device
     private var delegate: TrackStatsViewDelegate?
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
@@ -37,9 +37,8 @@ struct TrackDetailView: View {
     
     // MARK: - Init
     
-    init(track: Track, device: Device, delegate: TrackStatsViewDelegate? = nil) {
+    init(track: Track, delegate: TrackStatsViewDelegate? = nil) {
         self.track = track
-        self.device = device
         self.delegate = delegate
     }
     
@@ -58,15 +57,15 @@ struct TrackDetailView: View {
                     if geometry.isLandscape {
                         HStack(spacing: 0) {
                             if displaySettings.placeMapOnRightInLandscape {
-                                DetailsOnSideView(track: track, device: device, delegate: delegate)
+                                DetailsOnSideView(track: track, delegate: delegate)
                                 VerticalDividerView()
                             }
                             
                             ZStack {
-                                MapView(track: track, device: device)
+                                MapView(track: track)
                                     .edgesIgnoringSafeArea(.all)
                                     #if os(iOS)
-                                    .id(colorScheme)
+                                    .id(device.colorScheme)
                                     #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
@@ -87,7 +86,7 @@ struct TrackDetailView: View {
                             
                             if !displaySettings.placeMapOnRightInLandscape {
                                 VerticalDividerView()
-                                DetailsOnSideView(track: track, device: device, delegate: delegate)
+                                DetailsOnSideView(track: track, delegate: delegate)
                             }
                         }
                         
@@ -96,13 +95,13 @@ struct TrackDetailView: View {
                             #if os(macOS)
                             HorizontalDividerView()
                             #endif
-                            TrackStatsView(track: track, device: device, delegate: delegate)
+                            TrackStatsView(track: track, delegate: delegate)
                             HorizontalDividerView()
                             ZStack {
-                                MapView(track: track, device: device)
+                                MapView(track: track)
                                     .edgesIgnoringSafeArea([.top, .trailing, .leading])
                                     #if os(iOS)
-                                    .id(colorScheme)
+                                    .id(device.colorScheme)
                                     #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
@@ -120,7 +119,7 @@ struct TrackDetailView: View {
                                 #endif
                             }
                             HorizontalDividerView()
-                            TrackPlotView(track: track, device: device)
+                            TrackPlotView(track: track)
                                 .id(track.id)
                         }
                         #if os(iOS)
@@ -131,7 +130,7 @@ struct TrackDetailView: View {
                 }  // end VStack
             }  // end HStack
             #if os(macOS)
-            .id(colorScheme)
+            .id(device.colorScheme)
             #endif
             .onChange(of: geometry.size.width) { _ in
                 #if os(iOS)
@@ -168,7 +167,6 @@ struct TrackDetailView: View {
 struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
-    var device: Device
     var delegate: TrackStatsViewDelegate?
     
     // MARK: - View
@@ -179,11 +177,11 @@ struct DetailsOnSideView: View {
             HorizontalDividerView()
             #endif
             Spacer()
-            TrackStatsView(track: track, device: device, displayOnSide: true, delegate: delegate)
+            TrackStatsView(track: track, displayOnSide: true, delegate: delegate)
             Spacer()
             HorizontalDividerView()
             Spacer()
-            TrackPlotView(track: track, device: device, displayOnSide: true)
+            TrackPlotView(track: track, displayOnSide: true)
                 .id(track.id)
         }
     }

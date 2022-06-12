@@ -13,7 +13,7 @@ extension Color {
     // MARK: - Select Light/Dark Mode color
     
     static func color(light lightColor: Color, dark darkColor: Color) -> Color {
-        if Appearance.isDark {
+        if Device.shared.colorSchemeIsDark {
             return darkColor
         } else {
             return lightColor

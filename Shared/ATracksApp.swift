@@ -12,6 +12,7 @@ import HealthKit
 
 @main
 struct ATracksApp: App {
+    
     @Environment(\.scenePhase) var scenePhase
     
     @ObservedObject var displaySettings = DisplaySettings.shared
@@ -22,7 +23,7 @@ struct ATracksApp: App {
     @State private var hasOnboarded = false
     @State private var isOnboarding = false
     
-    let device = Device()
+    let device = Device.shared
     
     let coreDataStack = CoreDataStack.shared
     
@@ -42,7 +43,7 @@ struct ATracksApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(device: device)
+            ContentView()
                 .environment(\.managedObjectContext, coreDataStack.context)
                 .environmentObject(displaySettings)
                 .environmentObject(trackManager)

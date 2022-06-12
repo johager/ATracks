@@ -9,8 +9,9 @@ import SwiftUI
 
 struct TrackPlotView: View {
     
+    @ObservedObject private var device = Device.shared
+    
     @ObservedObject private var track: Track
-    @ObservedObject private var device: Device
     private var displayOnSide: Bool
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
@@ -23,9 +24,8 @@ struct TrackPlotView: View {
     
     // MARK: - Init
     
-    init(track: Track, device: Device, displayOnSide: Bool = false) {
+    init(track: Track, displayOnSide: Bool = false) {
         self.track = track
-        self.device = device
         self.displayOnSide = displayOnSide
         self.trackHelper = TrackHelper(track: track, forPlotting: true)
         

@@ -18,7 +18,8 @@ struct TrackListResultsView: View {
     
     @EnvironmentObject var trackManager: TrackManager
     
-    @ObservedObject private var device: Device
+    @ObservedObject private var device = Device.shared
+    
     private var delegate: TrackListResultsViewDelegate
     
     @State private var isShowingDeleteAlert = false
@@ -31,9 +32,8 @@ struct TrackListResultsView: View {
     
     // MARK: - Init
     
-    init(device: Device, delegate: TrackListResultsViewDelegate) {
+    init(delegate: TrackListResultsViewDelegate) {
         //print("=== file.\(#function) ===")
-        self.device = device
         self.delegate = delegate
     }
     
@@ -50,13 +50,13 @@ struct TrackListResultsView: View {
                         ZStack(alignment: .leading) {
                             #if os(iOS)
                             if device.padShowNavigationLink {
-                                NavigationLink(destination: TrackDetailView(track: track, device: device), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                                NavigationLink(destination: TrackDetailView(track: track), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
                                     .opacity(0)
                             } else {
                                 Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
                             }
                             #else
-                            NavigationLink(destination: TrackDetailView(track: track, device: device), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                            NavigationLink(destination: TrackDetailView(track: track), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
                             .opacity(0)
                             #endif
                             let isEditing = isEditing(track)

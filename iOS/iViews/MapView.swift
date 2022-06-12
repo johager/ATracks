@@ -13,7 +13,6 @@ import MapKit
 struct MapView: UIViewRepresentable {
     
     @ObservedObject var track: Track
-    var device: Device
     
     let mapViewHelper = MapViewHelper()
     
@@ -23,7 +22,7 @@ struct MapView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIView {
         //print("=== \(file).\(#function) - shouldTrackPoint: \(shouldTrackPoint) ===")
-        mapViewHelper.setUpView(for: track, and: device)
+        mapViewHelper.setUpView(for: track)
         mapViewHelper.mapView.delegate = context.coordinator
         
         return mapViewHelper.view

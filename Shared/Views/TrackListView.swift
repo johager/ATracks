@@ -16,7 +16,9 @@ struct TrackListView: View {
     @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
     #endif
 
-    @ObservedObject private var device: Device
+//    @ObservedObject private var device: Device
+    @ObservedObject private var device = Device.shared
+    
     private var horizontalSizeClassIsCompact: Bool
     private var isLandscape: Bool
     
@@ -52,8 +54,7 @@ struct TrackListView: View {
     
     // MARK: - Init
     
-    init(device: Device, horizontalSizeClassIsCompact: Bool, isLandscape: Bool) {
-        self.device = device
+    init(horizontalSizeClassIsCompact: Bool, isLandscape: Bool) {
         self.horizontalSizeClassIsCompact = horizontalSizeClassIsCompact
         self.isLandscape = isLandscape
     }
@@ -78,12 +79,12 @@ struct TrackListView: View {
                     
                     #if os(iOS)
                     if device.isPhone {
-                        TrackListResultsViewPhone(device: device, searchText: searchText, delegate: self)
+                        TrackListResultsViewPhone(searchText: searchText, delegate: self)
                     } else {
-                        TrackListResultsView(device: device, delegate: self)
+                        TrackListResultsView(delegate: self)
                     }
                     #else
-                    TrackListResultsView(device: device, delegate: self)
+                    TrackListResultsView(delegate: self)
                     #endif
                     
                     #if os(iOS)
@@ -102,12 +103,12 @@ struct TrackListView: View {
                 VStack(spacing: 0) {
                     #if os(iOS)
                     if device.isPhone {
-                        TrackListResultsViewPhone(device: device, searchText: searchText, delegate: self)
+                        TrackListResultsViewPhone(searchText: searchText, delegate: self)
                     } else {
-                        TrackListResultsView(device: device, delegate: self)
+                        TrackListResultsView(delegate: self)
                     }
                     #else
-                    TrackListResultsView(device: device, delegate: self)
+                    TrackListResultsView(delegate: self)
                     #endif
                     #if os(iOS)
                     VStack(spacing: 0) {

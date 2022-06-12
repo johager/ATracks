@@ -17,8 +17,9 @@ protocol TrackStatsViewDelegate {
 
 struct TrackStatsView: View {
     
+    @ObservedObject private var device = Device.shared
+    
     @ObservedObject private var track: Track
-    @ObservedObject private var device: Device
     private var displayOnSide: Bool
     private var delegate: TrackStatsViewDelegate?
     
@@ -28,9 +29,8 @@ struct TrackStatsView: View {
     
     // MARK: - Init
     
-    init(track: Track, device: Device, displayOnSide: Bool = false, delegate: TrackStatsViewDelegate?) {
+    init(track: Track, displayOnSide: Bool = false, delegate: TrackStatsViewDelegate?) {
         self.track = track
-        self.device = device
         self.displayOnSide = displayOnSide
         self.delegate = delegate
     }

@@ -21,8 +21,9 @@ class MapViewHelper: NSObject {
     
     let mapView = MKMapView()
     
+    let device = Device.shared
+    
     var track: Track!
-    var device: Device!
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -103,11 +104,10 @@ class MapViewHelper: NSObject {
     
     // MARK: - Public Methods
     
-    func setUpView(for track: Track, and device: Device) {
+    func setUpView(for track: Track) {
         //print("=== \(file).\(#function) - \(track.debugName) ===")
         
         self.track = track
-        self.device = device
         
         setUpView()
         setUpTracking()

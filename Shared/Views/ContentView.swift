@@ -9,13 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     #if os(iOS)
     @Environment(\.horizontalSizeClass) var hSizeClass
     #endif
     
     @EnvironmentObject var trackManager: TrackManager
     
-    private var device: Device
+    private var device: Device { Device.shared }
     
     private var horizontalSizeClassIsCompact: Bool {
         #if os(iOS)
@@ -26,12 +28,11 @@ struct ContentView: View {
         #endif
     }
     
-//    let file = "ContentView"
+    let file = "ContentView"
     
     // MARK: - Init
     
-    init(device: Device) {
-        self.device = device
+    init() {
         Appearance.customizeAppearance()
     }
     
@@ -40,12 +41,12 @@ struct ContentView: View {
     var body: some View {
         GeometryReader {  geometry in
             NavigationView {
-                TrackListView(device: device, horizontalSizeClassIsCompact: horizontalSizeClassIsCompact, isLandscape: geometry.isLandscape)
+                TrackListView(horizontalSizeClassIsCompact: horizontalSizeClassIsCompact, isLandscape: geometry.isLandscape)
                     .id(horizontalSizeClassIsCompact)
                 //SettingsView()
                 #if os(iOS)
                 if let selectedTrack = trackManager.selectedTrack {
-                    TrackDetailView(track: selectedTrack, device: device)
+                    TrackDetailView(track: selectedTrack)
                 } else {
                     BlankView()
                 }
@@ -62,6 +63,12 @@ struct ContentView: View {
                 }
             }
             #endif
+        }
+        .onAppear() {
+            device.setColorScheme(colorScheme)
+        }
+        .onChange(of: colorScheme) { newColorScheme in
+            device.setColorScheme(newColorScheme)
         }
     }
     

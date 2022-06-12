@@ -9,6 +9,10 @@ import SwiftUI
 
 class Device: NSObject, ObservableObject {
     
+    static let shared = Device()
+    
+    @Published var colorScheme: ColorScheme = .light
+    
     @Published var hasSafeAreaInsets = false
     
     @Published var detailHorizontalSizeClassIsCompact = false
@@ -28,6 +32,8 @@ class Device: NSObject, ObservableObject {
     
     // MARK: - Calculated
     
+    var colorSchemeIsDark: Bool { colorScheme == .dark }
+    
     var isPhone: Bool { deviceType.isPhone }
     var isPad: Bool { deviceType.isPad }
     var isMac: Bool { deviceType.isMac }
@@ -44,6 +50,10 @@ class Device: NSObject, ObservableObject {
     }
     
     // MARK: - Methods
+    
+    func setColorScheme(_ colorScheme: ColorScheme) {
+        self.colorScheme = colorScheme
+    }
     
     func trackPlotStatsLeadingSpace(displayOnSide: Bool) -> CGFloat {
         return trackPlotStatsSpace(displayOnSide: displayOnSide, safeOnRight: 8, safeNotOnRight: 16)

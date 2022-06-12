@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TrackListResultsViewPhone: View {
     
-    private var device: Device
+    @ObservedObject private var device = Device.shared
     
     var delegate: TrackListResultsViewDelegate
     
@@ -23,9 +23,8 @@ struct TrackListResultsViewPhone: View {
     
     // MARK: - Init
     
-    init(device: Device, searchText: String, delegate: TrackListResultsViewDelegate) {
+    init(searchText: String, delegate: TrackListResultsViewDelegate) {
         print("=== \(file).\(#function) - searchText: '\(searchText)' ===")
-        self.device = device
         self.delegate = delegate
         
         let fetchRequest = Track.fetchRequest
@@ -44,7 +43,7 @@ struct TrackListResultsViewPhone: View {
                 List() {
                     ForEach(tracks) { track in
                         ZStack(alignment: .leading) {
-                            NavigationLink(destination: TrackDetailView(track: track, device: device, delegate: self), tag: track, selection: $selectedTrack) { EmptyView() }
+                            NavigationLink(destination: TrackDetailView(track: track, delegate: self), tag: track, selection: $selectedTrack) { EmptyView() }
                             .opacity(0)
                             TrackRow(track: track, device: device)
                         }

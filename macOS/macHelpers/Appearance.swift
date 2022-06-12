@@ -10,15 +10,11 @@ import Cocoa
 
 enum Appearance {
     
-    static var isDark: Bool {
-        NSAppearance.currentDrawing().bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-    }
-    
-    static let file = "Appearance"
+    //static let file = "Appearance"
     
     // MARK: - Methods
     
     static func customizeAppearance() {
-        print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) ===")
     }
 }

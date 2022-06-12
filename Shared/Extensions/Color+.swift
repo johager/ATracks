@@ -211,7 +211,7 @@ extension Color {
     }
     
     static var markerStartShape: Color {
-        return color(light: avantiGreen, dark: medium2Green)
+        return colorStatic(light: avantiGreen, dark: medium2Green)
     }
     
     static var markerStartShapeSat: Color {
@@ -221,15 +221,15 @@ extension Color {
     // MARK: - Track Point Callout Colors
     
     static var trackPointCalloutText: Color {
-        return color(light: .text, dark: .white)
+        return colorStatic(light: .text, dark: .white)
     }
     
     static var trackPointCalloutBackground: Color {
-        return color(light: Color(white: 1.0), dark: Color(white: 0.10))
+        return colorStatic(light: Color(white: 1.0), dark: Color(white: 0.10))
     }
     
     static var trackPointCalloutBorder: Color {
-        return color(light: Color(white: 0.60), dark: Color(white: 0.70))
+        return colorStatic(light: Color(white: 0.60), dark: Color(white: 0.70))
     }
     
     // MARK: - Plot Colors
@@ -250,6 +250,16 @@ extension Color {
         let lightColor = Color(white: 0.0, opacity: 0.3)
         let darkColor = Color(white: 1.0, opacity: 0.3)
         return color(light: lightColor, dark: darkColor)
+    }
+    
+    // MARK: - Static Color
+    
+    static func colorStatic(light lightColor: Color, dark darkColor: Color) -> Color {
+        if Device.shared.colorSchemeIsDark {
+            return darkColor
+        } else {
+            return lightColor
+        }
     }
     
     // MARK: - Reference Colors
