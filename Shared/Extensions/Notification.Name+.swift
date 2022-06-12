@@ -12,7 +12,7 @@ extension Notification.Name {
     public static let didStopTracking = Notification.Name(rawValue: "didStopTracking")
     public static let scenePhaseChangedToActive = Notification.Name(rawValue: "scenePhaseChangedToActive")
     
-    static func showInfoForLocation(for track: Track) -> Notification.Name {
-        return Notification.Name(rawValue: "showInfoForLocation_\(track.id)")
+    static func showInfoForLocation(for trackDetailID: String) -> Notification.Name {
+        return Notification.Name(rawValue: "showInfoForLocation_\(trackDetailID)")
     }
 }

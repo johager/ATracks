@@ -20,6 +20,8 @@ struct TrackDetailView: View {
     @ObservedObject private var track: Track
     private var delegate: TrackStatsViewDelegate?
     
+    let trackDetailID = UUID().uuidString
+    
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
     #if os(iOS)
@@ -57,12 +59,12 @@ struct TrackDetailView: View {
                     if geometry.isLandscape {
                         HStack(spacing: 0) {
                             if displaySettings.placeMapOnRightInLandscape {
-                                DetailsOnSideView(track: track, delegate: delegate)
+                                DetailsOnSideView(track: track, trackDetailID: trackDetailID, delegate: delegate)
                                 VerticalDividerView()
                             }
                             
                             ZStack {
-                                MapView(track: track)
+                                MapView(track: track, trackDetailID: trackDetailID)
                                     .edgesIgnoringSafeArea(.all)
                                     #if os(iOS)
                                     .id(device.colorScheme)
@@ -86,7 +88,7 @@ struct TrackDetailView: View {
                             
                             if !displaySettings.placeMapOnRightInLandscape {
                                 VerticalDividerView()
-                                DetailsOnSideView(track: track, delegate: delegate)
+                                DetailsOnSideView(track: track, trackDetailID: trackDetailID, delegate: delegate)
                             }
                         }
                         
@@ -98,7 +100,7 @@ struct TrackDetailView: View {
                             TrackStatsView(track: track, delegate: delegate)
                             HorizontalDividerView()
                             ZStack {
-                                MapView(track: track)
+                                MapView(track: track, trackDetailID: trackDetailID)
                                     .edgesIgnoringSafeArea([.top, .trailing, .leading])
                                     #if os(iOS)
                                     .id(device.colorScheme)
@@ -119,7 +121,7 @@ struct TrackDetailView: View {
                                 #endif
                             }
                             HorizontalDividerView()
-                            TrackPlotView(track: track)
+                            TrackPlotView(track: track, trackDetailID: trackDetailID)
                                 .id(track.id)
                         }
                         #if os(iOS)
@@ -167,6 +169,7 @@ struct TrackDetailView: View {
 struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
+    var trackDetailID: String
     var delegate: TrackStatsViewDelegate?
     
     // MARK: - View
@@ -181,7 +184,7 @@ struct DetailsOnSideView: View {
             Spacer()
             HorizontalDividerView()
             Spacer()
-            TrackPlotView(track: track, displayOnSide: true)
+            TrackPlotView(track: track, trackDetailID: trackDetailID, displayOnSide: true)
                 .id(track.id)
         }
     }

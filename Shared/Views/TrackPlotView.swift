@@ -24,10 +24,10 @@ struct TrackPlotView: View {
     
     // MARK: - Init
     
-    init(track: Track, displayOnSide: Bool = false) {
+    init(track: Track, trackDetailID: String, displayOnSide: Bool = false) {
         self.track = track
         self.displayOnSide = displayOnSide
-        self.trackHelper = TrackHelper(track: track, forPlotting: true)
+        self.trackHelper = TrackHelper(track: track, trackDetailID: trackDetailID)
         
         if displayOnSide && DisplaySettings.shared.placeMapOnRightInLandscape {
             xVertVals = [-1, -1]

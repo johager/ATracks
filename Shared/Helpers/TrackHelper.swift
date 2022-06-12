@@ -39,14 +39,13 @@ class TrackHelper {
     var hasAltitudeData: Bool { yAxisNumGridLines > 0 }
     
     private var trackPoints: [TrackPoint]!
+    private var showInfoForLocation: Notification.Name!
     
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
-    lazy var showInfoForLocation = Notification.Name.showInfoForLocation(for: track)
-    
     // MARK: - Init
     
-    init(track: Track, forPlotting: Bool = false) {
+    init(track: Track, trackDetailID: String? = nil) {
         self.track = track
         self.trackPoints = track.trackPoints
         
@@ -54,9 +53,10 @@ class TrackHelper {
         
         setAltitudeData()
         
-        if forPlotting {
-            setPlotVals()
-        }
+        guard let trackDetailID = trackDetailID else { return }
+        
+        showInfoForLocation = Notification.Name.showInfoForLocation(for: trackDetailID)
+        setPlotVals()
     }
     
     // MARK: - Altitude Methods

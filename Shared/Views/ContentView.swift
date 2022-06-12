@@ -28,7 +28,7 @@ struct ContentView: View {
         #endif
     }
     
-    let file = "ContentView"
+    //let file = "ContentView"
     
     // MARK: - Init
     
@@ -70,6 +70,11 @@ struct ContentView: View {
         .onChange(of: colorScheme) { newColorScheme in
             device.setColorScheme(newColorScheme)
         }
+        #if os(macOS)
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification), perform: { _ in
+            NSApp.mainWindow?.standardWindowButton(.closeButton)?.isEnabled = false
+        })
+        #endif
     }
     
     // MARK: - Methods

@@ -104,7 +104,7 @@ class MapViewHelper: NSObject {
     
     // MARK: - Public Methods
     
-    func setUpView(for track: Track) {
+    func setUpView(for track: Track, and trackDetailID: String) {
         //print("=== \(file).\(#function) - \(track.debugName) ===")
         
         self.track = track
@@ -124,7 +124,7 @@ class MapViewHelper: NSObject {
         
         NotificationCenter.default.addObserver(self,
             selector: #selector(handleShowInfoForLocationNotification(_:)),
-            name: .showInfoForLocation(for: track), object: nil)
+            name: .showInfoForLocation(for: trackDetailID), object: nil)
     }
     
     func updateView(for track: Track) {
