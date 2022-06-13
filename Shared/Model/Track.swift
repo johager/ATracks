@@ -73,7 +73,7 @@ class Track: NSManagedObject, Identifiable {
     
     // MARK: - Init
     
-    @discardableResult convenience init(name: String, deviceName: String, deviceUUID: String, date: Date = Date(), isTracking: Bool = true, context: NSManagedObjectContext = CoreDataStack.shared.context) {
+    @discardableResult convenience init(name: String, deviceName: String = "", deviceUUID: String = "", date: Date = Date(), isTracking: Bool = true, context: NSManagedObjectContext = CoreDataStack.shared.context) {
         self.init(context: context)
         self.name = name
         self.deviceName = deviceName

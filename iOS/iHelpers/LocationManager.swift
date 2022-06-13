@@ -43,6 +43,15 @@ class LocationManager: NSObject {
     
     var settingsProvider: LocationManagerSettingsProvider = LocationManagerSettings.shared
     
+    #if targetEnvironment(simulator)
+    private let useSimulatedAltitude = true
+    private var altitudeCount: CGFloat = 0 {
+        didSet {
+            print("=== \(file).\(#function) didSet - altitudeCount: \(altitudeCount) ===")
+        }
+    }
+    #endif
+    
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
@@ -91,7 +100,7 @@ class LocationManager: NSObject {
     }
     
     func stopTracking(forDelete: Bool = false) {
-        print("=== \(file).\(#function)")
+        print("=== \(file).\(#function) - forDelete: \(forDelete) ===")
         if !forDelete {
             if let track = track {
                 TrackManager.shared.stopTracking(track)
@@ -104,6 +113,10 @@ class LocationManager: NSObject {
         location = nil
         firstLocation = nil
         shouldCheckAutoStop = false
+        
+        #if targetEnvironment(simulator)
+        altitudeCount = 0
+        #endif
         
         if !appIsActive {
             sceneDidBecomeInactive()
@@ -170,6 +183,20 @@ class LocationManager: NSObject {
         }
         stopLocationManagerUpdates()
     }
+    
+    #if targetEnvironment(simulator)
+    func locationWithSimulatedAltitude(from location: CLLocation) -> CLLocation {
+        let altitude = altitudeCount * 0.2
+        if isTracking {
+            altitudeCount += 1
+        }
+        return CLLocation(coordinate: location.coordinate,
+                          altitude: altitude,
+                          horizontalAccuracy: location.horizontalAccuracy,
+                          verticalAccuracy: 10,
+                          timestamp: location.timestamp)
+    }
+    #endif
 }
 
 // MARK: - CLLocationManagerDelegate
@@ -205,11 +232,19 @@ extension LocationManager: CLLocationManagerDelegate {
         
         guard let location = locations.last else { return }
         
+        #if targetEnvironment(simulator)
+        if useSimulatedAltitude {
+            self.location = locationWithSimulatedAltitude(from: location)
+        } else {
+            self.location = location
+        }
+        #else
         self.location = location
+        #endif
         
         guard isTracking else { return }
         
-        TrackManager.shared.createTrackPoint(from: location, in: track)
+        TrackManager.shared.createTrackPoint(from: self.location, in: track)
         
         checkAutoStop()
     }
