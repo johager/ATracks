@@ -114,12 +114,9 @@ class MapViewHelper: NSObject {
         
         self.track = track
         self.scrubberInfo = scrubberInfo
-        //scrubberInfo.describe()
         
         setUpView()
         setUpTracking()
-        
-        updateTrackPointCalloutLabel()
         
         if trackIsTrackingOnThisDevice {
             NotificationCenter.default.addObserver(self,
@@ -136,7 +133,6 @@ class MapViewHelper: NSObject {
     
     func updateView(for track: Track, and scrubberInfo: ScrubberInfo) {
         //print("=== \(file).\(#function) - \(track.debugName) - hasBeenSetUp: \(startPointAnnotation != nil) ===")
-        //scrubberInfo.describe()
         
         guard startPointAnnotation == nil else { return }
         
@@ -144,13 +140,18 @@ class MapViewHelper: NSObject {
         self.scrubberInfo = scrubberInfo
         
         drawTrack()
-        updateTrackPointCalloutLabel()
         
         setUpSubscriptions()
     }
     
     func setUpSubscriptions() {
         //print("=== \(file).\(#function) ===")
+        
+        #if os(iOS)
+        if Device.shared.isPad {
+            scrubberInfo.setUpFor(track.id)
+        }
+        #endif
         
         trackPointCLLocationSubscription = scrubberInfo.$trackPointCLLocationCoordinate2D.sink { clLocationCoordinate2D in
             //print("=== \(self.file).trackPointCLLocationSubscription.sink - clLocationCoordinate2D, \(self.track.debugName) ===")
@@ -365,15 +366,19 @@ class MapViewHelper: NSObject {
     
     private func updateTrackPointCalloutLabel() {
         if trackPointCalloutLabel == nil {
-            addTrackPointCalloutLabel()
+//            addTrackPointCalloutLabel()
+            return
         }
         
-        guard let string = scrubberInfo.trackPointCalloutLabelString else { return }
+        guard let string = scrubberInfo.trackPointCalloutLabelString else {
+            trackPointCalloutLabel.isHidden = true
+            return
+        }
         
         #if os(iOS)
         trackPointCalloutLabel.text = string
         #else
-            trackPointCalloutTextField.stringValue = string
+        trackPointCalloutTextField.stringValue = string
         #endif
 
         trackPointCalloutLabel.isHidden = false

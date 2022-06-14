@@ -67,7 +67,7 @@ struct TrackDetailView: View {
                                 MapView(track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea(.all)
 //                                    #if os(iOS)
-//                                    .id(device.colorScheme)
+                                    .id(device.colorScheme)
 //                                    #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
@@ -103,7 +103,7 @@ struct TrackDetailView: View {
                                 MapView(track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea([.top, .trailing, .leading])
 //                                    #if os(iOS)
-//                                    .id(device.colorScheme)
+                                    .id(device.colorScheme)
 //                                    #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
@@ -132,7 +132,7 @@ struct TrackDetailView: View {
                 }  // end VStack
             }  // end HStack
 //            #if os(macOS)
-            .id(device.colorScheme)
+//            .id(device.colorScheme)
 //            #endif
             .onChange(of: geometry.size.width) { _ in
                 #if os(iOS)
