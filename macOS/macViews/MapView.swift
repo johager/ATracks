@@ -11,7 +11,7 @@ import MapKit
 struct MapView: NSViewRepresentable {
     
     @ObservedObject var track: Track
-    var trackDetailID: String
+    var scrubberInfo: ScrubberInfo
     
     let mapViewHelper = MapViewHelper()
     
@@ -19,7 +19,7 @@ struct MapView: NSViewRepresentable {
     
     func makeNSView(context: Context) -> NSView {
         //print(#function)
-        mapViewHelper.setUpView(for: track, and: trackDetailID)
+        mapViewHelper.setUpView(for: track, and: scrubberInfo)
         mapViewHelper.mapView.delegate = context.coordinator
         
         return mapViewHelper.view
@@ -27,7 +27,7 @@ struct MapView: NSViewRepresentable {
     
     func updateNSView(_ view: NSView, context: Context) {
         //print(#function)
-        mapViewHelper.updateView(for: track)
+        mapViewHelper.updateView(for: track, and: scrubberInfo)
     }
     
     func makeCoordinator() -> MapViewCoordinator {

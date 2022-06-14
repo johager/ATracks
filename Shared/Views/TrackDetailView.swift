@@ -20,7 +20,7 @@ struct TrackDetailView: View {
     @ObservedObject private var track: Track
     private var delegate: TrackStatsViewDelegate?
     
-    let trackDetailID = UUID().uuidString
+    @StateObject var scrubberInfo = ScrubberInfo()
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -59,16 +59,16 @@ struct TrackDetailView: View {
                     if geometry.isLandscape {
                         HStack(spacing: 0) {
                             if displaySettings.placeMapOnRightInLandscape {
-                                DetailsOnSideView(track: track, trackDetailID: trackDetailID, delegate: delegate)
+                                DetailsOnSideView(track: track, scrubberInfo: scrubberInfo, delegate: delegate)
                                 VerticalDividerView()
                             }
                             
                             ZStack {
-                                MapView(track: track, trackDetailID: trackDetailID)
+                                MapView(track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea(.all)
-                                    #if os(iOS)
-                                    .id(device.colorScheme)
-                                    #endif
+//                                    #if os(iOS)
+//                                    .id(device.colorScheme)
+//                                    #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
                                 #if os(iOS)
@@ -88,7 +88,7 @@ struct TrackDetailView: View {
                             
                             if !displaySettings.placeMapOnRightInLandscape {
                                 VerticalDividerView()
-                                DetailsOnSideView(track: track, trackDetailID: trackDetailID, delegate: delegate)
+                                DetailsOnSideView(track: track, scrubberInfo: scrubberInfo, delegate: delegate)
                             }
                         }
                         
@@ -100,11 +100,11 @@ struct TrackDetailView: View {
                             TrackStatsView(track: track, delegate: delegate)
                             HorizontalDividerView()
                             ZStack {
-                                MapView(track: track, trackDetailID: trackDetailID)
+                                MapView(track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea([.top, .trailing, .leading])
-                                    #if os(iOS)
-                                    .id(device.colorScheme)
-                                    #endif
+//                                    #if os(iOS)
+//                                    .id(device.colorScheme)
+//                                    #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
                                 #if os(iOS)
@@ -121,7 +121,7 @@ struct TrackDetailView: View {
                                 #endif
                             }
                             HorizontalDividerView()
-                            TrackPlotView(track: track, trackDetailID: trackDetailID)
+                            TrackPlotView(track: track, scrubberInfo: scrubberInfo)
                                 .id(track.id)
                         }
                         #if os(iOS)
@@ -131,9 +131,9 @@ struct TrackDetailView: View {
                     }  // end geometry is portrait
                 }  // end VStack
             }  // end HStack
-            #if os(macOS)
+//            #if os(macOS)
             .id(device.colorScheme)
-            #endif
+//            #endif
             .onChange(of: geometry.size.width) { _ in
                 #if os(iOS)
                 device.detailHorizontalSizeClassIsCompact = hSizeClass == .compact
@@ -169,7 +169,7 @@ struct TrackDetailView: View {
 struct DetailsOnSideView: View {
     
     @ObservedObject var track: Track
-    var trackDetailID: String
+    var scrubberInfo: ScrubberInfo
     var delegate: TrackStatsViewDelegate?
     
     // MARK: - View
@@ -184,7 +184,7 @@ struct DetailsOnSideView: View {
             Spacer()
             HorizontalDividerView()
             Spacer()
-            TrackPlotView(track: track, trackDetailID: trackDetailID, displayOnSide: true)
+            TrackPlotView(track: track, scrubberInfo: scrubberInfo, displayOnSide: true)
                 .id(track.id)
         }
     }

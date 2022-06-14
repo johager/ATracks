@@ -102,7 +102,7 @@ class Track: NSManagedObject, Identifiable {
     func setAltitudeData() {
         guard altitudeIsValid else { return }
         
-        let trackHelper = TrackHelper(track: self)
+        let trackHelper = TrackHelper(track: self, forTrack: true)
         
         altitudeMin = trackHelper.altitudeMin
         altitudeMax = trackHelper.altitudeMax

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import MapKit
 
 class MapViewHelper: NSObject {
@@ -19,11 +20,15 @@ class MapViewHelper: NSObject {
     var trackPointCalloutTextField: NSTextField!
     #endif
     
+    private var trackPointCLLocationSubscription: AnyCancellable?
+    private var trackPointCalloutLabelSubscription: AnyCancellable?
+    
     let mapView = MKMapView()
     
     let device = Device.shared
     
     var track: Track!
+    var scrubberInfo: ScrubberInfo!
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
@@ -104,13 +109,17 @@ class MapViewHelper: NSObject {
     
     // MARK: - Public Methods
     
-    func setUpView(for track: Track, and trackDetailID: String) {
+    func setUpView(for track: Track, and scrubberInfo: ScrubberInfo) {
         //print("=== \(file).\(#function) - \(track.debugName) ===")
         
         self.track = track
+        self.scrubberInfo = scrubberInfo
+        //scrubberInfo.describe()
         
         setUpView()
         setUpTracking()
+        
+        updateTrackPointCalloutLabel()
         
         if trackIsTrackingOnThisDevice {
             NotificationCenter.default.addObserver(self,
@@ -122,19 +131,36 @@ class MapViewHelper: NSObject {
             selector: #selector(handleScenePhaseChangedToActive(_:)),
             name: .scenePhaseChangedToActive, object: nil)
         
-        NotificationCenter.default.addObserver(self,
-            selector: #selector(handleShowInfoForLocationNotification(_:)),
-            name: .showInfoForLocation(for: trackDetailID), object: nil)
+        setUpSubscriptions()
     }
     
-    func updateView(for track: Track) {
+    func updateView(for track: Track, and scrubberInfo: ScrubberInfo) {
         //print("=== \(file).\(#function) - \(track.debugName) - hasBeenSetUp: \(startPointAnnotation != nil) ===")
+        //scrubberInfo.describe()
         
         guard startPointAnnotation == nil else { return }
         
         self.track = track
+        self.scrubberInfo = scrubberInfo
         
         drawTrack()
+        updateTrackPointCalloutLabel()
+        
+        setUpSubscriptions()
+    }
+    
+    func setUpSubscriptions() {
+        //print("=== \(file).\(#function) ===")
+        
+        trackPointCLLocationSubscription = scrubberInfo.$trackPointCLLocationCoordinate2D.sink { clLocationCoordinate2D in
+            //print("=== \(self.file).trackPointCLLocationSubscription.sink - clLocationCoordinate2D, \(self.track.debugName) ===")
+            self.placeTrackMarker(at: clLocationCoordinate2D)
+        }
+
+        trackPointCalloutLabelSubscription = scrubberInfo.$trackPointCalloutLabelString.sink { string in
+            //print("=== \(self.file).trackPointCalloutLabelSubscription.sink - calloutLabel, \(self.track.debugName) - string: \(string) ===")
+            self.updateTrackPointCalloutLabel()
+        }
     }
 
     func centerMap() {
@@ -325,32 +351,31 @@ class MapViewHelper: NSObject {
         mapView.addAnnotation(endPointAnnotation)
     }
     
-    private func placeTrackMarker(at clLocationCoordinate2D: CLLocationCoordinate2D) {
+    private func placeTrackMarker(at clLocationCoordinate2D: CLLocationCoordinate2D?) {
+        
+        guard let clLocationCoordinate2D = clLocationCoordinate2D else { return }
         
         if trackPointAnnotation == nil {
             trackPointAnnotation = AAPointAnnotation(coordinate: clLocationCoordinate2D, imageNameBase: "mapPointMarker")
+            mapView.addAnnotation(trackPointAnnotation)
         } else {
-            mapView.removeAnnotation(trackPointAnnotation)
             trackPointAnnotation.coordinate = clLocationCoordinate2D
         }
-
-        mapView.addAnnotation(trackPointAnnotation)
     }
     
-    private func updateTrackPointCalloutLabel(for clLocationCoordinate2D: CLLocationCoordinate2D, elevation: Any?) {
-        
-        var string = clLocationCoordinate2D.stringWithThreeDecimals
-        
-        if let elevation = elevation as? Double {
-            string += "\n\(elevation.stringAsInt) ft"
+    private func updateTrackPointCalloutLabel() {
+        if trackPointCalloutLabel == nil {
+            addTrackPointCalloutLabel()
         }
         
+        guard let string = scrubberInfo.trackPointCalloutLabelString else { return }
+        
         #if os(iOS)
-            trackPointCalloutLabel.text = string
+        trackPointCalloutLabel.text = string
         #else
             trackPointCalloutTextField.stringValue = string
         #endif
-        
+
         trackPointCalloutLabel.isHidden = false
     }
     
@@ -377,19 +402,6 @@ class MapViewHelper: NSObject {
             centerMap()
         }
         #endif
-    }
-    
-    @objc func handleShowInfoForLocationNotification(_ notification: Notification) {
-        
-        guard let userInfo = notification.userInfo as? Dictionary<String,Any>,
-              let clLocationCoordinate2D = userInfo[Key.clLocationCoordinate2D] as? CLLocationCoordinate2D
-        else { return }
-        
-        //print("=== \(file).\(#function) ===")
-        
-        placeTrackMarker(at: clLocationCoordinate2D)
-        
-        updateTrackPointCalloutLabel(for: clLocationCoordinate2D, elevation: userInfo[Key.elevation])
     }
 }
 

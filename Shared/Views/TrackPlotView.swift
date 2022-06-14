@@ -12,26 +12,30 @@ struct TrackPlotView: View {
     @ObservedObject private var device = Device.shared
     
     @ObservedObject private var track: Track
+    @ObservedObject private var scrubberInfo: ScrubberInfo
     private var displayOnSide: Bool
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
     @State private var plotSize = CGSize(width: 100, height: 100)
-    @State private var xVertVals: [Double] = [2, 2]
+    @State private var xVertVals: [Double]
     private var yVertVals: [Double] = [0, 1]
     
     private var trackHelper: TrackHelper
     
     // MARK: - Init
     
-    init(track: Track, trackDetailID: String, displayOnSide: Bool = false) {
+    init(track: Track, scrubberInfo: ScrubberInfo, displayOnSide: Bool = false) {
         self.track = track
+        self.scrubberInfo = scrubberInfo
         self.displayOnSide = displayOnSide
-        self.trackHelper = TrackHelper(track: track, trackDetailID: trackDetailID)
+        self.trackHelper = TrackHelper(track: track)
         
-        if displayOnSide && DisplaySettings.shared.placeMapOnRightInLandscape {
-            xVertVals = [-1, -1]
+        if displayOnSide && DisplaySettings.shared.placeMapOnRightInLandscape && scrubberInfo.xFraction > 1 {
+            scrubberInfo.xFraction = -1
         }
+        
+        xVertVals = [scrubberInfo.xFraction, scrubberInfo.xFraction]
     }
     
     // MARK: - View
@@ -138,6 +142,9 @@ struct TrackPlotView: View {
         .foregroundColor(.text)
         .padding(.leading, device.trackPlotStatsLeadingSpace(displayOnSide: displayOnSide))
         .padding(.trailing, device.trackPlotStatsTrailingSpace(displayOnSide: displayOnSide))
+        .onChange(of: scrubberInfo.xFraction) { xFraction in
+            xVertVals = [xFraction, xFraction]
+        }
     }
     
     // MARK: - Methods
@@ -152,9 +159,9 @@ struct TrackPlotView: View {
         let xFraction = location.x / plotSize.width
         //print("=== TrackPlotView.\(#function) - locationX: \(location.x), plotSize.width: \(plotSize.width), xFraction: \(xFraction)")
         
-        guard trackHelper.showData(at: xFraction) else { return }
+        guard trackHelper.showData(at: xFraction, for: scrubberInfo) else { return }
         
-        xVertVals = [xFraction, xFraction]
+//        xVertVals = [xFraction, xFraction]
     }
 }
 

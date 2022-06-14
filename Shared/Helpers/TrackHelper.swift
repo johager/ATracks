@@ -30,22 +30,22 @@ class TrackHelper {
     var yAxisMax: Double!
     var yAxisDelta: Double!
     var yAxisScale: Double!
-    var yAxisNumGridLines: Int16 = 0 {
-        didSet {
-            print("=== \(file).\(#function) - didSet: \(yAxisNumGridLines) ===")
-        }
-    }
+    var yAxisNumGridLines: Int16 = 0
+//    var yAxisNumGridLines: Int16 = 0 {
+//        didSet {
+//            print("=== \(file).\(#function) - didSet: \(yAxisNumGridLines) ===")
+//        }
+//    }
     
     var hasAltitudeData: Bool { yAxisNumGridLines > 0 }
     
     private var trackPoints: [TrackPoint]!
-    private var showInfoForLocation: Notification.Name!
     
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
     
-    init(track: Track, trackDetailID: String? = nil) {
+    init(track: Track, forTrack: Bool = false) {
         self.track = track
         self.trackPoints = track.trackPoints
         
@@ -53,9 +53,10 @@ class TrackHelper {
         
         setAltitudeData()
         
-        guard let trackDetailID = trackDetailID else { return }
+        if forTrack {
+            return
+        }
         
-        showInfoForLocation = Notification.Name.showInfoForLocation(for: trackDetailID)
         setPlotVals()
     }
     
@@ -99,11 +100,11 @@ class TrackHelper {
         
         altitudeAve /= trackPoints[trackPoints.count - 1].timestamp.timeIntervalSince(trackPoints[0].timestamp)
         
-        let minString = altitudeMin.stringWithFourDecimals
-        let maxString = altitudeMax.stringWithFourDecimals
-        let aveString = altitudeAve.stringWithFourDecimals
-        let gainString = altitudeGain.stringWithFourDecimals
-        print("=== \(file).\(#function) - altitude min / max: \(minString) / \(maxString), ave: \(aveString), gain: \(gainString) ===")
+//        let minString = altitudeMin.stringWithFourDecimals
+//        let maxString = altitudeMax.stringWithFourDecimals
+//        let aveString = altitudeAve.stringWithFourDecimals
+//        let gainString = altitudeGain.stringWithFourDecimals
+//        print("=== \(file).\(#function) - altitude min / max: \(minString) / \(maxString), ave: \(aveString), gain: \(gainString) ===")
     }
     
     func smoothed(_ x: [Double], nSmoothPasses: Int, nSmoothRange: Int) -> [Double] {
@@ -312,7 +313,7 @@ class TrackHelper {
     
     // MARK: - Location Methods
     
-    func showData(at xFraction: CGFloat) -> Bool {
+    func showData(at xFraction: CGFloat, for scrubberInfo: ScrubberInfo) -> Bool {
         
         guard time.count > 1 else { return false }
         
@@ -332,7 +333,17 @@ class TrackHelper {
             userInfo[Key.elevation] = altitudes[index]
         }
         
-        NotificationCenter.default.post(name: showInfoForLocation, object: nil, userInfo: userInfo)
+        let clLocationCoordinate2D = trackPoints[index].clLocationCoordinate2D
+        
+        var calloutLabelString = clLocationCoordinate2D.stringWithThreeDecimals
+        
+        if track.altitudeIsValid {
+            calloutLabelString += "\n\(altitudes[index].stringAsInt) ft"
+        }
+        
+        scrubberInfo.xFraction = xFraction
+        scrubberInfo.trackPointCLLocationCoordinate2D = clLocationCoordinate2D
+        scrubberInfo.trackPointCalloutLabelString = calloutLabelString
         
         return true
     }
