@@ -327,12 +327,6 @@ class TrackHelper {
         
         //print("--- \(file).\(#function) - index: \(index)")
         
-        var userInfo: [String: Any] = [Key.clLocationCoordinate2D: trackPoints[index].clLocationCoordinate2D]
-        
-        if track.altitudeIsValid {
-            userInfo[Key.elevation] = altitudes[index]
-        }
-        
         let clLocationCoordinate2D = trackPoints[index].clLocationCoordinate2D
         
         var calloutLabelString = clLocationCoordinate2D.stringWithThreeDecimals

@@ -20,7 +20,6 @@ enum Func {
             let theDeviceName = UIDevice.current.name
         #endif
         
-        //print("=== Syncable.deviceName: '\(theDeviceName)'")
         return theDeviceName
     }
     

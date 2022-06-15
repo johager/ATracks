@@ -66,9 +66,7 @@ struct TrackDetailView: View {
                             ZStack {
                                 MapView(track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea(.all)
-//                                    #if os(iOS)
                                     .id(device.colorScheme)
-//                                    #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
                                 #if os(iOS)
@@ -102,9 +100,7 @@ struct TrackDetailView: View {
                             ZStack {
                                 MapView(track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea([.top, .trailing, .leading])
-//                                    #if os(iOS)
                                     .id(device.colorScheme)
-//                                    #endif
                                     .id(displaySettings.mapViewSatellite)
                                     .id(track.id)
                                 #if os(iOS)
@@ -131,9 +127,6 @@ struct TrackDetailView: View {
                     }  // end geometry is portrait
                 }  // end VStack
             }  // end HStack
-//            #if os(macOS)
-//            .id(device.colorScheme)
-//            #endif
             .onChange(of: geometry.size.width) { _ in
                 #if os(iOS)
                 device.detailHorizontalSizeClassIsCompact = hSizeClass == .compact

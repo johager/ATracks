@@ -18,7 +18,7 @@ class MapViewCoordinator: NSObject {
     
     var parent: MapView
     
-    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    //lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     init(_ parent: MapView) {
         self.parent = parent
@@ -34,7 +34,7 @@ class MapViewCoordinator: NSObject {
     // MARK: - Methods
     
     @objc func handleTap(_ gesture: Any) {
-        print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) ===")
         parent.mapViewHelper.centerMap()
     }
     
@@ -83,8 +83,4 @@ extension MapViewCoordinator: MKMapViewDelegate {
         
         return annotationView
     }
-    
-//    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-//        print("=== \(file).\(#function) - camera.centerCoordinateDistance: \(mapView.camera.centerCoordinateDistance) ===")
-//    }
 }
