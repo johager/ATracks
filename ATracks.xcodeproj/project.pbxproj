@@ -115,6 +115,10 @@
 		F8E0069728200FD400FD679C /* TrackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0069528200FD400FD679C /* TrackListView.swift */; };
 		F8E0B12C2858BE3D0065FC4A /* ScrubberInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0B12B2858BE3D0065FC4A /* ScrubberInfo.swift */; };
 		F8E0B12D2858BE3D0065FC4A /* ScrubberInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0B12B2858BE3D0065FC4A /* ScrubberInfo.swift */; };
+		F8E0B12F285A83F90065FC4A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0B12E285A83F90065FC4A /* OnboardingView.swift */; };
+		F8E0B130285A89B10065FC4A /* Text+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00693281F71DB00FD679C /* Text+.swift */; };
+		F8E0B132285A8D230065FC4A /* AboutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0B131285A8D230065FC4A /* AboutHelper.swift */; };
+		F8E0B133285A8D230065FC4A /* AboutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0B131285A8D230065FC4A /* AboutHelper.swift */; };
 		F8F686FC2814E7B000991442 /* DataStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F686FB2814E7B000991442 /* DataStateHelper.swift */; };
 		F8F686FD2814E7B000991442 /* DataStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F686FB2814E7B000991442 /* DataStateHelper.swift */; };
 		F8F686FF2814E99B00991442 /* LocationManagerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F686FE2814E99B00991442 /* LocationManagerSettings.swift */; };
@@ -222,6 +226,8 @@
 		F8E00693281F71DB00FD679C /* Text+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+.swift"; sourceTree = "<group>"; };
 		F8E0069528200FD400FD679C /* TrackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListView.swift; sourceTree = "<group>"; };
 		F8E0B12B2858BE3D0065FC4A /* ScrubberInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrubberInfo.swift; sourceTree = "<group>"; };
+		F8E0B12E285A83F90065FC4A /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		F8E0B131285A8D230065FC4A /* AboutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutHelper.swift; sourceTree = "<group>"; };
 		F8F686FB2814E7B000991442 /* DataStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStateHelper.swift; sourceTree = "<group>"; };
 		F8F686FE2814E99B00991442 /* LocationManagerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerSettings.swift; sourceTree = "<group>"; };
 		F8F687012814EA8300991442 /* SwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchView.swift; sourceTree = "<group>"; };
@@ -349,6 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */,
+				F8E0B131285A8D230065FC4A /* AboutHelper.swift */,
 				F868D66E280DB2E200EC3D30 /* AppInfo.swift */,
 				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
 				F8F686FB2814E7B000991442 /* DataStateHelper.swift */,
@@ -412,6 +419,7 @@
 			isa = PBXGroup;
 			children = (
 				F868D6A9280E2AD000EC3D30 /* MapView.swift */,
+				F8E0B12E285A83F90065FC4A /* OnboardingView.swift */,
 				F8FD3A5C2853D3C3006FF4C5 /* SettingsView.swift */,
 				F8AA6B1228296755007EBCAA /* TouchLocatingView.swift */,
 			);
@@ -456,6 +464,7 @@
 				F8233CA72811AA2100536A0F /* Int32+.swift */,
 				F868D6E228109BA300EC3D30 /* Notification.Name+.swift */,
 				F8AA6B18282A9FA7007EBCAA /* NSManagedObjectContext+.swift */,
+				F8E00693281F71DB00FD679C /* Text+.swift */,
 				F868D69A280E0C2000EC3D30 /* TimeInterval+.swift */,
 				F8F68706281589A600991442 /* View+.swift */,
 			);
@@ -467,7 +476,6 @@
 			children = (
 				F868D6B7280F10E800EC3D30 /* Color+iOS.swift */,
 				F8821AB12813A69500A21781 /* NavigationLink+.swift */,
-				F8E00693281F71DB00FD679C /* Text+.swift */,
 				F8A6D1782831A50B0035BFD1 /* UIImage+.swift */,
 				F868D69D280E143100EC3D30 /* UIView+pin.swift */,
 			);
@@ -643,6 +651,7 @@
 				F868D6D22810455F00EC3D30 /* TrackPlotView.swift in Sources */,
 				F868D6CA280F6C6100EC3D30 /* CodeVersionView.swift in Sources */,
 				F868D6A7280E298300EC3D30 /* MapViewCoordinator.swift in Sources */,
+				F8E0B132285A8D230065FC4A /* AboutHelper.swift in Sources */,
 				F868D688280DBCAA00EC3D30 /* TrackDetailView.swift in Sources */,
 				F8F687112816F7BD00991442 /* AALabelWithPadding.swift in Sources */,
 				F8E00685281CA1FF00FD679C /* DeviceType.swift in Sources */,
@@ -733,6 +742,7 @@
 				F8942A31284CE5F70072C37A /* Device.swift in Sources */,
 				F868D67F280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
 				F868D6E428109BA300EC3D30 /* Notification.Name+.swift in Sources */,
+				F8E0B133285A8D230065FC4A /* AboutHelper.swift in Sources */,
 				F8AA6B1328296755007EBCAA /* TouchLocatingView.swift in Sources */,
 				F891BA552846F6B600AE7118 /* NSTableView+.swift in Sources */,
 				F868D68F280DC26D00EC3D30 /* ContentView.swift in Sources */,
@@ -740,11 +750,13 @@
 				F8F686FD2814E7B000991442 /* DataStateHelper.swift in Sources */,
 				F8E0B12D2858BE3D0065FC4A /* ScrubberInfo.swift in Sources */,
 				F82BD5DA282711C5003E674D /* VerticalDividerView.swift in Sources */,
+				F8E0B130285A89B10065FC4A /* Text+.swift in Sources */,
 				F8E0069728200FD400FD679C /* TrackListView.swift in Sources */,
 				F8E00686281CA1FF00FD679C /* DeviceType.swift in Sources */,
 				F8E0067B281B1ECB00FD679C /* OnboardingHelper.swift in Sources */,
 				F8F6870B28158D6300991442 /* CLLocationCoordinate2D+.swift in Sources */,
 				F868D69C280E0C2000EC3D30 /* TimeInterval+.swift in Sources */,
+				F8E0B12F285A83F90065FC4A /* OnboardingView.swift in Sources */,
 				F868D65D280DAD4600EC3D30 /* TrackListResultsView.swift in Sources */,
 				F8CD3229282020DF001748DE /* SearchHelper.swift in Sources */,
 				F868D6D02810430200EC3D30 /* LineShape.swift in Sources */,
@@ -891,7 +903,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39l;
+				CURRENT_PROJECT_VERSION = 39m;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -929,7 +941,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39l;
+				CURRENT_PROJECT_VERSION = 39m;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -969,7 +981,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28h;
+				CURRENT_PROJECT_VERSION = 28i;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -998,7 +1010,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28h;
+				CURRENT_PROJECT_VERSION = 28i;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

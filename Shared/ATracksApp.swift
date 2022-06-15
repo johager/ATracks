@@ -32,6 +32,8 @@ struct ATracksApp: App {
     // MARK: - Init
     
     init() {
+//        UserDefaults.standard.set(false, forKey: OnboardingHelper.hasOnboardedKey)
+//        UserDefaults.standard.synchronize()
         DataStateHelper.checkDataState()
 //        let useAutoStop = UserDefaults.standard.bool(forKey: LocationManagerSettings.useAutoStopKey)
 //        print("=== \(file).\(#function) - useAutoStop: \(useAutoStop) ===")
@@ -69,11 +71,13 @@ struct ATracksApp: App {
                     }
                 }
                 .onChange(of: scenePhase) { scenePhaseChanged(to: $0) }
-                #if os(iOS)
                 .sheet(isPresented: $isOnboarding) {
+                    #if os(iOS)
                     AboutView(isOnboarding: $isOnboarding)
+                    #else
+                    OnboardingView(isOnboarding: $isOnboarding)
+                    #endif
                 }
-                #endif
         }
         #if os(macOS)
         Settings {

@@ -20,7 +20,7 @@ struct SettingsView: View {
                     Text("Satellite").tag(true)
                 }
                 .pickerStyle(.inline)
-                Picker("Map Position:", selection: $displaySettings.placeMapOnRightInLandscape) {
+                Picker("Map Position In Landscape:", selection: $displaySettings.placeMapOnRightInLandscape) {
                     Text("Left").tag(false)
                     Text("Right").tag(true)
                 }
