@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F805E04A28662AD6000B2BDC /* BlankOneMomentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F805E04928662AD6000B2BDC /* BlankOneMomentView.swift */; };
+		F805E04C2868FA52000B2BDC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F805E04B2868FA52000B2BDC /* AppState.swift */; };
+		F805E04D2868FA52000B2BDC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F805E04B2868FA52000B2BDC /* AppState.swift */; };
 		F8233CA82811AA2100536A0F /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8233CA72811AA2100536A0F /* Int32+.swift */; };
 		F8233CA92811AA2100536A0F /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8233CA72811AA2100536A0F /* Int32+.swift */; };
 		F82BD5D528270DCF003E674D /* TrackListButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BD5D428270DCF003E674D /* TrackListButtonsView.swift */; };
@@ -103,8 +106,8 @@
 		F8D3FFCD2819A5FB00887790 /* LocationServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D3FFCC2819A5FB00887790 /* LocationServicesView.swift */; };
 		F8E0067A281B1ECB00FD679C /* OnboardingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00679281B1ECB00FD679C /* OnboardingHelper.swift */; };
 		F8E0067B281B1ECB00FD679C /* OnboardingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00679281B1ECB00FD679C /* OnboardingHelper.swift */; };
-		F8E00680281B375A00FD679C /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0067F281B375A00FD679C /* BlankView.swift */; };
-		F8E00681281B375A00FD679C /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0067F281B375A00FD679C /* BlankView.swift */; };
+		F8E00680281B375A00FD679C /* BlankNoTracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0067F281B375A00FD679C /* BlankNoTracksView.swift */; };
+		F8E00681281B375A00FD679C /* BlankNoTracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0067F281B375A00FD679C /* BlankNoTracksView.swift */; };
 		F8E00685281CA1FF00FD679C /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00684281CA1FF00FD679C /* DeviceType.swift */; };
 		F8E00686281CA1FF00FD679C /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E00684281CA1FF00FD679C /* DeviceType.swift */; };
 		F8E0068E281EC7F700FD679C /* AddEditTrackName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */; };
@@ -149,6 +152,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F805E04928662AD6000B2BDC /* BlankOneMomentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankOneMomentView.swift; sourceTree = "<group>"; };
+		F805E04B2868FA52000B2BDC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F8233CA72811AA2100536A0F /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
 		F82BD5D428270DCF003E674D /* TrackListButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListButtonsView.swift; sourceTree = "<group>"; };
 		F82BD5D628270EBD003E674D /* HOrVStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HOrVStackView.swift; sourceTree = "<group>"; };
@@ -218,7 +223,7 @@
 		F8CD3227282020DF001748DE /* SearchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHelper.swift; sourceTree = "<group>"; };
 		F8D3FFCC2819A5FB00887790 /* LocationServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServicesView.swift; sourceTree = "<group>"; };
 		F8E00679281B1ECB00FD679C /* OnboardingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingHelper.swift; sourceTree = "<group>"; };
-		F8E0067F281B375A00FD679C /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
+		F8E0067F281B375A00FD679C /* BlankNoTracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankNoTracksView.swift; sourceTree = "<group>"; };
 		F8E00684281CA1FF00FD679C /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
 		F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditTrackName.swift; sourceTree = "<group>"; };
 		F8E0068F281F0F5A00FD679C /* ATracks 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ATracks 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -337,7 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				F868D68D280DC26D00EC3D30 /* ContentView.swift */,
-				F8E0067F281B375A00FD679C /* BlankView.swift */,
+				F8E0067F281B375A00FD679C /* BlankNoTracksView.swift */,
 				F891BA5628470D7300AE7118 /* HorizontalDividerView.swift */,
 				F868D6CB281040B000EC3D30 /* LineShape.swift */,
 				F868D687280DBCAA00EC3D30 /* TrackDetailView.swift */,
@@ -357,6 +362,7 @@
 				F868D6E82810B1E500EC3D30 /* AAPointAnnotation.swift */,
 				F8E0B131285A8D230065FC4A /* AboutHelper.swift */,
 				F868D66E280DB2E200EC3D30 /* AppInfo.swift */,
+				F805E04B2868FA52000B2BDC /* AppState.swift */,
 				F868D64C280DAD4600EC3D30 /* Assets.xcassets */,
 				F8F686FB2814E7B000991442 /* DataStateHelper.swift */,
 				F8942A2F284CE5F60072C37A /* Device.swift */,
@@ -387,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */,
+				F805E04928662AD6000B2BDC /* BlankOneMomentView.swift */,
 				F82BD5D628270EBD003E674D /* HOrVStackView.swift */,
 				F8D3FFCC2819A5FB00887790 /* LocationServicesView.swift */,
 				F868D697280DF99400EC3D30 /* MapView.swift */,
@@ -637,6 +644,7 @@
 				F82BD5D528270DCF003E674D /* TrackListButtonsView.swift in Sources */,
 				F8F686FC2814E7B000991442 /* DataStateHelper.swift in Sources */,
 				F891BA5728470D7300AE7118 /* HorizontalDividerView.swift in Sources */,
+				F805E04C2868FA52000B2BDC /* AppState.swift in Sources */,
 				F8D3FFCD2819A5FB00887790 /* LocationServicesView.swift in Sources */,
 				F868D671280DB35B00EC3D30 /* CoreDataStack.swift in Sources */,
 				F868D65C280DAD4600EC3D30 /* TrackListResultsView.swift in Sources */,
@@ -687,7 +695,7 @@
 				F868D681280DB5F800EC3D30 /* Date+.swift in Sources */,
 				F8AA6B19282A9FA7007EBCAA /* NSManagedObjectContext+.swift in Sources */,
 				F868D6DE28107B8400EC3D30 /* TouchLocatingView.swift in Sources */,
-				F8E00680281B375A00FD679C /* BlankView.swift in Sources */,
+				F8E00680281B375A00FD679C /* BlankNoTracksView.swift in Sources */,
 				F868D675280DB40A00EC3D30 /* Track.swift in Sources */,
 				F8F6870D2815AAC000991442 /* AAToggleStyle.swift in Sources */,
 				F868D678280DB44B00EC3D30 /* DataType.swift in Sources */,
@@ -704,6 +712,7 @@
 				F8E0069628200FD400FD679C /* TrackListView.swift in Sources */,
 				F8821AAD281397D600A21781 /* MailView.swift in Sources */,
 				F8E00691281F616800FD679C /* DisplaySettings.swift in Sources */,
+				F805E04A28662AD6000B2BDC /* BlankOneMomentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,7 +737,7 @@
 				F8FD3A5D2853D3C3006FF4C5 /* SettingsView.swift in Sources */,
 				F868D679280DB44B00EC3D30 /* DataType.swift in Sources */,
 				F8AA6B1A282A9FA7007EBCAA /* NSManagedObjectContext+.swift in Sources */,
-				F8E00681281B375A00FD679C /* BlankView.swift in Sources */,
+				F8E00681281B375A00FD679C /* BlankNoTracksView.swift in Sources */,
 				F868D6A2280E1FBE00EC3D30 /* MapViewHelper.swift in Sources */,
 				F868D68C280DBD7400EC3D30 /* TrackRow.swift in Sources */,
 				F8F68708281589A600991442 /* View+.swift in Sources */,
@@ -738,6 +747,7 @@
 				F868D673280DB35F00EC3D30 /* AppInfo.swift in Sources */,
 				F8E00692281F616800FD679C /* DisplaySettings.swift in Sources */,
 				F82BD5DD2827FAB0003E674D /* GeometryProxy+.swift in Sources */,
+				F805E04D2868FA52000B2BDC /* AppState.swift in Sources */,
 				F868D6B1280EF13800EC3D30 /* Color+.swift in Sources */,
 				F8942A31284CE5F70072C37A /* Device.swift in Sources */,
 				F868D67F280DB5DA00EC3D30 /* TrackManager.swift in Sources */,
@@ -903,7 +913,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39m;
+				CURRENT_PROJECT_VERSION = 39o;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -941,7 +951,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39m;
+				CURRENT_PROJECT_VERSION = 39o;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -981,7 +991,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28i;
+				CURRENT_PROJECT_VERSION = 28k;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1010,7 +1020,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28i;
+				CURRENT_PROJECT_VERSION = 28k;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

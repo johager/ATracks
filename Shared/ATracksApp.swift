@@ -9,12 +9,14 @@ import SwiftUI
 #if os(iOS)
 import HealthKit
 #endif
+import os.log
 
 @main
 struct ATracksApp: App {
     
     @Environment(\.scenePhase) var scenePhase
     
+    @ObservedObject private var appState = AppState()
     @ObservedObject var displaySettings = DisplaySettings.shared
     @ObservedObject var trackManager = TrackManager.shared
     
@@ -29,6 +31,8 @@ struct ATracksApp: App {
     
     let file = "ATracksApp"
     
+    var logger: Logger
+    
     // MARK: - Init
     
     init() {
@@ -39,6 +43,7 @@ struct ATracksApp: App {
 //        print("=== \(file).\(#function) - useAutoStop: \(useAutoStop) ===")
 //        print("=== \(file).\(#function) - deviceName: \(Func.deviceName) ===")
 //        print("=== \(file).\(#function) - deviceUUID: \(Func.deviceUUID) ===")
+        logger = Func.logger(for: file)
     }
     
     // MARK: - Scene
@@ -47,9 +52,12 @@ struct ATracksApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, coreDataStack.context)
+                .environmentObject(appState)
                 .environmentObject(displaySettings)
                 .environmentObject(trackManager)
                 .onAppear {
+                    logger.notice("onAppear")
+                    trackManager.setUp(using: appState)
                     if OnboardingHelper.shouldOnboard {
                         //print("=== \(file).\(#function) - onAppear - shouldOnboard ===")
                         isOnboarding = true
@@ -100,43 +108,59 @@ struct ATracksApp: App {
     // MARK: - ScenePhase Methods
     
     func scenePhaseChanged(to phase: ScenePhase) {
-        switch phase {
-        case .active:
-            print("=== \(file).\(#function) - active, hasOnboarded: \(hasOnboarded), wasInactive: \(wasInactive) ===")
+        
+//        switch phase {
+//        case .active:
+//            logger.notice("scenePhaseChanged - phase: active")
+//        case .inactive:
+//            logger.notice("scenePhaseChanged - phase: inactive")
+//        case .background:
+//            logger.notice("scenePhaseChanged - phase: background")
+//        @unknown default:
+//            logger.notice("scenePhaseChanged - phase: unknown")
+//        }
+        
+        if phase == .active {
+            //print("=== \(file).\(#function) - active, hasOnboarded: \(hasOnboarded), wasInactive: \(wasInactive) ===")
+            logger.notice("scenePhaseChanged to active")
+            appState.isActive = true
             #if os(iOS)
             device.hasSafeAreaInsets = Func.hasSafeAreaInsets
             handleActive()
             #endif
             //doSpecialStartUp()
             NotificationCenter.default.post(name: .scenePhaseChangedToActive, object: nil, userInfo: nil)
-        #if os(iOS)
-        case .inactive:
-            print("=== \(file).\(#function) - inactive, hasOnboarded: \(hasOnboarded) ===")
+            
+        } else {
+            guard appState.isActive else { return }
+            //print("=== \(file).\(#function) - !active, hasOnboarded: \(hasOnboarded) ===")
+            logger.notice("scenePhaseChanged to !active")
+            appState.isActive = false
             #if os(iOS)
             if hasOnboarded {
                 LocationManager.shared.sceneDidBecomeInactive()
             }
             #endif
             wasInactive = true
-        #endif
-        case .background:
-            print("=== \(file).\(#function) - background, hasOnboarded: \(hasOnboarded) ===")
-        default:
-            print("=== \(file).\(#function) - phase: \(phase), hasOnboarded: \(hasOnboarded) ===")
         }
     }
     
     func handleActive() {
-        print("=== \(file).\(#function) - hasOnboarded: \(hasOnboarded), wasInactive: \(wasInactive) ===")
+        //print("=== \(file).\(#function) - hasOnboarded: \(hasOnboarded), wasInactive: \(wasInactive) ===")
         
         defer {
             wasInactive = false
         }
         
         #if os(iOS)
-        guard hasOnboarded, wasInactive else { return }
+        guard hasOnboarded else { return }
+        
         LocationManager.shared.sceneDidBecomeActive()
-        Task { await updateSteps() }
+        if wasInactive {
+            Task { await updateSteps() }
+        } else {
+            Task { await HealthKitManager.shared.requestPermission() }
+        }
         #endif
     }
     
@@ -149,6 +173,29 @@ struct ATracksApp: App {
 //    func makeTrack(daysAgo: Int) {
 //        let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: Date())!
 //        Track(name: "<[ \(daysAgo) Days Ago ]>", deviceName: "dummy", deviceUUID: "123", date: date, isTracking: false)
+//    }
+    
+//    func doSpecialStartUp() {
+//        let fetchRequest = Track.fetchRequest
+//
+//        let dateCheck = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+//        fetchRequest.predicate = NSPredicate(format: "%K > %@", Track.dateKey, dateCheck as CVarArg)
+//        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]
+//
+//        do {
+//            let tracks = try coreDataStack.context.fetch(fetchRequest)
+//            print("=== \(file).\(#function) - tracks.count: \(tracks.count) ===")
+//
+//            for track in tracks {
+//                print("--- \(file).\(#function) - trackName: \(track.debugName)")
+//                track.stopTracking()
+//            }
+//
+//            coreDataStack.saveContext()
+//
+//        } catch {
+//            print("=== \(file).\(#function) - error fetching")
+//        }
 //    }
     
 //    func doSpecialStartUp() {

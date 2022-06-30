@@ -1,5 +1,5 @@
 //
-//  BlankView.swift
+//  BlankNoTracksView.swift
 //  ATracks
 //
 //  Created by James Hager on 4/28/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BlankView: View {
+struct BlankNoTracksView: View {
     var body: some View {
         GeometryReader { geometry in
             HStack {
@@ -47,6 +47,6 @@ struct BlankView: View {
 
 struct BlankView_Previews: PreviewProvider {
     static var previews: some View {
-        BlankView()
+        BlankNoTracksView()
     }
 }

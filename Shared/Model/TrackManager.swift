@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 import CoreData
 import CoreLocation
+import os.log
 
 protocol TrackManagerDelegate {
     func didMakeNewTrackPoint(_ trackPoint: TrackPoint)
@@ -21,7 +23,33 @@ class TrackManager: NSObject, ObservableObject {
     
     @Published var tracks = [Track]()
     @Published var selectedTrack: Track?
+    {
+        didSet {
+            if let selectedTrack = selectedTrack {
+                //print("=== \(file).\(#function) didSet - selectedTrack: '\(selectedTrack.debugName)' ===")
+                logger?.notice("selectedTrack didSet to \(selectedTrack.debugName, privacy: .private(mask: .hash))")
+            } else {
+                //print("=== \(file).\(#function) didSet - selectedTrack: nil ===")
+                logger?.notice("selectedTrack didSet to nil")
+            }
+        }
+    }
     var selectedTrackDidChangeProgramatically = false
+    
+    #if os(iOS)
+    var selectedTrackToHold: Track?  // save selectedTrack when app goes into background
+    {
+       didSet {
+           if let selectedTrackToHold = selectedTrackToHold {
+               //print("=== \(file).\(#function) didSet - selectedTrackToHold: '\(selectedTrackToHold.debugName)' ===")
+               logger?.notice("selectedTrackToHold didSet to \(selectedTrackToHold.debugName, privacy: .private(mask: .hash))")
+           } else {
+               //print("=== \(file).\(#function) didSet - selectedTrackToHold: nil ===")
+               logger?.notice("selectedTrackToHold didSet to nil")
+           }
+       }
+   }
+    #endif
     
     var delegate: TrackManagerDelegate?
     
@@ -31,14 +59,33 @@ class TrackManager: NSObject, ObservableObject {
     private var coreDataStack: CoreDataStack { CoreDataStack.shared }
     private var viewContext: NSManagedObjectContext { CoreDataStack.shared.context }
     
+    private var appState: AppState!
     private var isPhone: Bool!
     
-    var shouldSetSelectedTrack: Bool {
+    private var scenePhaseSubscription: AnyCancellable?
+    
+    private var shouldSetSelectedTrack: Bool {
         guard let selectedTrack = selectedTrack,
               !tracks.contains(selectedTrack)
         else { return false }
         return true
     }
+    
+    private var tracksThatAreTrackingOnThisDevice: [Track]? {
+        let fetchRequest = Track.fetchRequest
+        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Track.isTrackingKey, NSNumber(value: true), Track.deviceUUIDKey, deviceUUID)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Track.date, ascending: false)]
+        
+        do {
+            let tracks = try viewContext.fetch(fetchRequest)
+            return tracks
+        } catch {
+            Func.logError(error, in: #function, using: &logger, for: file)
+            return nil
+        }
+    }
+    
+    private var logger: Logger?
     
     lazy var deviceName = Func.deviceName
     lazy var deviceUUID = Func.deviceUUID
@@ -50,6 +97,7 @@ class TrackManager: NSObject, ObservableObject {
     private override init() {
         super.init()
 //        print("=== \(file).\(#function) ===")
+        logger = Func.logger(for: file)
         
         isPhone = DeviceType.current().isPhone
         
@@ -71,6 +119,20 @@ class TrackManager: NSObject, ObservableObject {
         fetchTracks()
         
         setSelectedTrack()
+    }
+    
+    // MARK: - Set Up
+    
+    func setUp(using appState: AppState) {
+        self.appState = appState
+        
+        scenePhaseSubscription = appState.$isActive.sink { isActive in
+            if isActive {
+                self.sceneDidBecomeActive()
+            } else {
+                self.sceneDidBecomeInactive()
+            }
+        }
     }
     
     // MARK: - CRUD for Tracks
@@ -201,26 +263,39 @@ class TrackManager: NSObject, ObservableObject {
                 }
             }
         } catch {
-            print("--- \(file).\(#function) - error: \(error)")
-            print(error.localizedDescription)
+            Func.logError(error, in: #function, using: &logger, for: file)
         }
         #endif
     }
     
     func stopTracking() {
-        let batchUpdateRequest = NSBatchUpdateRequest(entityName: DataType.track.entityName)
-        batchUpdateRequest.predicate = NSPredicate(format: "%K == %@", Track.isTrackingKey, NSNumber(value: true))
-        batchUpdateRequest.propertiesToUpdate = [Track.isTrackingKey: false]
+        print("=== \(file).\(#function) ===")
+        guard let tracks = tracksThatAreTrackingOnThisDevice else { return }
         
-        viewContext.execute(batchUpdateRequest, purpose: "Set Track.isTracking false")
+        for track in tracks {
+            print("--- \(file).\(#function) - name: '\(track.debugName)'")
+            track.stopTracking()
+        }
+        if tracks.count > 0 {
+            coreDataStack.saveContext()
+        }
         
-        coreDataStack.saveContext()
+        restoreSelectedTrackToHold()
     }
     
-    func stopTracking(_ track: Track) {
-        track.isTracking = false
-        coreDataStack.saveContext()
-    }
+//    func stopTracking(_ track: Track?) {
+//        
+//        guard let track = track
+//        else {
+//            stopTracking()
+//            return
+//        }
+//        
+//        track.stopTracking()
+//        coreDataStack.saveContext()
+//
+//        restoreSelectedTrackToHold()
+//    }
     
     func didDelete(_ track: Track) -> Bool {
         
@@ -280,10 +355,18 @@ class TrackManager: NSObject, ObservableObject {
     
     func createTrackPoint(from location: CLLocation, in track: Track) {
         //print("=== \(file).\(#function) ===")
-        print("=== \(file).\(#function) - horizontalAccuracy: \(location.horizontalAccuracy), verticalAccuracy: \(location.verticalAccuracy), altitude: \(location.altitude) ===")
+        //print("=== \(file).\(#function) - horizontalAccuracy: \(location.horizontalAccuracy), verticalAccuracy: \(location.verticalAccuracy), altitude: \(location.altitude), appState.isActive: \(appState.isActive) ===")
+        
+        defer {
+            coreDataStack.saveContext()
+        }
+        
+        guard appState.isActive else {
+            TrackPoint(clLocation: location, track: track, shouldUpdateTrackDetails: false)
+            return
+        }
         
         let trackPoint = TrackPoint(clLocation: location, track: track)
-        coreDataStack.saveContext()
         delegate?.didMakeNewTrackPoint(trackPoint)
         #if os(iOS)
         Task.init {
@@ -292,6 +375,41 @@ class TrackManager: NSObject, ObservableObject {
                 track.steps = numSteps
                 coreDataStack.saveContext()
             }
+        }
+        #endif
+    }
+    
+    // MARK: - Scene Lifecycle
+    
+    func sceneDidBecomeActive() {
+//        print("=== \(file).\(#function) ===")
+        logger?.notice(#function)
+
+        restoreSelectedTrackToHold()
+    }
+    
+    func sceneDidBecomeInactive() {
+//        print("=== \(file).\(#function) ===")
+        logger?.notice(#function)
+        
+        #if os(iOS)
+        guard let selectedTrack = selectedTrack,
+              TrackHelper.trackIsTrackingOnThisDevice(selectedTrack)
+        else { return }
+
+        selectedTrackToHold = selectedTrack
+        self.selectedTrack = nil
+        #endif
+    }
+    
+    func restoreSelectedTrackToHold() {
+        #if os(iOS)
+        logger?.notice("restoreSelectedTrackToHold - at top")
+        guard selectedTrackToHold != nil else { return }
+        
+        Func.afterDelay(0.3) {
+            self.selectedTrack = self.selectedTrackToHold
+            self.selectedTrackToHold = nil
         }
         #endif
     }

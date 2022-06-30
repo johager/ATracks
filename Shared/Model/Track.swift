@@ -34,6 +34,7 @@ class Track: NSManagedObject, Identifiable {
     
     static let altitudeIsValidKey = "altitudeIsValid"
     static let dateKey = "date"
+    static let deviceUUIDKey = "deviceUUID"
     static let hasFinalStepsKey = "hasFinalSteps"
     static let isTrackingKey = "isTracking"
     static let nameKey = "name"
@@ -85,17 +86,25 @@ class Track: NSManagedObject, Identifiable {
     
     // MARK: - Methods
     
-    func setTrackSummaryData(verticalAccuracy: Double = 1) {
+    func stopTracking() {
+        isTracking = false
+        setTrackSummaryData()
+    }
+    
+    func setTrackSummaryData(verticalAccuracy: Double = 1, shouldUpdateTrackDetails: Bool = true) {
+        //print("=== \(file).\(#function) - shouldUpdateTrackDetails: \(shouldUpdateTrackDetails) ===")
         
         if verticalAccuracy <= 0 {
             altitudeIsValid = false
         }
         
+        guard shouldUpdateTrackDetails else { return }
+        
         let trackPoints = self.trackPoints
         
         guard trackPoints.count > 1 else { return }
         
-        setDistanceAndDuration(using: trackPoints)
+        setDistanceAndDuration(from: trackPoints)
         setAltitudeData()
     }
     
@@ -110,7 +119,7 @@ class Track: NSManagedObject, Identifiable {
         altitudeGain = trackHelper.altitudeGain
     }
     
-    func setDistanceAndDuration(using trackPoints: [TrackPoint]) {
+    func setDistanceAndDuration(from trackPoints: [TrackPoint]) {
         
         let locations = trackPoints.map { $0.clLocation }
         

@@ -8,6 +8,8 @@
 import Foundation
 import Combine
 import MapKit
+import SwiftUI
+import os.log
 
 class MapViewHelper: NSObject {
     
@@ -99,6 +101,8 @@ class MapViewHelper: NSObject {
         #endif
     }
     
+    private var logger: Logger?
+    
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
@@ -110,7 +114,9 @@ class MapViewHelper: NSObject {
     // MARK: - Public Methods
     
     func setUpView(for track: Track, and scrubberInfo: ScrubberInfo) {
-        //print("=== \(file).\(#function) - \(track.debugName) ===")
+//        print("=== \(file).\(#function) - \(track.debugName) ===")
+        
+        setUpLogger()
         
         self.track = track
         self.scrubberInfo = scrubberInfo
@@ -131,8 +137,27 @@ class MapViewHelper: NSObject {
         setUpSubscriptions()
     }
     
-    func updateView(for track: Track, and scrubberInfo: ScrubberInfo) {
-        //print("=== \(file).\(#function) - \(track.debugName) - hasBeenSetUp: \(startPointAnnotation != nil) ===")
+    func updateView(for track: Track, and scrubberInfo: ScrubberInfo, appIsActive: Bool = true) {
+//        print("=== \(file).\(#function) - \(track.debugName) - hasBeenSetUp: \(startPointAnnotation != nil) ===")
+//        print("--- \(file).\(#function) - appIsActive: \(appIsActive), device.colorScheme: \(device.colorScheme)")
+        
+        #if os(iOS)
+//        setUpLogger()
+//        let shouldUpdate = appIsActive || device.mapViewShouldUpdateDueToColorSchemeChange
+//        logger?.notice("updateView - hasBeenSetUp: \(self.startPointAnnotation != nil, privacy: .public), appIsActive: \(appIsActive, privacy: .public), shouldUpdateDueToColorSchemeChange: \(self.device.mapViewShouldUpdateDueToColorSchemeChange, privacy: .public), shouldUpdate: \(shouldUpdate, privacy: .public)")
+        
+        guard appIsActive || device.mapViewShouldUpdateDueToColorSchemeChange else { return }
+//        print("--- \(file).\(#function) - do update")
+        
+        setUpLogger()
+        logger?.notice("updateView - do update - hasBeenSetUp: \(self.startPointAnnotation != nil, privacy: .public)")
+        
+        if device.mapViewShouldUpdateDueToColorSchemeChange {
+            Func.afterDelay(1) {
+                self.device.mapViewShouldUpdateDueToColorSchemeChange = false
+            }
+        }
+        #endif
         
         guard startPointAnnotation == nil else { return }
         
@@ -142,6 +167,11 @@ class MapViewHelper: NSObject {
         drawTrack()
         
         setUpSubscriptions()
+    }
+    
+    func setUpLogger() {
+        guard logger == nil else { return }
+        logger = Func.logger(for: file)
     }
     
     func setUpSubscriptions() {

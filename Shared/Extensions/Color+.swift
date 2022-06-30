@@ -39,6 +39,14 @@ extension Color {
     #endif
     
     #if os(iOS)
+    static var listCoverForInactive: Color {
+        let lightColor = Color(white: 0.9, opacity: 0.6)
+        let darkColor = Color(white: 0.1, opacity: 0.6)
+        return color(light: lightColor, dark: darkColor)
+    }
+    #endif
+    
+    #if os(iOS)
     static var listRowSelectedBackground: Color {
         return color(light: light1HGreen, dark: dark3HGreen)
     }

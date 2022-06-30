@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import os.log
 
 class CoreDataStack: NSObject {
     
@@ -13,7 +14,16 @@ class CoreDataStack: NSObject {
     
     private let modelName = "ATracks"
     
-    private override init() { }
+    var logger: Logger?
+    
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
+    
+    // MARK: - Init
+    
+    private override init() {
+        super.init()
+        logger = Func.logger(for: file)
+    }
     
     deinit{
         print("=== CoreDataStack.deinit ===")
@@ -52,16 +62,20 @@ class CoreDataStack: NSObject {
     
     func saveContext() {
         print("<<< saveContext >>>")
+
         guard context.hasChanges else { return }
         
         do {
             try context.save()
         } catch let error as NSError {
-            print(">>> Error: \(error.localizedDescription)")
+            if logger == nil {
+                logger = Func.logger(for: file)
+            }
+            logger!.notice("save(context) - Error: \(error.localizedDescription, privacy: .public)")
             if let detailedErrors = error.userInfo[NSDetailedErrorsKey] as? [NSError] {
                 for detailedError in detailedErrors {
-                    print("--> Detailed Error: \(detailedError.localizedDescription)")
-                    print(detailedError.userInfo)
+                    logger!.notice("save(context) - Detailed Error: \(detailedError.localizedDescription, privacy: .public)")
+                    logger!.notice("save(context) - - userInfo: \(detailedError.userInfo, privacy: .public)")
                 }
             }
             abort()

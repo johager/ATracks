@@ -40,83 +40,92 @@ struct TrackListResultsView: View {
     // MARK: - View
     
     var body: some View {
-        VStack(spacing: 0) {
-            #if os(macOS)
-            HorizontalDividerView()
-            #endif
-            ScrollViewReader { proxy in
-                List() {
-                    ForEach(trackManager.tracks) { track in
-                        ZStack(alignment: .leading) {
-                            #if os(iOS)
-                            if device.padShowNavigationLink {
+        ZStack {
+            VStack(spacing: 0) {
+                #if os(macOS)
+                HorizontalDividerView()
+                #endif
+                ScrollViewReader { proxy in
+                    List() {
+                        ForEach(trackManager.tracks) { track in
+                            ZStack(alignment: .leading) {
+                                #if os(iOS)
+                                if device.padShowNavigationLink {
+                                    NavigationLink(destination: TrackDetailView(track: track), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                                        .opacity(0)
+                                } else {
+                                    Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
+                                }
+                                #else
                                 NavigationLink(destination: TrackDetailView(track: track), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
-                                    .opacity(0)
-                            } else {
-                                Button(action: { trackManager.selectedTrack = track }) { EmptyView() }
+                                .opacity(0)
+                                #endif
+                                let isEditing = isEditing(track)
+                                TrackRow(track: track, device: device, isSelected: isSelected(track), isEditing: isEditing, delegate: self)
+                                    #if os(macOS)
+                                    .id(isEditing)
+                                    #endif
+                            }
+                            .id(track)
+                            #if os(iOS)
+                            .padding([.top, .bottom], -6)
+                            #endif
+                            .padding([.leading, .trailing], -16)
+                            
+                            #if os(iOS)
+                            .listRowSeparatorTint(.listRowSeparator)
+                            .swipeActions(allowsFullSwipe: false) {
+                                Button(action: { delete(track) } ) {
+                                    Label("Delete", systemImage: "trash.fill")
+                                }
+                                .tint(.listRowSwipeDelete)
+                                
+                                Button(action: { delegate.edit(track) } ) {
+                                    Label("Edit", systemImage: "square.and.pencil")
+                                }
+                                .tint(.listRowSwipeEdit)
+                                
+                                Button(action: { delegate.startTracking(useNameOf: track) } ) {
+        //                            Label("Start", systemImage: "stopwatch")
+                                    Label("Start", systemImage: "timer")
+                                }
+                                .tint(.listRowSwipeStart)
                             }
                             #else
-                            NavigationLink(destination: TrackDetailView(track: track), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
-                            .opacity(0)
+                            .contextMenu {
+                                Button(action: { trackBeingEdited = track }) { Text("Edit") }
+                                Button(action: { delete(track) }) { Text("Delete") }
+                            }
                             #endif
-                            let isEditing = isEditing(track)
-                            TrackRow(track: track, device: device, isSelected: isSelected(track), isEditing: isEditing, delegate: self)
-                                #if os(macOS)
-                                .id(isEditing)
-                                #endif
                         }
-                        .id(track)
+                    }
+                    .listStyle(.plain)
+                    .animation(.linear, value: trackManager.tracks)
+                    .background(Color.listBackground)
+                    .onChange(of: trackManager.selectedTrack) { _ in
+                        //print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(trackManager.selectedTrackDidChangeProgramatically) ===")
                         #if os(iOS)
-                        .padding([.top, .bottom], -6)
-                        #endif
-                        .padding([.leading, .trailing], -16)
-                        
-                        #if os(iOS)
-                        .listRowSeparatorTint(.listRowSeparator)
-                        .swipeActions(allowsFullSwipe: false) {
-                            Button(action: { delete(track) } ) {
-                                Label("Delete", systemImage: "trash.fill")
-                            }
-                            .tint(.listRowSwipeDelete)
-                            
-                            Button(action: { delegate.edit(track) } ) {
-                                Label("Edit", systemImage: "square.and.pencil")
-                            }
-                            .tint(.listRowSwipeEdit)
-                            
-                            Button(action: { delegate.startTracking(useNameOf: track) } ) {
-    //                            Label("Start", systemImage: "stopwatch")
-                                Label("Start", systemImage: "timer")
-                            }
-                            .tint(.listRowSwipeStart)
+                        guard trackManager.selectedTrackDidChangeProgramatically else { return }
+                        withAnimation(.easeInOut(duration: 1)) {
+                            proxy.scrollTo(trackManager.selectedTrack, anchor: .center)
+                        }
+                        Func.afterDelay(0.5) {
+                            trackManager.selectedTrackDidChangeProgramatically = false
                         }
                         #else
-                        .contextMenu {
-                            Button(action: { trackBeingEdited = track }) { Text("Edit") }
-                            Button(action: { delete(track) }) { Text("Delete") }
-                        }
+                        trackBeingEdited = nil
                         #endif
                     }
                 }
-                .listStyle(.plain)
-                .animation(.linear, value: trackManager.tracks)
-                .background(Color.listBackground)
-                .onChange(of: trackManager.selectedTrack) { _ in
-                    //print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(trackManager.selectedTrackDidChangeProgramatically) ===")
-                    #if os(iOS)
-                    guard trackManager.selectedTrackDidChangeProgramatically else { return }
-                    withAnimation(.easeInOut(duration: 1)) {
-                        proxy.scrollTo(trackManager.selectedTrack, anchor: .center)
-                    }
-                    Func.afterDelay(0.5) {
-                        trackManager.selectedTrackDidChangeProgramatically = false
-                    }
-                    #else
-                    trackBeingEdited = nil
-                    #endif
-                }
+                .padding(.bottom, 0)
             }
-            .padding(.bottom, 0)
+            #if os(iOS)
+            if trackManager.selectedTrackToHold != nil {
+                Rectangle()
+                .fill(Color.listCoverForInactive)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            #endif
         }
         #if os(iOS)
         .ignoresSafeArea(.keyboard)

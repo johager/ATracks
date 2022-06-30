@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreLocation
+import os.log
 
 class LocationManager: NSObject {
     
@@ -18,6 +19,11 @@ class LocationManager: NSObject {
     private let locationManager = CLLocationManager()
     
     private var appIsActive = false
+    {
+        didSet {
+            logger?.notice("appIsActive didSet \(self.appIsActive, privacy: .public)")
+        }
+    }
     
     var shouldTrack = true
     
@@ -52,16 +58,22 @@ class LocationManager: NSObject {
     }
     #endif
     
+    private var logger: Logger?
+    
     lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
     
     private override init() {
         super.init()
+        locationManager.activityType = .fitness
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 2
+        locationManager.pausesLocationUpdatesAutomatically = false
+        
+        logger = Func.logger(for: file)
     }
     
     // MARK: - Methods
@@ -89,7 +101,8 @@ class LocationManager: NSObject {
     }
     
     func startTracking(name: String) {
-        print("=== \(file).\(#function) - name: '\(name)' ===")
+        //print("=== \(file).\(#function) - name: '\(name)' ===")
+        logger?.notice("\(#function) - name: '\(name, privacy: .private(mask: .hash))'")
         
         if isTracking {
             stopTracking()
@@ -100,13 +113,11 @@ class LocationManager: NSObject {
     }
     
     func stopTracking(forDelete: Bool = false) {
-        print("=== \(file).\(#function) - forDelete: \(forDelete) ===")
+        //print("=== \(file).\(#function) - forDelete: \(forDelete) ===")
+        logger?.notice("\(#function) - forDelete: '\(forDelete, privacy: .public)'")
         if !forDelete {
-            if let track = track {
-                TrackManager.shared.stopTracking(track)
-            } else {
-                TrackManager.shared.stopTracking()
-            }
+//            TrackManager.shared.stopTracking(track)
+            TrackManager.shared.stopTracking()
         }
         track = nil
         isTracking = false
@@ -159,7 +170,8 @@ class LocationManager: NSObject {
     // MARK: - Scene Lifecycle
     
     func sceneDidBecomeActive() {
-        print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
+        //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
+        logger?.notice("\(#function) - shouldTrack: \(self.shouldTrack, privacy: .public)")
         
         guard shouldTrack else { return }
         
@@ -172,7 +184,8 @@ class LocationManager: NSObject {
     }
     
     func sceneDidBecomeInactive() {
-        print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
+        //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
+        logger?.notice("\(#function) - shouldTrack: \(self.shouldTrack, privacy: .public)")
  
         guard shouldTrack else { return }
         
@@ -231,6 +244,16 @@ extension LocationManager: CLLocationManagerDelegate {
 //        print("=== \(file).\(#function) - locations: \(locations.count) ===")
         
         guard let location = locations.last else { return }
+        
+//        logger?.notice("didUpdateLocations - isTracking: \(self.isTracking, privacy: .public), track exists: \(self.track != nil)")
+        
+        if let logger = logger {
+            if let memory = Func.memoryMB() {
+                logger.notice("didUpdateLocations - isTracking: \(self.isTracking, privacy: .public), track exists: \(self.track != nil), appIsActive: \(self.appIsActive, privacy: .public), memory: \(memory, privacy: .public) MB")
+            } else {
+                logger.notice("didUpdateLocations - isTracking: \(self.isTracking, privacy: .public), track exists: \(self.track != nil), appIsActive: \(self.appIsActive, privacy: .public), memory: nil")
+            }
+        }
         
         #if targetEnvironment(simulator)
         if useSimulatedAltitude {

@@ -12,6 +12,19 @@ class Device: NSObject, ObservableObject {
     static let shared = Device()
     
     @Published var colorScheme: ColorScheme = .light
+    {
+        didSet {
+            print("=== \(file).\(#function) didSet - colorScheme: \(colorScheme) ===")
+        }
+    }
+    #if os(iOS)
+    var mapViewShouldUpdateDueToColorSchemeChange = false
+    {
+        didSet {
+            print("=== \(file).\(#function) didSet - mapViewShouldUpdateDueToColorSchemeChange: \(mapViewShouldUpdateDueToColorSchemeChange) ===")
+        }
+    }
+    #endif
     
     @Published var hasSafeAreaInsets = false
     
@@ -40,7 +53,7 @@ class Device: NSObject, ObservableObject {
     
     var useSafeAreaInsets: Bool { isPhone && hasSafeAreaInsets }
     
-    //lazy var file = Func.sourceFileNameFromFullPath(#file)
+    lazy var file = Func.sourceFileNameFromFullPath(#file)
     
     // MARK: - Init
     
@@ -53,6 +66,10 @@ class Device: NSObject, ObservableObject {
     
     func setColorScheme(_ colorScheme: ColorScheme) {
         self.colorScheme = colorScheme
+        
+        #if os(iOS)
+        mapViewShouldUpdateDueToColorSchemeChange = true
+        #endif
     }
     
     func trackPlotStatsLeadingSpace(displayOnSide: Bool) -> CGFloat {

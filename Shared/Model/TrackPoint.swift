@@ -31,7 +31,7 @@ class TrackPoint: NSManagedObject {
     
     // MARK: - Init
     
-    @discardableResult convenience init(clLocation: CLLocation, track: Track, context: NSManagedObjectContext = CoreDataStack.shared.context) {
+    @discardableResult convenience init(clLocation: CLLocation, track: Track, shouldUpdateTrackDetails: Bool = true, context: NSManagedObjectContext = CoreDataStack.shared.context) {
         self.init(context: context)
         altitude = clLocation.altitude
         latitude = clLocation.coordinate.latitude
@@ -40,6 +40,9 @@ class TrackPoint: NSManagedObject {
         timestamp = clLocation.timestamp
         
         self.track = track
-        track.setTrackSummaryData(verticalAccuracy: clLocation.verticalAccuracy)
+        
+        guard shouldUpdateTrackDetails else { return }
+        
+        track.setTrackSummaryData(verticalAccuracy: clLocation.verticalAccuracy, shouldUpdateTrackDetails: shouldUpdateTrackDetails)
     }
 }

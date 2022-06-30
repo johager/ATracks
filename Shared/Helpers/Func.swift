@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os.log
 
 enum Func {
     
@@ -57,6 +58,45 @@ enum Func {
         #else
         return false
         #endif
+    }
+    
+    static func logError(_ error: Error, in function: String, using logger: inout Logger?, for file: String) {
+        if logger == nil {
+            logger = Func.logger(for: file)
+        }
+        
+        logger!.notice("\(function) - error: \(error.localizedDescription)")
+    }
+    
+    static func logger(for category: String) -> Logger {
+        return Logger(subsystem: "com.AvantiApplications.ATracks", category: category)
+    }
+    
+    static func memory() -> mach_vm_size_t? {
+        let TASK_VM_INFO_COUNT = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<integer_t>.size)
+
+        let TASK_VM_INFO_REV1_COUNT = mach_msg_type_number_t(MemoryLayout.offset(of: \task_vm_info_data_t.min_address)! / MemoryLayout<integer_t>.size)
+
+        var info = task_vm_info_data_t()
+
+        var count = TASK_VM_INFO_COUNT
+
+        let kr = withUnsafeMutablePointer(to: &info) { infoPtr in
+            infoPtr.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { intPtr in
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), intPtr, &count)
+            }
+        }
+
+        guard kr == KERN_SUCCESS,
+              count >= TASK_VM_INFO_REV1_COUNT
+        else { return nil }
+
+        return info.phys_footprint
+    }
+    
+    static func memoryMB() -> Int? {
+        guard let memory = memory() else { return nil }
+        return Int(memory) / 1024 / 1024
     }
     
     static var safeAreaInsets: EdgeInsets {

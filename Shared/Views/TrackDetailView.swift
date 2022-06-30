@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os.log
 
 struct TrackDetailView: View {
     
@@ -35,6 +36,8 @@ struct TrackDetailView: View {
     }
     #endif
     
+    private var logger: Logger?
+    
     let file = "TrackDetailView"
     
     // MARK: - Init
@@ -42,6 +45,8 @@ struct TrackDetailView: View {
     init(track: Track, delegate: TrackStatsViewDelegate? = nil) {
         self.track = track
         self.delegate = delegate
+        
+        logger = Func.logger(for: file)
     }
     
     // MARK: - View
@@ -139,7 +144,11 @@ struct TrackDetailView: View {
         #if os(iOS)
         .ignoresSafeArea(.keyboard)
         .onAppear {
+            logger?.notice("onAppear - track: \(track.debugName, privacy: .private(mask: .hash))")
             device.detailHorizontalSizeClassIsCompact = hSizeClass == .compact
+        }
+        .onDisappear {
+            logger?.notice("onDisappear - track: \(track.debugName, privacy: .private(mask: .hash))")
         }
         .navigationBarTitleDisplayMode(.inline)
         #else

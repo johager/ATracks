@@ -47,11 +47,13 @@ struct ContentView: View {
                 #if os(iOS)
                 if let selectedTrack = trackManager.selectedTrack {
                     TrackDetailView(track: selectedTrack)
+                } else if trackManager.selectedTrackToHold != nil {
+                    BlankOneMomentView()
                 } else {
-                    BlankView()
+                    BlankNoTracksView()
                 }
                 #else
-                BlankView()
+                BlankNoTracksView()
                 #endif
             }
             #if os(macOS)

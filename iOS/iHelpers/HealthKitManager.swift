@@ -31,6 +31,7 @@ class HealthKitManager {
     // MARK: - Methods
     
     func requestPermission() async -> Bool {
+        print("=== \(file).\(#function) ===")
         
         #if targetEnvironment(simulator)
         return false
@@ -51,7 +52,7 @@ class HealthKitManager {
     
     func getSteps(from startDate: Date, to endDate: Date = Date(), trackName: String) async -> Int32? {
         let fileFunc = "\(file).getSteps(...)"
-        print("=== \(fileFunc) - hasAccess: \(hasAccess)")
+        print("=== \(fileFunc) - hasAccess: \(hasAccess) ===")
         
         guard hasAccess else { return nil }
 

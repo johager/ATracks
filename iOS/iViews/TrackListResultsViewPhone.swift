@@ -9,12 +9,14 @@ import SwiftUI
 
 struct TrackListResultsViewPhone: View {
     
+    @EnvironmentObject var trackManager: TrackManager
+    
     @ObservedObject private var device = Device.shared
     
     var delegate: TrackListResultsViewDelegate
     
-    @State private var selectedTrack: Track?
-    @State private var selectedTrackDidChangeProgramatically = false
+//    @State private var selectedTrack: Track?
+//    @State private var selectedTrackDidChangeProgramatically = false
     @State private var isShowingDeleteAlert = false
     
     @FetchRequest private var tracks: FetchedResults<Track>
@@ -38,58 +40,57 @@ struct TrackListResultsViewPhone: View {
     // MARK: - View
     
     var body: some View {
-        VStack(spacing: 0) {
-            ScrollViewReader { proxy in
-                List() {
-                    ForEach(tracks) { track in
-                        ZStack(alignment: .leading) {
-                            NavigationLink(destination: TrackDetailView(track: track, delegate: self), tag: track, selection: $selectedTrack) { EmptyView() }
-                            .opacity(0)
-                            TrackRow(track: track, device: device)
-                        }
-                        .id(track)
-//                        #if os(iOS)
-//                        .listRowBackground(track === selectedTrack ? Color.listRowSelectedBackground : Color.clear)
-//                        #endif
-                        
-                        #if os(iOS)
-                        .listRowSeparatorTint(.listRowSeparator)
-                        .swipeActions(allowsFullSwipe: false) {
-                            Button(action: { delete(track) } ) {
-                                Label("Delete", systemImage: "trash.fill")
+        ZStack {
+            VStack(spacing: 0) {
+                ScrollViewReader { proxy in
+                    List() {
+                        ForEach(tracks) { track in
+                            ZStack(alignment: .leading) {
+                                NavigationLink(destination: TrackDetailView(track: track, delegate: self), tag: track, selection: $trackManager.selectedTrack) { EmptyView() }
+                                    .opacity(0)
+                                TrackRow(track: track, device: device)
                             }
-                            .tint(.listRowSwipeDelete)
+                            .id(track)
+    //                        .listRowBackground(track === selectedTrack ? Color.listRowSelectedBackground : Color.clear)
                             
-                            Button(action: { delegate.edit(track) } ) {
-                                Label("Edit", systemImage: "square.and.pencil")
+                            .listRowSeparatorTint(.listRowSeparator)
+                            .swipeActions(allowsFullSwipe: false) {
+                                Button(action: { delete(track) } ) {
+                                    Label("Delete", systemImage: "trash.fill")
+                                }
+                                .tint(.listRowSwipeDelete)
+                                
+                                Button(action: { delegate.edit(track) } ) {
+                                    Label("Edit", systemImage: "square.and.pencil")
+                                }
+                                .tint(.listRowSwipeEdit)
+                                
+                                Button(action: { delegate.startTracking(useNameOf: track) } ) {
+        //                            Label("Start", systemImage: "stopwatch")
+                                    Label("Start", systemImage: "timer")
+                                }
+                                .tint(.listRowSwipeStart)
                             }
-                            .tint(.listRowSwipeEdit)
-                            
-                            Button(action: { delegate.startTracking(useNameOf: track) } ) {
-    //                            Label("Start", systemImage: "stopwatch")
-                                Label("Start", systemImage: "timer")
-                            }
-                            .tint(.listRowSwipeStart)
                         }
-                        #endif
+                    }
+                    .listStyle(.plain)
+                    .onChange(of: trackManager.selectedTrack) { _ in
+                        print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(trackManager.selectedTrackDidChangeProgramatically) ===")
+                        guard trackManager.selectedTrackDidChangeProgramatically else { return }
+                        proxy.scrollTo(trackManager.selectedTrack, anchor: .center)
+                        trackManager.selectedTrackDidChangeProgramatically = false
                     }
                 }
-                .listStyle(.plain)
-                #if os(iOS)
-                .onChange(of: selectedTrack) { _ in
-                    print("=== \(file).onChange(of: selectedTrack) - selectedTrackDidChangeProgramatically: \(selectedTrackDidChangeProgramatically) ===")
-                    guard selectedTrackDidChangeProgramatically else { return }
-                    proxy.scrollTo(selectedTrack, anchor: .center)
-                    self.selectedTrackDidChangeProgramatically = false
-                }
-                #endif
+                .padding(.bottom, 0)
             }
-            .padding(.bottom, 0)
+            if trackManager.selectedTrackToHold != nil {
+                Rectangle()
+                .fill(Color.listCoverForInactive)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
         
-        #if os(iOS)
         .ignoresSafeArea(.keyboard)
-        #endif
         .alert(isPresented: $isShowingDeleteAlert) {
             Alert(title: Text("Cannot Delete"), message: Text("You cannot delete a track when another device is actively tracking it."), dismissButton: .default(Text("OK")))
         }
@@ -108,16 +109,14 @@ struct TrackListResultsViewPhone: View {
 // MARK: - TrackStatsViewDelegate
 
 extension TrackListResultsViewPhone: TrackStatsViewDelegate {
-    #if os(iOS)
     func handleSwipe(_ swipeDir: SwipeDirection) {
         //print("=== \(file).\(#function) - swipeDir: \(swipeDir) ===")
         
-        guard let newTrack = SwipeHelper.newTrack(from: Array(tracks), and: selectedTrack, for: swipeDir) else { return }
+        guard let newTrack = SwipeHelper.newTrack(from: Array(tracks), and: trackManager.selectedTrack, for: swipeDir) else { return }
         
-        selectedTrackDidChangeProgramatically = true
-        selectedTrack = newTrack
+        trackManager.selectedTrackDidChangeProgramatically = true
+        trackManager.selectedTrack = newTrack
     }
-    #endif
 }
 
 //struct TrackListResultsViewPhone_Previews: PreviewProvider {
