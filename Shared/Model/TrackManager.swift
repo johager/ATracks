@@ -26,30 +26,15 @@ class TrackManager: NSObject, ObservableObject {
     {
         didSet {
             if let selectedTrack = selectedTrack {
-                //print("=== \(file).\(#function) didSet - selectedTrack: '\(selectedTrack.debugName)' ===")
+                //print("=== \(file).\(#function) didSet: '\(selectedTrack.debugName)' ===")
                 logger?.notice("selectedTrack didSet to \(selectedTrack.debugName, privacy: .private(mask: .hash))")
             } else {
-                //print("=== \(file).\(#function) didSet - selectedTrack: nil ===")
+                //print("=== \(file).\(#function) didSet: nil ===")
                 logger?.notice("selectedTrack didSet to nil")
             }
         }
     }
     var selectedTrackDidChangeProgramatically = false
-    
-    #if os(iOS)
-    var selectedTrackToHold: Track?  // save selectedTrack when app goes into background
-    {
-       didSet {
-           if let selectedTrackToHold = selectedTrackToHold {
-               //print("=== \(file).\(#function) didSet - selectedTrackToHold: '\(selectedTrackToHold.debugName)' ===")
-               logger?.notice("selectedTrackToHold didSet to \(selectedTrackToHold.debugName, privacy: .private(mask: .hash))")
-           } else {
-               //print("=== \(file).\(#function) didSet - selectedTrackToHold: nil ===")
-               logger?.notice("selectedTrackToHold didSet to nil")
-           }
-       }
-   }
-    #endif
     
     var delegate: TrackManagerDelegate?
     
@@ -61,8 +46,6 @@ class TrackManager: NSObject, ObservableObject {
     
     private var appState: AppState!
     private var isPhone: Bool!
-    
-    private var scenePhaseSubscription: AnyCancellable?
     
     private var shouldSetSelectedTrack: Bool {
         guard let selectedTrack = selectedTrack,
@@ -125,14 +108,6 @@ class TrackManager: NSObject, ObservableObject {
     
     func setUp(using appState: AppState) {
         self.appState = appState
-        
-        scenePhaseSubscription = appState.$isActive.sink { isActive in
-            if isActive {
-                self.sceneDidBecomeActive()
-            } else {
-                self.sceneDidBecomeInactive()
-            }
-        }
     }
     
     // MARK: - CRUD for Tracks
@@ -268,6 +243,24 @@ class TrackManager: NSObject, ObservableObject {
         #endif
     }
     
+    func updateSteps(for track: Track) {
+        #if os(iOS)
+        Task.init {
+            guard let numSteps = await HealthKitManager.shared.getSteps(from: track.date, trackName: track.debugName) else { return }
+            viewContext.performAndWait {
+                track.steps = numSteps
+                coreDataStack.saveContext()
+            }
+        }
+        #endif
+    }
+    
+    func updateSummaryDataAndSteps(for track: Track) {
+        track.setTrackSummaryData()
+        coreDataStack.saveContext()
+        updateSteps(for: track)
+    }
+    
     func stopTracking() {
         print("=== \(file).\(#function) ===")
         guard let tracks = tracksThatAreTrackingOnThisDevice else { return }
@@ -275,12 +268,11 @@ class TrackManager: NSObject, ObservableObject {
         for track in tracks {
             print("--- \(file).\(#function) - name: '\(track.debugName)'")
             track.stopTracking()
+            updateSteps(for: track)
         }
         if tracks.count > 0 {
             coreDataStack.saveContext()
         }
-        
-        restoreSelectedTrackToHold()
     }
     
 //    func stopTracking(_ track: Track?) {
@@ -293,8 +285,7 @@ class TrackManager: NSObject, ObservableObject {
 //        
 //        track.stopTracking()
 //        coreDataStack.saveContext()
-//
-//        restoreSelectedTrackToHold()
+//        updateSteps(for: track)
 //    }
     
     func didDelete(_ track: Track) -> Bool {
@@ -357,60 +348,13 @@ class TrackManager: NSObject, ObservableObject {
         //print("=== \(file).\(#function) ===")
         //print("=== \(file).\(#function) - horizontalAccuracy: \(location.horizontalAccuracy), verticalAccuracy: \(location.verticalAccuracy), altitude: \(location.altitude), appState.isActive: \(appState.isActive) ===")
         
-        defer {
-            coreDataStack.saveContext()
-        }
-        
-        guard appState.isActive else {
-            TrackPoint(clLocation: location, track: track, shouldUpdateTrackDetails: false)
-            return
-        }
-        
-        let trackPoint = TrackPoint(clLocation: location, track: track)
+        let trackPoint = TrackPoint(clLocation: location, track: track, shouldUpdateTrackDetails: appState.isActive)
         delegate?.didMakeNewTrackPoint(trackPoint)
-        #if os(iOS)
-        Task.init {
-            guard let numSteps = await HealthKitManager.shared.getSteps(from: track.date, trackName: track.debugName) else { return }
-            viewContext.performAndWait {
-                track.steps = numSteps
-                coreDataStack.saveContext()
-            }
-        }
-        #endif
-    }
-    
-    // MARK: - Scene Lifecycle
-    
-    func sceneDidBecomeActive() {
-//        print("=== \(file).\(#function) ===")
-        logger?.notice(#function)
-
-        restoreSelectedTrackToHold()
-    }
-    
-    func sceneDidBecomeInactive() {
-//        print("=== \(file).\(#function) ===")
-        logger?.notice(#function)
+        coreDataStack.saveContext()
         
         #if os(iOS)
-        guard let selectedTrack = selectedTrack,
-              TrackHelper.trackIsTrackingOnThisDevice(selectedTrack)
-        else { return }
-
-        selectedTrackToHold = selectedTrack
-        self.selectedTrack = nil
-        #endif
-    }
-    
-    func restoreSelectedTrackToHold() {
-        #if os(iOS)
-        logger?.notice("restoreSelectedTrackToHold - at top")
-        guard selectedTrackToHold != nil else { return }
-        
-        Func.afterDelay(0.3) {
-            self.selectedTrack = self.selectedTrackToHold
-            self.selectedTrackToHold = nil
-        }
+        guard appState.isActive else { return }
+        updateSteps(for: track)
         #endif
     }
 }

@@ -119,13 +119,6 @@ struct TrackListResultsView: View {
                 }
                 .padding(.bottom, 0)
             }
-            #if os(iOS)
-            if trackManager.selectedTrackToHold != nil {
-                Rectangle()
-                .fill(Color.listCoverForInactive)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            #endif
         }
         #if os(iOS)
         .ignoresSafeArea(.keyboard)

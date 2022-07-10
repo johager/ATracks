@@ -6,31 +6,44 @@
 //
 
 import SwiftUI
-import MapKit
 
 struct MapView: NSViewRepresentable {
     
-    @ObservedObject var track: Track
-    var scrubberInfo: ScrubberInfo
+    typealias Context = NSViewRepresentableContext<MapView>
+    typealias NSViewType = NSView
     
-    let mapViewHelper = MapViewHelper()
+    private var mapViewHelper: MapViewHelper!
+    
+    let file = "MapView"
+    
+    // MARK: - Init
+    
+    init(mapViewHelper: MapViewHelper, track: Track, scrubberInfo: ScrubberInfo) {
+        self.mapViewHelper = mapViewHelper
+        mapViewHelper.setUp(for: track, and: scrubberInfo)
+    }
     
     // MARK: - NSViewRepresentable
     
+    func makeCoordinator() -> MapViewCoordinator {
+        MapViewCoordinator(mapViewHelper: mapViewHelper)
+    }
+    
     func makeNSView(context: Context) -> NSView {
-        //print(#function)
-        mapViewHelper.setUpView(for: track, and: scrubberInfo)
+        //print("=== \(file).\(#function)  ===")
+        mapViewHelper.makeView()
         mapViewHelper.mapView.delegate = context.coordinator
-        
         return mapViewHelper.view
     }
     
     func updateNSView(_ view: NSView, context: Context) {
-        //print(#function)
-        mapViewHelper.updateView(for: track, and: scrubberInfo)
+        //print("=== \(file).\(#function)  ===")
+        mapViewHelper.updateView()
     }
     
-    func makeCoordinator() -> MapViewCoordinator {
-        MapViewCoordinator(self)
+    static func dismantleNSView(_ nsView: NSView, coordinator: MapViewCoordinator) {
+        let file = "MapView"
+        print("=== \(file).\(#function)  ===")
+        coordinator.cleanUp()
     }
 }

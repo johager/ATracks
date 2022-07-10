@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F805E04A28662AD6000B2BDC /* BlankOneMomentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F805E04928662AD6000B2BDC /* BlankOneMomentView.swift */; };
 		F805E04C2868FA52000B2BDC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F805E04B2868FA52000B2BDC /* AppState.swift */; };
 		F805E04D2868FA52000B2BDC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F805E04B2868FA52000B2BDC /* AppState.swift */; };
 		F8233CA82811AA2100536A0F /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8233CA72811AA2100536A0F /* Int32+.swift */; };
@@ -152,7 +151,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F805E04928662AD6000B2BDC /* BlankOneMomentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankOneMomentView.swift; sourceTree = "<group>"; };
 		F805E04B2868FA52000B2BDC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F8233CA72811AA2100536A0F /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
 		F82BD5D428270DCF003E674D /* TrackListButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListButtonsView.swift; sourceTree = "<group>"; };
@@ -393,7 +391,6 @@
 			isa = PBXGroup;
 			children = (
 				F8E0068D281EC7F700FD679C /* AddEditTrackName.swift */,
-				F805E04928662AD6000B2BDC /* BlankOneMomentView.swift */,
 				F82BD5D628270EBD003E674D /* HOrVStackView.swift */,
 				F8D3FFCC2819A5FB00887790 /* LocationServicesView.swift */,
 				F868D697280DF99400EC3D30 /* MapView.swift */,
@@ -712,7 +709,6 @@
 				F8E0069628200FD400FD679C /* TrackListView.swift in Sources */,
 				F8821AAD281397D600A21781 /* MailView.swift in Sources */,
 				F8E00691281F616800FD679C /* DisplaySettings.swift in Sources */,
-				F805E04A28662AD6000B2BDC /* BlankOneMomentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -913,7 +909,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 40a;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -933,7 +929,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;
@@ -951,7 +947,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ATracks (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 40a;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -971,7 +967,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AvantiApplications.ATracks;
 				PRODUCT_NAME = ATracks;
 				SDKROOT = iphoneos;
@@ -991,7 +987,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28k;
+				CURRENT_PROJECT_VERSION = 28l;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1020,7 +1016,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28k;
+				CURRENT_PROJECT_VERSION = 28l;
 				DEVELOPMENT_TEAM = 37H8X6K6NN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

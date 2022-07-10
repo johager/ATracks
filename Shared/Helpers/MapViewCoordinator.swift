@@ -16,26 +16,36 @@ import AppKit
 
 class MapViewCoordinator: NSObject {
     
-    var parent: MapView
+    var mapViewHelper: MapViewHelper!
     
     //lazy var file = Func.sourceFileNameFromFullPath(#file)
     
-    init(_ parent: MapView) {
-        self.parent = parent
+    init(mapViewHelper: MapViewHelper) {
         super.init()
+        self.mapViewHelper = mapViewHelper
         #if os(iOS)
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         #else
         let gestureRecognizer = NSClickGestureRecognizer(target: self, action: #selector(handleTap))
         #endif
-        parent.mapViewHelper.mapView.addGestureRecognizer(gestureRecognizer)
+        mapViewHelper.mapView.addGestureRecognizer(gestureRecognizer)
+        //print("=== \(file).\(#function) ===")
+    }
+    
+//    deinit {
+//        print("=== \(file).\(#function) ===")
+//    }
+    
+    func cleanUp() {
+        mapViewHelper.cleanUp()
+        mapViewHelper = nil
     }
     
     // MARK: - Methods
     
     @objc func handleTap(_ gesture: Any) {
         //print("=== \(file).\(#function) ===")
-        parent.mapViewHelper.centerMap()
+        mapViewHelper.centerMap()
     }
     
     #if os(iOS)

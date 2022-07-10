@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @ObservedObject var displaySettings = DisplaySettings.shared
+    @StateObject var displaySettings = DisplaySettings.shared
     
     // MARK: - View
     

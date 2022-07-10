@@ -45,7 +45,7 @@ class LocationManager: NSObject {
 
     var firstLocation: CLLocation!
     private var shouldCheckAutoStop = false
-    private var track: Track!
+    var track: Track!
     
     var settingsProvider: LocationManagerSettingsProvider = LocationManagerSettings.shared
     
@@ -177,10 +177,14 @@ class LocationManager: NSObject {
         
         appIsActive = true
         
-        if isTracking {
+        guard isTracking else {
+            startLocationManagerUpdates()
             return
         }
-        startLocationManagerUpdates()
+        
+        guard let track = LocationManager.shared.track else { return }
+        
+        TrackManager.shared.updateSummaryDataAndSteps(for: track)
     }
     
     func sceneDidBecomeInactive() {

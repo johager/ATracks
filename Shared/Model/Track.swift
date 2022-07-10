@@ -92,7 +92,7 @@ class Track: NSManagedObject, Identifiable {
     }
     
     func setTrackSummaryData(verticalAccuracy: Double = 1, shouldUpdateTrackDetails: Bool = true) {
-        //print("=== \(file).\(#function) - shouldUpdateTrackDetails: \(shouldUpdateTrackDetails) ===")
+        print("=== \(file).\(#function) - shouldUpdateTrackDetails: \(shouldUpdateTrackDetails) ===")
         
         if verticalAccuracy <= 0 {
             altitudeIsValid = false
@@ -109,6 +109,7 @@ class Track: NSManagedObject, Identifiable {
     }
     
     func setAltitudeData() {
+        print("=== \(file).\(#function) - altitudeIsValid: \(altitudeIsValid) ===")
         guard altitudeIsValid else { return }
         
         let trackHelper = TrackHelper(track: self, forTrack: true)

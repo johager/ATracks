@@ -31,9 +31,9 @@ class TrackHelper {
     var yAxisDelta: Double!
     var yAxisScale: Double!
     var yAxisNumGridLines: Int16 = 0
-//    var yAxisNumGridLines: Int16 = 0 {
+//    {
 //        didSet {
-//            print("=== \(file).\(#function) - didSet: \(yAxisNumGridLines) ===")
+//            print("=== \(file).\(#function) didSet: \(yAxisNumGridLines) ===")
 //        }
 //    }
     
@@ -49,6 +49,8 @@ class TrackHelper {
         self.track = track
         self.trackPoints = track.trackPoints
         
+        //print("=== \(file).\(#function) - track: \(track.debugName), forTrack: \(forTrack) ===")
+        
         guard track.altitudeIsValid else { return }
         
         setAltitudeData()
@@ -59,6 +61,10 @@ class TrackHelper {
         
         setPlotVals()
     }
+    
+//    deinit {
+//        print("=== \(file).\(#function) - track: \(track.debugName) ===")
+//    }
     
     // MARK: - Altitude Methods
     

@@ -10,8 +10,8 @@ import MessageUI
 
 struct SettingsView: View {
     
-    @ObservedObject var displaySettings = DisplaySettings.shared
-    @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
+    @StateObject var displaySettings = DisplaySettings.shared
+    @StateObject var locationManagerSettings = LocationManagerSettings.shared
     
     private var device: Device
     

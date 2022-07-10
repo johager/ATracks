@@ -16,17 +16,18 @@ struct TrackDetailView: View {
     #endif
     @EnvironmentObject var displaySettings: DisplaySettings
     
-    @ObservedObject private var device = Device.shared
+    @StateObject private var device = Device.shared
     
     @ObservedObject private var track: Track
     private var delegate: TrackStatsViewDelegate?
     
-    @StateObject var scrubberInfo = ScrubberInfo()
+    @StateObject private var mapViewHelper = MapViewHelper()
+    @StateObject private var scrubberInfo = ScrubberInfo()
     
     private var trackIsTrackingOnThisDevice: Bool { TrackHelper.trackIsTrackingOnThisDevice(track) }
     
     #if os(iOS)
-    @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
+    @StateObject var locationManagerSettings = LocationManagerSettings.shared
     private var stopTrackingText: String {
         if locationManagerSettings.useAutoStop {
             return "[Stop Tracking]"
@@ -45,8 +46,8 @@ struct TrackDetailView: View {
     init(track: Track, delegate: TrackStatsViewDelegate? = nil) {
         self.track = track
         self.delegate = delegate
-        
         logger = Func.logger(for: file)
+        print("=== \(file).\(#function) - \(track.debugName) ===")
     }
     
     // MARK: - View
@@ -69,11 +70,11 @@ struct TrackDetailView: View {
                             }
                             
                             ZStack {
-                                MapView(track: track, scrubberInfo: scrubberInfo)
+                                MapView(mapViewHelper: mapViewHelper, track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea(.all)
                                     .id(device.colorScheme)
                                     .id(displaySettings.mapViewSatellite)
-                                    .id(track.id)
+//                                    .id(track.id)
                                 #if os(iOS)
                                 if trackIsTrackingOnThisDevice {
                                     VStack {
@@ -103,11 +104,11 @@ struct TrackDetailView: View {
                             TrackStatsView(track: track, delegate: delegate)
                             HorizontalDividerView()
                             ZStack {
-                                MapView(track: track, scrubberInfo: scrubberInfo)
+                                MapView(mapViewHelper: mapViewHelper, track: track, scrubberInfo: scrubberInfo)
                                     .edgesIgnoringSafeArea([.top, .trailing, .leading])
                                     .id(device.colorScheme)
                                     .id(displaySettings.mapViewSatellite)
-                                    .id(track.id)
+//                                    .id(track.id)
                                 #if os(iOS)
                                 if trackIsTrackingOnThisDevice {
                                     VStack {

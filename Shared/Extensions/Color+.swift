@@ -176,7 +176,7 @@ extension Color {
     
     static var track: Color {
         let lightColor = Color(red: 0.9, green: 0, blue: 0)
-        return color(light: lightColor, dark: avantiOrange)
+        return colorStatic(light: lightColor, dark: avantiOrange)
     }
     
     static var trackSat: Color {

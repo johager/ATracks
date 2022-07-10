@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TrackPlotView: View {
     
-    @ObservedObject private var device = Device.shared
+    @StateObject private var device = Device.shared
     
     @ObservedObject private var track: Track
     @ObservedObject private var scrubberInfo: ScrubberInfo
@@ -23,6 +23,8 @@ struct TrackPlotView: View {
     
     private var trackHelper: TrackHelper
     
+    let file = "TrackPlotView"
+    
     // MARK: - Init
     
     init(track: Track, scrubberInfo: ScrubberInfo, displayOnSide: Bool = false) {
@@ -30,6 +32,8 @@ struct TrackPlotView: View {
         self.scrubberInfo = scrubberInfo
         self.displayOnSide = displayOnSide
         self.trackHelper = TrackHelper(track: track)
+        
+        //print("=== \(file).\(#function) - track: \(track.debugName) ===")
         
         if displayOnSide && DisplaySettings.shared.placeMapOnRightInLandscape && scrubberInfo.xFraction > 1 {
             scrubberInfo.xFraction = -1

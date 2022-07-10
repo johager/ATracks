@@ -16,7 +16,7 @@ protocol TrackListButtonsViewDelegate {
 
 struct TrackListButtonsView: View {
     
-    @ObservedObject var locationManagerSettings = LocationManagerSettings.shared
+    @StateObject var locationManagerSettings = LocationManagerSettings.shared
     
     let hOrVStack: HOrVStack
     @Binding var isTracking: Bool

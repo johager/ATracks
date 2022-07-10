@@ -17,7 +17,7 @@ protocol TrackStatsViewDelegate {
 
 struct TrackStatsView: View {
     
-    @ObservedObject private var device = Device.shared
+    @StateObject private var device = Device.shared
     
     @ObservedObject private var track: Track
     private var displayOnSide: Bool
