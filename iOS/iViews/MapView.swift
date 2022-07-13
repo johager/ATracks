@@ -26,6 +26,7 @@ struct MapView: UIViewRepresentable {
     // MARK: - Init
     
     init(mapViewHelper: MapViewHelper, track: Track, scrubberInfo: ScrubberInfo) {
+//        print("=== \(file).\(#function) - \(track.debugName) ===")
         self.mapViewHelper = mapViewHelper
         mapViewHelper.setUp(for: track, and: scrubberInfo)
         logger = Func.logger(for: file)
@@ -49,6 +50,7 @@ struct MapView: UIViewRepresentable {
     func updateUIView(_ view: UIView, context: Context) {
         //print("=== \(file).\(#function) - appState.isActive: \(appState.isActive) ===")
         logger?.notice("\(#function) - appState.isActive: \(appState.isActive, privacy: .public)")
+        guard appState.isActive else { return }
         mapViewHelper.updateView()
     }
     

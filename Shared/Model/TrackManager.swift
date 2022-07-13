@@ -26,10 +26,10 @@ class TrackManager: NSObject, ObservableObject {
     {
         didSet {
             if let selectedTrack = selectedTrack {
-                //print("=== \(file).\(#function) didSet: '\(selectedTrack.debugName)' ===")
+                //print("=== \(file).\(#function) didSet '\(selectedTrack.debugName)' ===")
                 logger?.notice("selectedTrack didSet to \(selectedTrack.debugName, privacy: .private(mask: .hash))")
             } else {
-                //print("=== \(file).\(#function) didSet: nil ===")
+                //print("=== \(file).\(#function) didSet nil ===")
                 logger?.notice("selectedTrack didSet to nil")
             }
         }

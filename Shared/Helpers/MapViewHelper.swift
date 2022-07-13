@@ -110,11 +110,11 @@ class MapViewHelper: NSObject, ObservableObject {
     override init() {
         super.init()
         self.logger = Func.logger(for: file)
-        print("=== \(file).\(#function) ===")
+//        print("=== \(file).\(#function) ===")
     }
     
     deinit {
-        print("=== \(file).\(#function) ===")
+//        print("=== \(file).\(#function) ===")
         NotificationCenter.default.removeObserver(self)
     }
      
@@ -128,18 +128,30 @@ class MapViewHelper: NSObject, ObservableObject {
 //        #endif
         
         if self.track == nil {
+//            print("=== \(file).\(#function) - \(track.debugName) - track was nil ===")
             self.track = track
             self.scrubberInfo = scrubberInfo
-            setUpSubscriptions()
             return
         }
         
         self.scrubberInfo = scrubberInfo
-        setUpSubscriptions()
         
-        guard track.id != self.track.id || device.mapViewShouldUpdateDueToColorSchemeChange else { return }
+        guard track.id != self.track.id || device.mapViewShouldUpdateDueToColorSchemeChange
+        else {
+//            print("=== \(file).\(#function) - \(track.debugName) - track is same ===")
+            if Device.shared.isMac {
+                setUpSubscriptions()
+            }
+            return
+        }
+        
+//        print("=== \(file).\(#function) - \(track.debugName) - track is new ===")
         
         self.track = track
+        
+        if Device.shared.isPad {
+            setUpSubscriptions()
+        }
         
         setUpTracking()
         
@@ -149,16 +161,10 @@ class MapViewHelper: NSObject, ObservableObject {
     }
     
     func makeView() {
-        print("=== \(file).\(#function) - \(track.debugName) ===")
+//        print("=== \(file).\(#function) - \(track.debugName) - hasBeenSetUp: \(startPointAnnotation != nil) ===")
         
         setUpView()
         setUpTracking()
-        
-        if trackIsTrackingOnThisDevice {
-            NotificationCenter.default.addObserver(self,
-                selector: #selector(handleDidStopTrackingNotification(_:)),
-                name: .didStopTracking, object: nil)
-        }
         
         NotificationCenter.default.addObserver(self,
             selector: #selector(handleScenePhaseChangedToActive(_:)),
@@ -174,7 +180,7 @@ class MapViewHelper: NSObject, ObservableObject {
 //        let shouldUpdate = appIsActive || device.mapViewShouldUpdateDueToColorSchemeChange
 //        logger?.notice("updateView - hasBeenSetUp: \(self.startPointAnnotation != nil, privacy: .public), shouldUpdateDueToColorSchemeChange: \(self.device.mapViewShouldUpdateDueToColorSchemeChange, privacy: .public), shouldUpdate: \(shouldUpdate, privacy: .public)")
         
-        logger?.notice("updateView - do update - hasBeenSetUp: \(self.startPointAnnotation != nil, privacy: .public)")
+        //logger?.notice("updateView - hasBeenSetUp: \(self.startPointAnnotation != nil, privacy: .public)")
         
         if device.mapViewShouldUpdateDueToColorSchemeChange {
             prepForNewTrack()
@@ -206,7 +212,10 @@ class MapViewHelper: NSObject, ObservableObject {
     func cleanUp() {
         //print("=== \(file).\(#function) ===")
 
+        trackPointCLLocationSubscription?.cancel()
         trackPointCLLocationSubscription = nil
+        
+        trackPointCalloutLabelSubscription?.cancel()
         trackPointCalloutLabelSubscription = nil
     }
     
@@ -221,13 +230,29 @@ class MapViewHelper: NSObject, ObservableObject {
 //        #endif
         
         #if os(iOS)
+        if trackIsTrackingOnThisDevice {
+//            print("--- \(file).\(#function) - \(track.debugName), set up observer for didStopTracking")
+            NotificationCenter.default.addObserver(self,
+                selector: #selector(handleDidStopTrackingNotification(_:)),
+                name: .didStopTracking, object: nil)
+        } else {
+            NotificationCenter.default.removeObserver(self, name: .didStopTracking, object: nil)
+        }
+        
         if Device.shared.isPad {
             scrubberInfo.setUpFor(track.id)
         }
         #endif
         
+        cleanUp()
+        
         trackPointCLLocationSubscription = scrubberInfo.$trackPointCLLocationCoordinate2D.sink { clLocationCoordinate2D in
             //print("=== \(self.file).trackPointCLLocationSubscription.sink - clLocationCoordinate2D, \(self.track.debugName) ===")
+//            if clLocationCoordinate2D == nil {
+//                print("=== \(self.file).trackPointCLLocationSubscription.sink - clLocationCoordinate2D is nil, \(self.track.debugName) ===")
+//            } else {
+//                print("=== \(self.file).trackPointCLLocationSubscription.sink - clLocationCoordinate2D exists, \(self.track.debugName) ===")
+//            }
             self.placeTrackMarker(at: clLocationCoordinate2D)
         }
 
@@ -353,8 +378,7 @@ class MapViewHelper: NSObject, ObservableObject {
         //mapView.showsUserLocation = true
         #if os(iOS)
         mapView.userTrackingMode = .followWithHeading
-        let mapCamera = MKMapCamera(lookingAtCenter: center, fromDistance: 1500, pitch: 0, heading: 0)
-        mapView.camera = mapCamera
+        mapView.camera = MKMapCamera(lookingAtCenter: center, fromDistance: 1500, pitch: 0, heading: 0)
         mapView.cameraZoomRange = MKMapView.CameraZoomRange(minCenterCoordinateDistance: 1000)
         #endif
         
@@ -362,6 +386,8 @@ class MapViewHelper: NSObject, ObservableObject {
     }
     
     private func prepForNewTrack() {
+//        print("=== \(file).\(#function) ===")
+        
         mapView?.annotations.forEach { mapView.removeAnnotation($0) }
         mapView?.overlays.forEach { mapView.removeOverlay($0) }
         
@@ -371,6 +397,7 @@ class MapViewHelper: NSObject, ObservableObject {
     }
     
     private func drawTrack() {
+//        print("=== \(file).\(#function) ===")
         
         guard startPointAnnotation == nil else { return }
         
@@ -387,14 +414,14 @@ class MapViewHelper: NSObject, ObservableObject {
         }
         
         // start point annotation
-        startPointAnnotation = AAPointAnnotation(coordinate: coordinates.first!, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: true, imageOffsetY: -18)
-        mapView.addAnnotation(startPointAnnotation)
+        addStartPointAnnotation(at: coordinates.first!)
         
-        // end point annotation
+        // track point annotation
         if track.isTracking {
             trackPointAnnotation = AAPointAnnotation(coordinate: coordinates.last!, imageNameBase: "mapPointMarker")
             mapView.addAnnotation(trackPointAnnotation)
             return
+            
         } else if let coordinate = scrubberInfo.trackPointCLLocationCoordinate2D {
             trackPointAnnotation = AAPointAnnotation(coordinate: coordinate, imageNameBase: "mapPointMarker")
             mapView.addAnnotation(trackPointAnnotation)
@@ -408,13 +435,21 @@ class MapViewHelper: NSObject, ObservableObject {
         addEndPointAnnotation()
     }
     
+    private func addStartPointAnnotation(at coordinate: CLLocationCoordinate2D) {
+        
+        guard startPointAnnotation == nil else { return }
+        
+        startPointAnnotation = AAPointAnnotation(coordinate: coordinate, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: true, imageOffsetY: -18)
+        mapView.addAnnotation(startPointAnnotation)
+    }
+    
     private func addEndPointAnnotation() {
         
         guard endPointAnnotation == nil else { return }
         
         let trackPoints = track.trackPoints
         
-        guard trackPoints.count > 0,
+        guard trackPoints.count > 1,
               trackPoints.last!.clLocation.distance(from: trackPoints.first!.clLocation) > 10
         else { return }
         
@@ -423,14 +458,27 @@ class MapViewHelper: NSObject, ObservableObject {
     }
     
     private func placeTrackMarker(at clLocationCoordinate2D: CLLocationCoordinate2D?) {
+//        print("=== \(file).\(#function) ===")
         
-        guard let clLocationCoordinate2D = clLocationCoordinate2D else { return }
+        guard let clLocationCoordinate2D = clLocationCoordinate2D
+        else {
+            removeTrackPointAnnotation()
+            return
+        }
         
         if trackPointAnnotation == nil {
             trackPointAnnotation = AAPointAnnotation(coordinate: clLocationCoordinate2D, imageNameBase: "mapPointMarker")
             mapView.addAnnotation(trackPointAnnotation)
         } else {
             trackPointAnnotation.coordinate = clLocationCoordinate2D
+        }
+    }
+    
+    private func removeTrackPointAnnotation() {
+//        print("=== \(file).\(#function) ===")
+        if trackPointAnnotation != nil {
+            mapView.removeAnnotation(trackPointAnnotation)
+            trackPointAnnotation = nil
         }
     }
     
@@ -456,23 +504,23 @@ class MapViewHelper: NSObject, ObservableObject {
     // MARK: - Notifications
     
     @objc func handleDidStopTrackingNotification(_ notification: Notification) {
-        print("=== \(file).\(#function) ===")
+        //print("=== \(file).\(#function) ===")
+        logger?.notice("handleDidStopTrackingNotification")
         setMapNoTrack(shouldApplyRegion: false)
-        
-        if trackPointAnnotation != nil {
-            mapView.removeAnnotation(trackPointAnnotation)
-            trackPointAnnotation = nil
-        }
-        
+        removeTrackPointAnnotation()
         addEndPointAnnotation()
-        
         centerMap()
     }
     
     @objc func handleScenePhaseChangedToActive(_ notification: NSNotification) {
         //print("=== \(file).\(#function) ===")
+        //logger?.notice("handleScenePhaseChangedToActive")
         #if os(iOS)
+        //print("=== \(file).\(#function) - trackIsTrackingOnThisDevice: \(trackIsTrackingOnThisDevice) ===")
+        logger?.notice("handleScenePhaseChangedToActive - trackIsTrackingOnThisDevice: \(self.trackIsTrackingOnThisDevice, privacy: .public)")
         if trackIsTrackingOnThisDevice {
+            prepForNewTrack()
+            drawTrack()
             centerMap()
         }
         #endif
@@ -484,15 +532,18 @@ class MapViewHelper: NSObject, ObservableObject {
 extension MapViewHelper: TrackManagerDelegate {
     
     func didMakeNewTrackPoint(_ trackPoint: TrackPoint) {
-        //print("=== \(file).\(#function) ===")
+        print("=== \(file).\(#function) ===")
         
         if mapView == nil {
             return
         }
         
-        mapView.setCenter(trackPoint.clLocationCoordinate2D, animated: true)
+        let coordinate = trackPoint.clLocationCoordinate2D
+        
+        mapView.setCenter(coordinate, animated: true)
         
         drawTrack()
+        addStartPointAnnotation(at: coordinate)
         
         defer {
             lastTrackPoint = trackPoint

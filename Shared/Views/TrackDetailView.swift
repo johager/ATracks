@@ -47,7 +47,7 @@ struct TrackDetailView: View {
         self.track = track
         self.delegate = delegate
         logger = Func.logger(for: file)
-        print("=== \(file).\(#function) - \(track.debugName) ===")
+//        print("=== \(file).\(#function) - \(track.debugName) ===")
     }
     
     // MARK: - View

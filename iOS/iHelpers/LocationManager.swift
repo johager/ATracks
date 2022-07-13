@@ -50,6 +50,8 @@ class LocationManager: NSObject {
     var settingsProvider: LocationManagerSettingsProvider = LocationManagerSettings.shared
     
     #if targetEnvironment(simulator)
+    private let shouldUseTime_BasedAutoStop = true
+    private let autoStopTime: TimeInterval = 10
     private let useSimulatedAltitude = true
     private var altitudeCount: CGFloat = 0 {
         didSet {
@@ -102,7 +104,7 @@ class LocationManager: NSObject {
     
     func startTracking(name: String) {
         //print("=== \(file).\(#function) - name: '\(name)' ===")
-        logger?.notice("\(#function) - name: '\(name, privacy: .private(mask: .hash))'")
+        logger?.notice("\(#function, privacy: .public) - name: '\(name, privacy: .private(mask: .hash))'")
         
         if isTracking {
             stopTracking()
@@ -114,7 +116,7 @@ class LocationManager: NSObject {
     
     func stopTracking(forDelete: Bool = false) {
         //print("=== \(file).\(#function) - forDelete: \(forDelete) ===")
-        logger?.notice("\(#function) - forDelete: '\(forDelete, privacy: .public)'")
+        logger?.notice("\(#function, privacy: .public) - forDelete: '\(forDelete, privacy: .public)'")
         if !forDelete {
 //            TrackManager.shared.stopTracking(track)
             TrackManager.shared.stopTracking()
@@ -149,6 +151,16 @@ class LocationManager: NSObject {
         let dLoc = location.distance(from: firstLocation)
         print("--- \(file).\(#function) - isTracking: \(isTracking), dTime: \(dTime), dLoc: \(dLoc), shouldCheckAutoStop: \(shouldCheckAutoStop)")
         
+        #if targetEnvironment(simulator)
+        if shouldUseTime_BasedAutoStop {
+            if dTime > autoStopTime {
+                logger?.notice("\(#function, privacy: .public) - call stopTracking() due to autoStopTime")
+                stopTracking()
+            }
+            return
+        }
+        #endif
+        
         guard shouldCheckAutoStop
         else {
             shouldCheckAutoStop = dTime > autoStopMinTimeIntToStart && dLoc > autoStopMinDistToStart
@@ -156,6 +168,7 @@ class LocationManager: NSObject {
         }
         
         if dLoc < autoStopMinDistToStop {
+            logger?.notice("\(#function, privacy: .public) - call stopTracking()")
             stopTracking()
         }
     }
@@ -171,7 +184,7 @@ class LocationManager: NSObject {
     
     func sceneDidBecomeActive() {
         //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
-        logger?.notice("\(#function) - shouldTrack: \(self.shouldTrack, privacy: .public)")
+        logger?.notice("\(#function, privacy: .public) - shouldTrack: \(self.shouldTrack, privacy: .public)")
         
         guard shouldTrack else { return }
         
@@ -189,7 +202,7 @@ class LocationManager: NSObject {
     
     func sceneDidBecomeInactive() {
         //print("=== \(file).\(#function) - shouldTrack: \(shouldTrack), appIsActive: \(appIsActive) ===")
-        logger?.notice("\(#function) - shouldTrack: \(self.shouldTrack, privacy: .public)")
+        logger?.notice("\(#function, privacy: .public) - shouldTrack: \(self.shouldTrack, privacy: .public)")
  
         guard shouldTrack else { return }
         

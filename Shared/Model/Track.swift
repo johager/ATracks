@@ -92,7 +92,7 @@ class Track: NSManagedObject, Identifiable {
     }
     
     func setTrackSummaryData(verticalAccuracy: Double = 1, shouldUpdateTrackDetails: Bool = true) {
-        print("=== \(file).\(#function) - shouldUpdateTrackDetails: \(shouldUpdateTrackDetails) ===")
+//        print("=== \(file).\(#function) - shouldUpdateTrackDetails: \(shouldUpdateTrackDetails) ===")
         
         if verticalAccuracy <= 0 {
             altitudeIsValid = false
@@ -109,15 +109,24 @@ class Track: NSManagedObject, Identifiable {
     }
     
     func setAltitudeData() {
-        print("=== \(file).\(#function) - altitudeIsValid: \(altitudeIsValid) ===")
+//        print("=== \(file).\(#function) - altitudeIsValid: \(altitudeIsValid) ===")
         guard altitudeIsValid else { return }
         
-        let trackHelper = TrackHelper(track: self, forTrack: true)
+        let trackHelper = TrackHelper(track: self)
+        
+        guard trackHelper.altitudes.count > 1 else { return }
         
         altitudeMin = trackHelper.altitudeMin
         altitudeMax = trackHelper.altitudeMax
         altitudeAve = trackHelper.altitudeAve
         altitudeGain = trackHelper.altitudeGain
+        
+        let userInfo = [
+            TrackHelper.timeKey: trackHelper.time,
+            TrackHelper.altitudesKey: trackHelper.altitudes
+        ]
+        
+        NotificationCenter.default.post(name: Notification.Name.altitudeChanged(for: self), object: nil, userInfo: userInfo)
     }
     
     func setDistanceAndDuration(from trackPoints: [TrackPoint]) {
@@ -139,8 +148,8 @@ class Track: NSManagedObject, Identifiable {
         let startDate = trackPoints.first!.timestamp
         let stopDate = trackPoints.last!.timestamp
         
-        print("=== \(file).\(#function) - startDate: \(startDate.stringForDebug) ===")
-        print("--- \(file).\(#function) -  stopDate: \(stopDate.stringForDebug)")
+//        print("=== \(file).\(#function) - startDate: \(startDate.stringForDebug) ===")
+//        print("--- \(file).\(#function) -  stopDate: \(stopDate.stringForDebug)")
         
         let duration = stopDate.timeIntervalSince(startDate)
         

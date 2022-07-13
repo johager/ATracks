@@ -51,7 +51,7 @@ class TrackHelperTests: XCTestCase {
     func runSetGridValsTestCases(_ testCases: [SetGridValsTestCase], function: String) {
         
         track = Track(name: "_test_")
-        trackHelper = TrackHelper(track: track)
+        trackHelper = TrackHelper(track: track, shouldSetPlotVals: true)
         
         var failedCases = [SetGridValsTestCase]()
         

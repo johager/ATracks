@@ -23,7 +23,7 @@ class DisplaySettings: ObservableObject {
     
     @Published var mapViewSatellite: Bool {
         didSet {
-            print("=== \(file).\(#function) didSet: \(mapViewSatellite) ===")
+            print("=== \(file).\(#function) didSet \(mapViewSatellite) ===")
             UserDefaults.standard.set(mapViewSatellite, forKey: DisplaySettings.mapViewSatelliteKey)
             UserDefaults.standard.synchronize()
         }
@@ -32,7 +32,7 @@ class DisplaySettings: ObservableObject {
     #if os(iOS)
     @Published var placeButtonsOnRightInLandscape: Bool {
         didSet {
-            print("=== \(file).\(#function) didSet: \(placeButtonsOnRightInLandscape) ===")
+            print("=== \(file).\(#function) didSet \(placeButtonsOnRightInLandscape) ===")
             UserDefaults.standard.set(placeButtonsOnRightInLandscape, forKey: DisplaySettings.placeButtonsOnRightInLandscapeKey)
             UserDefaults.standard.synchronize()
         }
@@ -41,7 +41,7 @@ class DisplaySettings: ObservableObject {
     
     @Published var placeMapOnRightInLandscape: Bool {
         didSet {
-            print("=== \(file).\(#function) didSet: \(placeMapOnRightInLandscape) ===")
+            print("=== \(file).\(#function) didSet \(placeMapOnRightInLandscape) ===")
             UserDefaults.standard.set(placeMapOnRightInLandscape, forKey: DisplaySettings.placeMapOnRightInLandscapeKey)
             UserDefaults.standard.synchronize()
         }

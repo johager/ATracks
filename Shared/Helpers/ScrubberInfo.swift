@@ -14,9 +14,9 @@ class ScrubberInfo: ObservableObject {
 //    {
 //        didSet {
 //            #if os(iOS)
-//            print("=== \(file).\(#function) didSet: \(xFraction) - trackID: \(trackID) ===")
+//            print("=== \(file).\(#function) didSet \(xFraction) - trackID: \(trackID) ===")
 //            #else
-//            print("=== \(file).\(#function) didSet: \(xFraction) ===")
+//            print("=== \(file).\(#function) didSet \(xFraction) ===")
 //            #endif
 //        }
 //    }

@@ -14,14 +14,14 @@ class Device: NSObject, ObservableObject {
     @Published var colorScheme: ColorScheme = .light
     {
         didSet {
-            print("=== \(file).\(#function) didSet: \(colorScheme) ===")
+            print("=== \(file).\(#function) didSet \(colorScheme) ===")
         }
     }
 //    #if os(iOS)
     var mapViewShouldUpdateDueToColorSchemeChange = false
     {
         didSet {
-            print("=== \(file).\(#function) didSet: \(mapViewShouldUpdateDueToColorSchemeChange) ===")
+            print("=== \(file).\(#function) didSet \(mapViewShouldUpdateDueToColorSchemeChange) ===")
         }
     }
 //    #endif

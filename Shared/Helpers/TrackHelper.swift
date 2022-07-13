@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Combine
 import CoreGraphics
 import CoreLocation
 
-class TrackHelper {
+class TrackHelper: NSObject, ObservableObject {
     
     var track: Track!
     
@@ -30,41 +31,87 @@ class TrackHelper {
     var yAxisMax: Double!
     var yAxisDelta: Double!
     var yAxisScale: Double!
-    var yAxisNumGridLines: Int16 = 0
-//    {
-//        didSet {
-//            print("=== \(file).\(#function) didSet: \(yAxisNumGridLines) ===")
-//        }
-//    }
+    var yAxisNumGridLines: Int16 = 0 {
+        didSet {
+            //print("=== \(file).\(#function) didSet \(yAxisNumGridLines) ===")
+            hasAltitudeData = yAxisNumGridLines > 0
+        }
+    }
     
-    var hasAltitudeData: Bool { yAxisNumGridLines > 0 }
+    @Published var hasAltitudeData = false
     
     private var trackPoints: [TrackPoint]!
     
+//    private let uuidString = UUID().uuidString
+    
     lazy var file = Func.sourceFileNameFromFullPath(#file)
+    
+    // MARK: - Static Properties
+    
+    static let timeKey = "time"
+    static let altitudesKey = "altitudes"
     
     // MARK: - Init
     
-    init(track: Track, forTrack: Bool = false) {
+    override init() {
+        super.init()
+//        print("=== \(file).\(#function) - uuidString: \(uuidString) ===")
+    }
+    
+    init(track: Track, shouldSetPlotVals: Bool = false) {
+        super.init()
+//        print("=== \(file).\(#function) - track: \(track.debugName), uuidString: \(uuidString) ===")
         self.track = track
-        self.trackPoints = track.trackPoints
-        
-        //print("=== \(file).\(#function) - track: \(track.debugName), forTrack: \(forTrack) ===")
         
         guard track.altitudeIsValid else { return }
         
         setAltitudeData()
         
-        if forTrack {
-            return
-        }
+        guard shouldSetPlotVals else { return }
         
         setPlotVals()
     }
     
 //    deinit {
 //        print("=== \(file).\(#function) - track: \(track.debugName) ===")
+//        print("=== \(file).\(#function) - uuidString: \(uuidString) ===")
+//        #if os(iOS)
+//        NotificationCenter.default.removeObserver(self)
+//        #endif
 //    }
+    
+    // MARK: - Set Up Methods
+    
+    func setUp(for track: Track) {
+//        print("=== \(file).\(#function) - track: \(track.debugName), uuidString: \(uuidString) ===")
+        
+        guard track.altitudeIsValid else { return }
+
+        if self.track != nil && track.id == self.track.id {
+            return
+        }
+        
+        self.track = track
+        
+        setAltitudeData()
+        
+        setPlotVals()
+        
+        #if os(iOS)
+        if TrackHelper.trackIsTrackingOnThisDevice(track) {
+            NotificationCenter.default.addObserver(self,
+                selector: #selector(handleAltitudeChanged(_:)),
+                name: Notification.Name.altitudeChanged(for: track), object: nil)
+        }
+        #endif
+    }
+    
+    func cleanUp() {
+//        print("=== \(file).\(#function) - uuidString: \(uuidString) ===")
+        #if os(iOS)
+        NotificationCenter.default.removeObserver(self)
+        #endif
+    }
     
     // MARK: - Altitude Methods
     
@@ -72,6 +119,8 @@ class TrackHelper {
         
         let nSmoothPasses = 11
         let nSmoothRange = 7
+        
+        trackPoints = track.trackPoints
         
         guard trackPoints.count > nSmoothRange else { return }
         
@@ -154,6 +203,31 @@ class TrackHelper {
         }
     }
     
+    #if os(iOS)
+    @objc func handleAltitudeChanged(_ notification: NSNotification) {
+        //print("=== \(file).\(#function) ===")
+        
+        guard
+            let userInfo = notification.userInfo as? Dictionary<String,Any>,
+            let time = userInfo[TrackHelper.timeKey] as? [Double],
+            let altitudes = userInfo[TrackHelper.altitudesKey] as? [Double]
+        else {
+            //print("=== \(file).\(#function) - bad userInfo, uuidString: \(uuidString) ===")
+            return
+        }
+        
+        //print("--- \(file).\(#function) - altitudes.count: \(altitudes.count)")
+        //print("=== \(file).\(#function) - altitudes.count: \(altitudes.count), uuidString: \(uuidString) ===")
+        
+        self.time = time
+        self.altitudes = altitudes
+        
+        trackPoints = track.trackPoints
+        
+        setPlotVals()
+    }
+    #endif
+    
     // MARK: - Plot Methods
     
     func setPlotVals() {
@@ -162,9 +236,13 @@ class TrackHelper {
         
         setGridVals(for: altitudes)
         
+        var altitudePlotVals = [Double]()
+        
         for altitude in altitudes {
             altitudePlotVals.append(yFor(altitude))
         }
+        
+        self.altitudePlotVals = altitudePlotVals
     }
     
     func yFor(_ yVal: Double) -> Double {

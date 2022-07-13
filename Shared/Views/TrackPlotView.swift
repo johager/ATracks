@@ -21,19 +21,17 @@ struct TrackPlotView: View {
     @State private var xVertVals: [Double]
     private var yVertVals: [Double] = [0, 1]
     
-    private var trackHelper: TrackHelper
+    @StateObject private var trackHelper = TrackHelper()
     
-    let file = "TrackPlotView"
+//    let file = "TrackPlotView"
     
     // MARK: - Init
     
     init(track: Track, scrubberInfo: ScrubberInfo, displayOnSide: Bool = false) {
+        //print("=== \(file).\(#function) - track: \(track.debugName) ===")
         self.track = track
         self.scrubberInfo = scrubberInfo
         self.displayOnSide = displayOnSide
-        self.trackHelper = TrackHelper(track: track)
-        
-        //print("=== \(file).\(#function) - track: \(track.debugName) ===")
         
         if displayOnSide && DisplaySettings.shared.placeMapOnRightInLandscape && scrubberInfo.xFraction > 1 {
             scrubberInfo.xFraction = -1
@@ -61,10 +59,10 @@ struct TrackPlotView: View {
                             Text("Gain: ")
                         }
                         VStack(alignment: .trailing, spacing: 4) {
-                            Text(trackHelper.altitudeMax.stringAsInt)
-                            Text(trackHelper.altitudeMin.stringAsInt)
-                            Text(trackHelper.altitudeAve.stringAsInt)
-                            Text(trackHelper.altitudeGain.stringAsInt)
+                            Text(track.altitudeMax.stringAsInt)
+                            Text(track.altitudeMin.stringAsInt)
+                            Text(track.altitudeAve.stringAsInt)
+                            Text(track.altitudeGain.stringAsInt)
                         }
                     } else {
                         VStack(alignment: .trailing, spacing: 4) {
@@ -72,8 +70,8 @@ struct TrackPlotView: View {
                             Text("Min: ")
                         }
                         VStack(alignment: .trailing, spacing: 4) {
-                            Text(trackHelper.altitudeMax.stringAsInt)
-                            Text(trackHelper.altitudeMin.stringAsInt)
+                            Text(track.altitudeMax.stringAsInt)
+                            Text(track.altitudeMin.stringAsInt)
                         }
                         Spacer()
                         VStack(alignment: .trailing, spacing: 4) {
@@ -81,8 +79,8 @@ struct TrackPlotView: View {
                             Text("Gain: ")
                         }
                         VStack(alignment: .trailing, spacing: 4) {
-                            Text(trackHelper.altitudeAve.stringAsInt)
-                            Text(trackHelper.altitudeGain.stringAsInt)
+                            Text(track.altitudeAve.stringAsInt)
+                            Text(track.altitudeGain.stringAsInt)
                         }
                     }
                 }
@@ -146,8 +144,16 @@ struct TrackPlotView: View {
         .foregroundColor(.text)
         .padding(.leading, device.trackPlotStatsLeadingSpace(displayOnSide: displayOnSide))
         .padding(.trailing, device.trackPlotStatsTrailingSpace(displayOnSide: displayOnSide))
+        .onAppear {
+//            print("=== \(file).onAppear - track: \(track.debugName) ===")
+            trackHelper.setUp(for: track)
+        }
         .onChange(of: scrubberInfo.xFraction) { xFraction in
             xVertVals = [xFraction, xFraction]
+        }
+        .onDisappear {
+//            print("=== \(file).onDisappear - track: \(track.debugName) ===")
+            trackHelper.cleanUp()
         }
     }
     

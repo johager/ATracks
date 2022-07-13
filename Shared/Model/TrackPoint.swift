@@ -41,8 +41,6 @@ class TrackPoint: NSManagedObject {
         
         self.track = track
         
-        guard shouldUpdateTrackDetails else { return }
-        
         track.setTrackSummaryData(verticalAccuracy: clLocation.verticalAccuracy, shouldUpdateTrackDetails: shouldUpdateTrackDetails)
     }
 }
