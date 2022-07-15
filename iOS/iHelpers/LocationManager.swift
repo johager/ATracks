@@ -50,14 +50,8 @@ class LocationManager: NSObject {
     var settingsProvider: LocationManagerSettingsProvider = LocationManagerSettings.shared
     
     #if targetEnvironment(simulator)
-    private let shouldUseTime_BasedAutoStop = true
-    private let autoStopTime: TimeInterval = 10
+    private let autoStopTime: TimeInterval? = 10  // time for auto-stop on simulator (if set)
     private let useSimulatedAltitude = true
-    private var altitudeCount: CGFloat = 0 {
-        didSet {
-            print("=== \(file).\(#function) didSet - altitudeCount: \(altitudeCount) ===")
-        }
-    }
     #endif
     
     private var logger: Logger?
@@ -127,10 +121,6 @@ class LocationManager: NSObject {
         firstLocation = nil
         shouldCheckAutoStop = false
         
-        #if targetEnvironment(simulator)
-        altitudeCount = 0
-        #endif
-        
         if !appIsActive {
             sceneDidBecomeInactive()
         }
@@ -152,7 +142,7 @@ class LocationManager: NSObject {
         print("--- \(file).\(#function) - isTracking: \(isTracking), dTime: \(dTime), dLoc: \(dLoc), shouldCheckAutoStop: \(shouldCheckAutoStop)")
         
         #if targetEnvironment(simulator)
-        if shouldUseTime_BasedAutoStop {
+        if let autoStopTime = autoStopTime {
             if dTime > autoStopTime {
                 logger?.notice("\(#function, privacy: .public) - call stopTracking() due to autoStopTime")
                 stopTracking()
@@ -216,10 +206,15 @@ class LocationManager: NSObject {
     
     #if targetEnvironment(simulator)
     func locationWithSimulatedAltitude(from location: CLLocation) -> CLLocation {
-        let altitude = altitudeCount * 0.2
-        if isTracking {
-            altitudeCount += 1
+
+        let altitude: Double
+        if let firstLocation = firstLocation {
+            let dt = location.timestamp.timeIntervalSince(firstLocation.timestamp)
+            altitude = 0.1 * dt
+        } else {
+            altitude = 0
         }
+        
         return CLLocation(coordinate: location.coordinate,
                           altitude: altitude,
                           horizontalAccuracy: location.horizontalAccuracy,
