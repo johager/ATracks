@@ -111,7 +111,7 @@ class LocationManager: NSObject {
     
     func stopTracking(forDelete: Bool = false) {
         //print("=== \(file).\(#function) - forDelete: \(forDelete) ===")
-        logger?.notice("\(#function, privacy: .public) - forDelete: '\(forDelete, privacy: .public)'")
+        logger?.notice("\(#function, privacy: .public) - forDelete: \(forDelete, privacy: .public)")
         if !forDelete {
 //            TrackManager.shared.stopTracking(track)
             TrackManager.shared.stopTracking()

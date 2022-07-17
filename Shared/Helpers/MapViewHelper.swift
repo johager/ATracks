@@ -139,9 +139,9 @@ class MapViewHelper: NSObject, ObservableObject {
         guard track.id != self.track.id || device.mapViewShouldUpdateDueToColorSchemeChange
         else {
 //            print("=== \(file).\(#function) - \(track.debugName) - track is same ===")
-            if Device.shared.isMac {
-                setUpSubscriptions()
-            }
+            #if os(macOS)
+            setUpSubscriptions()
+            #endif
             return
         }
         
@@ -149,9 +149,11 @@ class MapViewHelper: NSObject, ObservableObject {
         
         self.track = track
         
+        #if os(iOS)
         if Device.shared.isPad {
             setUpSubscriptions()
         }
+        #endif
         
         setUpTracking()
         
