@@ -124,6 +124,9 @@ struct TrackPlotView: View {
                         .stroke(Color.plotAxis, lineWidth: 2)
                     
                     // value lines
+//                    LineShape(xVals: trackHelper.time, yVals: trackHelper.altitudePlotValsRaw)
+//                        .stroke(Color.plotAltitudeRaw, lineWidth: 3)
+                    
                     LineShape(xVals: trackHelper.time, yVals: trackHelper.altitudePlotVals)
                         .stroke(Color.plotAltitude, lineWidth: 2)
                     

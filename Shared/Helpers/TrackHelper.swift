@@ -19,6 +19,9 @@ class TrackHelper: NSObject, ObservableObject {
     
     var altitudePlotVals = [Double]()  // for axis 0 to 1
     
+//    var altitudesRaw = [Double]()
+//    var altitudePlotValsRaw = [Double]()  // for axis 0 to 1
+    
     var altitudeMin: Double = 0
     var altitudeMax: Double = 0
     var altitudeAve: Double = 0
@@ -50,6 +53,7 @@ class TrackHelper: NSObject, ObservableObject {
     
     static let timeKey = "time"
     static let altitudesKey = "altitudes"
+//    static let altitudesRawKey = "altitudesRaw"
     
     // MARK: - Init
     
@@ -117,12 +121,12 @@ class TrackHelper: NSObject, ObservableObject {
     
     func setAltitudeData() {
         
-        let nSmoothPasses = 11
-        let nSmoothRange = 7
+        let nLowPass = 2
+        let nKalman = 3
         
         trackPoints = track.trackPoints
         
-        guard trackPoints.count > nSmoothRange else { return }
+        guard trackPoints.count > 2 else { return }
         
         // raw values
         
@@ -132,9 +136,11 @@ class TrackHelper: NSObject, ObservableObject {
             altRaw.append(trackPoint.altitude * 3.28084)  // convert meters to feet
         }
 
+//        altitudesRaw = altRaw
+        
         // smooth values
         
-        altitudes = smoothed(altRaw, nSmoothPasses: nSmoothPasses, nSmoothRange: nSmoothRange)
+        altitudes = smoothed(altRaw, nLowPass: nLowPass, nKalman: nKalman)
         
         // summary values
         
@@ -162,45 +168,94 @@ class TrackHelper: NSObject, ObservableObject {
 //        print("=== \(file).\(#function) - altitude min / max: \(minString) / \(maxString), ave: \(aveString), gain: \(gainString) ===")
     }
     
-    func smoothed(_ x: [Double], nSmoothPasses: Int, nSmoothRange: Int) -> [Double] {
-        let nOffset = (nSmoothRange - 1) / 2
+    func smoothed(_ x: [Double], nLowPass: Int, nKalman: Int) -> [Double] {
         
-        var xInit = x
-        var xSmoothed: [Double]!
+        // low-pass settings
+        let alpha1: Double = 0.75
+        let alpha2: Double = 0.25
         
-        for _ in 0..<nSmoothPasses {
-            xSmoothed = [Double]()
-            
-            for _ in 0..<nOffset {
-                xSmoothed.append(0)
-            }
+        // Kalman setttings
+        let accuracy: Double = 10
+        let decay: Double = 3
+        
+        let sigmaSquared: Double = accuracy * accuracy
+        
+        var xSmoothed = x
+        
+        for _ in 0..<nLowPass {
+            xSmoothed = lowPassSmoothedForward(xSmoothed, alpha: alpha1)
+            xSmoothed = lowPassSmoothedBackward(xSmoothed, alpha: alpha1)
+        }
+        
+        for _ in 0..<nKalman {
+            xSmoothed = kalmanSmoothedForward(xSmoothed, sigmaSquared: sigmaSquared, decay: decay)
+            xSmoothed = kalmanSmoothedBackward(xSmoothed, sigmaSquared: sigmaSquared, decay: decay)
+        }
 
-            for i in nOffset..<(xInit.count - nOffset) {
-                xSmoothed.append(smoothed(xInit, at: i, nSmoothRange: nSmoothRange))
-            }
-
-            setEnds(&xSmoothed, nOffset: nOffset)
-            
-            xInit = xSmoothed
+        for _ in 0..<nLowPass {
+            xSmoothed = lowPassSmoothedForward(xSmoothed, alpha: alpha2)
+            xSmoothed = lowPassSmoothedBackward(xSmoothed, alpha: alpha2)
         }
         
         return xSmoothed
     }
     
-    func smoothed(_ x: [Double], at i: Int, nSmoothRange: Int) -> Double {
-        let nOffset = (nSmoothRange - 1) / 2
-        var sum: Double = 0
-        for iOffset in -nOffset...nOffset {
-            sum += x[i + iOffset]
+    func lowPassSmoothedForward(_ x: [Double], alpha: Double) -> [Double] {
+        // low-pass filter (forward in i)
+        
+        var xSmoothed = [x[0]]
+        
+        for i in 1..<x.count {
+            xSmoothed.append(xSmoothed[i - 1] + alpha * (x[i] - xSmoothed[i - 1]))
         }
-        return sum / Double(nSmoothRange)
+        
+        return xSmoothed
     }
     
-    func setEnds(_ x: inout [Double], nOffset: Int) {
-        for i in 0..<nOffset {
-            x[i] = x[nOffset]
-            x.append(x.last!)
+    func lowPassSmoothedBackward(_ x: [Double], alpha: Double) -> [Double] {
+        // low-pass filter (backward in i)
+        
+        var xSmoothed = x
+        
+        for i in (0..<x.count - 1).reversed() {
+            xSmoothed[i] = xSmoothed[i + 1] + alpha * (x[i] - xSmoothed[i + 1])
         }
+        
+        return xSmoothed
+    }
+    
+    func kalmanSmoothedForward(_ x: [Double], sigmaSquared: Double, decay: Double) -> [Double] {
+        // Kalman filter (forward in i)
+        
+        var xSmoothed = [x[0]]
+        
+        var variance = sigmaSquared
+        
+        for i in 1..<x.count {
+            variance += (time[i] - time[i - 1]) * decay
+            let gain = variance / (variance + sigmaSquared)
+            xSmoothed.append(x[i - 1] + gain * (x[i] - x[i - 1]))
+            variance *= 1 - gain
+        }
+        
+        return xSmoothed
+    }
+    
+    func kalmanSmoothedBackward(_ x: [Double], sigmaSquared: Double, decay: Double) -> [Double] {
+        // Kalman filter (backward in i)
+        
+        var xSmoothed = x
+        
+        var variance = sigmaSquared
+        
+        for i in (0..<x.count - 1).reversed() {
+            variance += (time[i + 1] - time[i]) * decay
+            let gain = variance / (variance + sigmaSquared)
+            xSmoothed[i] = x[i + 1] + gain * (x[i] - x[i + 1])
+            variance *= 1 - gain
+        }
+        
+        return xSmoothed
     }
     
     #if os(iOS)
@@ -211,6 +266,7 @@ class TrackHelper: NSObject, ObservableObject {
             let userInfo = notification.userInfo as? Dictionary<String,Any>,
             let time = userInfo[TrackHelper.timeKey] as? [Double],
             let altitudes = userInfo[TrackHelper.altitudesKey] as? [Double]
+//            let altitudesRaw = userInfo[TrackHelper.altitudesRawKey] as? [Double]
         else {
             //print("=== \(file).\(#function) - bad userInfo, uuidString: \(uuidString) ===")
             return
@@ -221,6 +277,7 @@ class TrackHelper: NSObject, ObservableObject {
         
         self.time = time
         self.altitudes = altitudes
+//        self.altitudesRaw = altitudesRaw
         
         trackPoints = track.trackPoints
         
@@ -243,6 +300,12 @@ class TrackHelper: NSObject, ObservableObject {
         }
         
         self.altitudePlotVals = altitudePlotVals
+        
+//        var altitudePlotValsRaw = [Double]()
+//        for altitudeRaw in altitudesRaw {
+//            altitudePlotValsRaw.append(yFor(altitudeRaw))
+//        }
+//        self.altitudePlotValsRaw = altitudePlotValsRaw
     }
     
     func yFor(_ yVal: Double) -> Double {

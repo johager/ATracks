@@ -250,6 +250,10 @@ extension Color {
         return color(light: Color(white: 0.30), dark: Color(white: 0.70))
     }
     
+//    static var plotAltitudeRaw: Color {
+//        return .red
+//    }
+    
     static var plotGrid: Color {
         return color(light: Color(white: 0.77), dark: Color(white: 0.23))
     }

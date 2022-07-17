@@ -124,6 +124,7 @@ class Track: NSManagedObject, Identifiable {
         let userInfo = [
             TrackHelper.timeKey: trackHelper.time,
             TrackHelper.altitudesKey: trackHelper.altitudes
+//            TrackHelper.altitudesRawKey: trackHelper.altitudesRaw
         ]
         
         NotificationCenter.default.post(name: Notification.Name.altitudeChanged(for: self), object: nil, userInfo: userInfo)

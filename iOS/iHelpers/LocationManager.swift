@@ -26,6 +26,7 @@ class LocationManager: NSObject {
     }
     
     var shouldTrack = true
+//    var shouldTrack = false
     
     private var isAvailGPS = false
     

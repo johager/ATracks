@@ -11,7 +11,7 @@ import CoreData
 enum DataStateHelper {
     
     static let dataStateKey = "dataState"
-    static let dataStateCurrent = 9
+    static let dataStateCurrent = 10
     
     static let userDefaultsCreatedKey = "userDefaultsCreated"
     
@@ -32,6 +32,7 @@ enum DataStateHelper {
         //    7: DisplaySettings.placeButtonsOnRightInLandscape
         //    8: New Track.hasFinalSteps
         //    9: Get steps using HKStatisticsCollectionQuery
+        //   10: Altitude smoothed using low-pass and Kalman filters
         
         let userDefaults = UserDefaults.standard
         
@@ -85,6 +86,10 @@ enum DataStateHelper {
         
         if dataStateSaved < 9 {
             prepForDataState9(context: context, shouldSaveContext: &shouldSaveContext)
+        }
+        
+        if dataStateSaved < 10 {
+            prepForDataState10(context: context, shouldSaveContext: &shouldSaveContext)
         }
         
         if shouldSaveContext {
@@ -272,4 +277,35 @@ enum DataStateHelper {
         }
     }
     #endif
+    
+    static func prepForDataState10(context:  NSManagedObjectContext, shouldSaveContext: inout Bool) {
+        // Altitude smoothed using low-pass and Kalman filters
+        
+        #if targetEnvironment(simulator)
+        print("=== \(file).\(#function) - simulator ===")
+        return
+        #endif
+        
+        print("=== \(file).\(#function) ===")
+        
+        guard DeviceType.current() == .phone else { return }
+        
+        let fetchRequest = Track.fetchRequest
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Track.dateKey, ascending: false)]
+        
+        do {
+            let tracks = try context.fetch(fetchRequest)
+            for track in tracks {
+                let trackName = track.debugName
+                print("--- \(file).\(#function) - trackName: \(trackName)")
+                track.setAltitudeData()
+            }
+            if tracks.count > 0 {
+                shouldSaveContext = true
+            }
+        } catch {
+            print("--- \(file).\(#function) - error: \(error)")
+            print(error.localizedDescription)
+        }
+    }
 }
