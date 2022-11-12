@@ -21,7 +21,7 @@ extension TimeInterval {
         }
         
         let string = formatter.string(from: self)
-        guard let string = string else { return "NA" }
+        guard let string else { return "NA" }
         return string
     }
 }

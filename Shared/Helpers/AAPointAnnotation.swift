@@ -46,8 +46,9 @@ class AAPointAnnotation: MKPointAnnotation {
         guard let topImage = UIImage(named: imageNameBase)?.colored(UIColor(mainColor(forMapType: mapType)))
         else { return nil }
         
-        guard let imageNameBackgroundBase = imageNameBackgroundBase,
-              let backgroundImage = UIImage(named: imageNameBackgroundBase)?.colored(UIColor(backgroundColor(forMapType: mapType)))
+        guard
+            let imageNameBackgroundBase = imageNameBackgroundBase,
+            let backgroundImage = UIImage(named: imageNameBackgroundBase)?.colored(UIColor(backgroundColor(forMapType: mapType)))
         else { return topImage }
 
         return backgroundImage.overlay(topImage)
@@ -58,8 +59,9 @@ class AAPointAnnotation: MKPointAnnotation {
         guard let topImage = NSImage(named: imageNameBase)?.colored(NSColor(mainColor(forMapType: mapType)))
         else { return nil }
         
-        guard let imageNameBackgroundBase = imageNameBackgroundBase,
-              let backgroundImage = NSImage(named: imageNameBackgroundBase)?.colored(NSColor(backgroundColor(forMapType: mapType)))
+        guard
+            let imageNameBackgroundBase = imageNameBackgroundBase,
+            let backgroundImage = NSImage(named: imageNameBackgroundBase)?.colored(NSColor(backgroundColor(forMapType: mapType)))
         else { return topImage }
         
         return backgroundImage.overlay(topImage)

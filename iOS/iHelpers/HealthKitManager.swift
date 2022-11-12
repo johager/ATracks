@@ -67,12 +67,12 @@ class HealthKitManager {
             let query = HKStatisticsCollectionQuery(quantityType: stepCount, quantitySamplePredicate: nil, options: [.cumulativeSum], anchorDate: startDate, intervalComponents: interval)
             
             query.initialResultsHandler = { _, result, error in
-                if let error = error {
+                if let error {
                     print("--- \(fileFunc) - \(trackName) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
                     return continuation.resume(returning: nil)
                 }
 
-                guard let result = result
+                guard let result
                 else {
                     print("--- \(fileFunc) - \(trackName) - error retrieving steps: no result.")
                     return continuation.resume(returning: nil)
@@ -94,7 +94,7 @@ class HealthKitManager {
             }
             
 //            query.statisticsUpdateHandler = { _, statistics, _, error in
-//                if let error = error {
+//                if let error {
 //                    print("--- \(fileFunc) - \(trackName) - error retrieving steps: \(error.localizedDescription)\n---\n\(error)")
 //                    return continuation.resume(returning: nil)
 //                }
@@ -115,7 +115,7 @@ class HealthKitManager {
             hkStore.execute(query)
         }
 
-        guard let numSteps = numSteps else { return nil }
+        guard let numSteps else { return nil }
 
         return numSteps
     }

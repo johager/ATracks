@@ -165,8 +165,9 @@ struct TrackPlotView: View {
     func handleTouch(at location: CGPoint) {
         //print("=== TrackPlotView.\(#function) - hasAltitudeData: \(trackHelper.hasAltitudeData), yAxisNumGridLines: \(trackHelper.yAxisNumGridLines), trackIsTrackingOnThisDevice: \(trackIsTrackingOnThisDevice) ===")
         
-        guard trackHelper.hasAltitudeData,
-              !trackIsTrackingOnThisDevice
+        guard
+            trackHelper.hasAltitudeData,
+            !trackIsTrackingOnThisDevice
         else { return }
         
         let xFraction = location.x / plotSize.width

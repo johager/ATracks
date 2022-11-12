@@ -46,8 +46,9 @@ enum SwipeHelper {
     static func newTrack(from tracks: [Track], and selectedTrack: Track?, newIndexFrom: (Int) -> Int?) -> Track? {
 //        print("=== \(file).\(#function) ===")
         
-        guard let selectedTrack = selectedTrack,
-              let index = tracks.firstIndex(of: selectedTrack)
+        guard
+            let selectedTrack,
+            let index = tracks.firstIndex(of: selectedTrack)
         else { return nil }
         
 //        print("=== \(file).\(#function) - current index: \(index) of count \(tracks.count) ===")

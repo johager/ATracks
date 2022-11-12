@@ -141,7 +141,7 @@ struct TrackListResultsView: View {
         #if os(iOS)
         return false
         #else
-        guard let trackBeingEdited = trackBeingEdited else { return false }
+        guard let trackBeingEdited else { return false }
         return track === trackBeingEdited
         #endif
     }

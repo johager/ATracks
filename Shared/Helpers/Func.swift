@@ -87,8 +87,9 @@ enum Func {
             }
         }
 
-        guard kr == KERN_SUCCESS,
-              count >= TASK_VM_INFO_REV1_COUNT
+        guard
+            kr == KERN_SUCCESS,
+            count >= TASK_VM_INFO_REV1_COUNT
         else { return nil }
 
         return info.phys_footprint

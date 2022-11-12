@@ -37,7 +37,7 @@ class CoreDataStack: NSObject {
         let container = NSPersistentCloudKitContainer(name: modelName)
         container.persistentStoreDescriptions.first?.url = persistentStoreURL
         container.loadPersistentStores { _, error in
-            if let error = error {
+            if let error {
                 fatalError("=== CoreDataStack.persistentContainer - error loading persistent stores: \(error.localizedDescription)\n---\n\(error)")
             }
         }

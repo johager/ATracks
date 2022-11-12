@@ -42,8 +42,9 @@ struct TrackListView: View {
     var defaultTrackName: String { Date().stringForTrackName }
     
     var interfaceOrientation: UIInterfaceOrientation {
-        guard let scene = UIApplication.shared.connectedScenes.first,
-              let sceneDelegate = scene as? UIWindowScene else { return .unknown }
+        guard
+            let scene = UIApplication.shared.connectedScenes.first,
+            let sceneDelegate = scene as? UIWindowScene else { return .unknown }
         return sceneDelegate.interfaceOrientation
     }
     var isLandscapeLeft: Bool { return interfaceOrientation == .landscapeLeft }
@@ -197,7 +198,7 @@ struct TrackListView: View {
             trackBeingEdited = nil
         }
         
-        guard let trackName = trackName else { return }
+        guard let trackName else { return }
         
         var name = trackName.trimmingCharacters(in: .whitespacesAndNewlines)
         

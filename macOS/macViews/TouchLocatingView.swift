@@ -48,9 +48,10 @@ struct TouchLocatingView: NSViewRepresentable {
         
         func handleEvent(_ event: NSEvent) {
             
-            guard let eventWindow = event.window,
-                  let viewWindow = self.window,
-                  eventWindow === viewWindow
+            guard
+                let eventWindow = event.window,
+                let viewWindow = self.window,
+                eventWindow === viewWindow
             else { return }
                   
             let locationInView = convert(event.locationInWindow, from: nil)

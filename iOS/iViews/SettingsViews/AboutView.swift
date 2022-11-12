@@ -57,7 +57,7 @@ struct AboutView: View {
                     }
                     Text("The location and elevation data is obtained from the GPS in your device. You must allow ATracks to track your location. Providing location access \"While Using the App\" will allow ATracks to track your location only when the app is active, and \"Always\" will allow ATracks to track your location while the app is in the background.")
                     Text("The app will first ask permission to \"Allow Once\" or \"Allow While Using App\". Select \"Allow While Using App\" so that your track can be followed. This will only allow tracking while the app is active. After you grant permission for \"Allow While Using App\" and start tracking, exit the app so that you can be prompted to allow background tracking by selecting \"Change to Always Allow.\"")
-                    Text("Alternatively, you can go to the device Settings > ATracks > Location and select \"Always\".")
+                    Text("Alternatively, you can go to the in-App settings page and select \"Location Permission,\" and that will take you to the main device Settings (Settings > ATracks > Location) where you should select \"Always\".")
                     
                     if DeviceType.current() == .phone {
                         Text("Steps Set Up")

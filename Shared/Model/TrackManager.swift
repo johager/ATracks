@@ -25,7 +25,7 @@ class TrackManager: NSObject, ObservableObject {
     @Published var selectedTrack: Track?
     {
         didSet {
-            if let selectedTrack = selectedTrack {
+            if let selectedTrack {
                 //print("=== \(file).\(#function) didSet '\(selectedTrack.debugName)' ===")
                 logger?.notice("selectedTrack didSet to \(selectedTrack.debugName, privacy: .private(mask: .hash))")
             } else {
@@ -48,8 +48,9 @@ class TrackManager: NSObject, ObservableObject {
     private var isPhone: Bool!
     
     private var shouldSetSelectedTrack: Bool {
-        guard let selectedTrack = selectedTrack,
-              !tracks.contains(selectedTrack)
+        guard
+            let selectedTrack,
+            !tracks.contains(selectedTrack)
         else { return false }
         return true
     }
@@ -192,8 +193,9 @@ class TrackManager: NSObject, ObservableObject {
         // dateForHasFinalSteps: if find steps, set hasFinalSteps true when stopDate < dateForHasFinalSteps
         // dateForForceHasFinalSteps: if don't find steps, set hasFinalSteps true when stopDate < dateForForceHasFinalSteps
         
-        guard let dateForHasFinalSteps = Calendar.current.date(byAdding: .day, value: -1, to: Date()),
-              let dateForForceHasFinalSteps = Calendar.current.date(byAdding: .day, value: -14, to: Date())
+        guard
+            let dateForHasFinalSteps = Calendar.current.date(byAdding: .day, value: -1, to: Date()),
+            let dateForForceHasFinalSteps = Calendar.current.date(byAdding: .day, value: -14, to: Date())
         else { return }
         
 //        let recent = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
@@ -217,7 +219,7 @@ class TrackManager: NSObject, ObservableObject {
                 Task.init {
                     let numSteps = await HealthKitManager.shared.getSteps(from: startDate, to: stopDate, trackName: trackName)
                     viewContext.performAndWait {
-                        if let numSteps = numSteps {
+                        if let numSteps {
                             let hasFinalStepsToSet = stopDate < dateForHasFinalSteps
                             print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps), hasFinalStepsToSet: \(hasFinalStepsToSet)")
                             track.steps = numSteps
@@ -232,7 +234,7 @@ class TrackManager: NSObject, ObservableObject {
                             }
                         }
                     }
-//                    if let numSteps = numSteps {
+//                    if let numSteps {
 //                        print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps)")
 //                    }
                 }
@@ -277,7 +279,7 @@ class TrackManager: NSObject, ObservableObject {
     
 //    func stopTracking(_ track: Track?) {
 //        
-//        guard let track = track
+//        guard let track
 //        else {
 //            stopTracking()
 //            return
@@ -310,9 +312,10 @@ class TrackManager: NSObject, ObservableObject {
     }
     
     func setSelectedTrackForDelete() {
-        guard let selectedTrack = selectedTrack,
-              tracks.count > 1,
-              let index = tracks.firstIndex(of: selectedTrack)
+        guard
+            let selectedTrack,
+            tracks.count > 1,
+            let index = tracks.firstIndex(of: selectedTrack)
         else {
             self.selectedTrack = nil
             return

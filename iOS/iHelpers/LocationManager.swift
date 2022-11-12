@@ -76,9 +76,10 @@ class LocationManager: NSObject {
     // MARK: - Methods
     
     func isTracking(_ someTrack: Track) -> Bool {
-        guard isTracking,
-              let selfTrack = self.track,
-              selfTrack === someTrack
+        guard
+            isTracking,
+            let selfTrack = self.track,
+            selfTrack === someTrack
         else { return false }
         return true
     }
@@ -143,7 +144,7 @@ class LocationManager: NSObject {
         print("--- \(file).\(#function) - isTracking: \(isTracking), dTime: \(dTime), dLoc: \(dLoc), shouldCheckAutoStop: \(shouldCheckAutoStop)")
         
         #if targetEnvironment(simulator)
-        if let autoStopTime = autoStopTime {
+        if let autoStopTime {
             if dTime > autoStopTime {
                 logger?.notice("\(#function, privacy: .public) - call stopTracking() due to autoStopTime")
                 stopTracking()
@@ -164,12 +165,12 @@ class LocationManager: NSObject {
         }
     }
     
-    func reportCapabilities() -> (locationServices: Bool, significantLocationChangeMonitoring: Bool, heading: Bool) {
-        let locationServices = CLLocationManager.locationServicesEnabled()
-        let significantLocationChangeMonitoring = CLLocationManager.significantLocationChangeMonitoringAvailable()
-        let heading = CLLocationManager.headingAvailable()
-        return (locationServices, significantLocationChangeMonitoring, heading)
-    }
+//    func reportCapabilities() -> (locationServices: Bool, significantLocationChangeMonitoring: Bool, heading: Bool) {
+//        let locationServices = CLLocationManager.locationServicesEnabled()
+//        let significantLocationChangeMonitoring = CLLocationManager.significantLocationChangeMonitoringAvailable()
+//        let heading = CLLocationManager.headingAvailable()
+//        return (locationServices, significantLocationChangeMonitoring, heading)
+//    }
     
     // MARK: - Scene Lifecycle
     
@@ -260,7 +261,7 @@ extension LocationManager: CLLocationManagerDelegate {
         
 //        logger?.notice("didUpdateLocations - isTracking: \(self.isTracking, privacy: .public), track exists: \(self.track != nil)")
         
-        if let logger = logger {
+        if let logger {
             if let memory = Func.memoryMB() {
                 logger.notice("didUpdateLocations - isTracking: \(self.isTracking, privacy: .public), track exists: \(self.track != nil), appIsActive: \(self.appIsActive, privacy: .public), memory: \(memory, privacy: .public) MB")
             } else {

@@ -11,7 +11,7 @@ extension NSManagedObjectContext {
     
     func execute(_ batchUpdateRequest: NSBatchUpdateRequest, purpose: String? = nil) {
         
-        if let purpose = purpose {
+        if let purpose {
             let entityName = batchUpdateRequest.entityName
             print("=== NSManagedObjectContext.\(#function) - \(entityName): \(purpose) ===")
         }

@@ -261,12 +261,12 @@ enum DataStateHelper {
                 Task.init {
                     let numSteps = await HealthKitManager.shared.getSteps(from: startDate, to: stopDate, trackName: trackName)
                     context.performAndWait {
-                        if let numSteps = numSteps {
+                        if let numSteps {
                             print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps)")
                             track.steps = numSteps
                         }
                     }
-//                    if let numSteps = numSteps {
+//                    if let numSteps {
 //                        print("--- \(file).\(#function) - trackName: \(trackName), steps saved/new: \(track.steps)/\(numSteps)")
 //                    }
                 }

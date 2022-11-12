@@ -41,8 +41,9 @@ class MapViewHelper: NSObject, ObservableObject {
     private var device: Device { Device.shared }
     
     private var region: MKCoordinateRegion {
-        guard let trackPointsSet = track.trackPointsSet,
-              trackPointsSet.count > 1
+        guard
+            let trackPointsSet = track.trackPointsSet,
+            trackPointsSet.count > 1
         else {
             #if os(iOS)
             if trackIsTrackingOnThisDevice {
@@ -451,8 +452,9 @@ class MapViewHelper: NSObject, ObservableObject {
         
         let trackPoints = track.trackPoints
         
-        guard trackPoints.count > 1,
-              trackPoints.last!.clLocation.distance(from: trackPoints.first!.clLocation) > 10
+        guard
+            trackPoints.count > 1,
+            trackPoints.last!.clLocation.distance(from: trackPoints.first!.clLocation) > 10
         else { return }
         
         endPointAnnotation = AAPointAnnotation(coordinate: trackPoints.last!.clLocationCoordinate2D, imageNameBase: "mapMarkerShape", imageNameBackgroundBase: "mapMarkerFill", forStart: false, imageOffsetY: -18)
@@ -489,7 +491,7 @@ class MapViewHelper: NSObject, ObservableObject {
             return
         }
         
-        guard let text = text else {
+        guard let text else {
             trackPointCalloutLabel.isHidden = true
             return
         }
@@ -551,7 +553,7 @@ extension MapViewHelper: TrackManagerDelegate {
             lastTrackPoint = trackPoint
         }
         
-        guard let lastTrackPoint = lastTrackPoint else { return }
+        guard let lastTrackPoint else { return }
         
         placeTrackMarker(at: trackPoint.clLocationCoordinate2D)
         

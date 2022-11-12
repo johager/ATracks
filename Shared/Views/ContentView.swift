@@ -21,7 +21,7 @@ struct ContentView: View {
     
     private var horizontalSizeClassIsCompact: Bool {
         #if os(iOS)
-        guard let hSizeClass = hSizeClass else { return true }
+        guard let hSizeClass else { return true }
         return hSizeClass == .compact ? true : false
         #else
         return false
@@ -54,6 +54,7 @@ struct ContentView: View {
                 BlankNoTracksView()
                 #endif
             }
+            .accentColor(.textSelectable)
             #if os(macOS)
             .toolbar {
                 ToolbarItem(placement: .navigation) {

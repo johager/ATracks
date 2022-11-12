@@ -114,6 +114,16 @@ struct SettingsView: View {
             // Tracking Settings
             
             Section {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    Link(destination: url) {
+                        HStack {
+                            Text("Location Permission")
+                            Spacer()
+                            NavigationLink.empty
+                        }
+                    }
+                    .listRowSeparatorTint(.listRowSeparator)
+                }
                 SwitchView(switchText: "Use Default Track Name", switchVal: $locationManagerSettings.useDefaultTrackName)
                 SwitchView(switchText: "Use Auto-Stop", switchVal: $locationManagerSettings.useAutoStop)
             } header: {
@@ -205,8 +215,9 @@ struct SettingsView: View {
     
     func handleMFMailComposeResult() {
         
-        guard !isShowingMailView,
-              let result = result
+        guard
+            !isShowingMailView,
+            let result = result
         else { return }
         
         mailResponseTitle = ""
